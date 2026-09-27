@@ -1,35 +1,55 @@
-## Project Structure
+# Evaluating Evidential Support of Citations in AI-Generated Content
 
-```text
-MS_FINAL_PROJECT/
-├── data/
-│   ├── raw/
-│   └── processed/
-├── docs/
-├── experiments/
-├── notebooks/
-├── proposal/
-├── results/
-├── src/
-├── .gitignore
-├── README.md
-└── requirements.txt
-```
+**Author:** Tejal Jadhav  
+**Course:** CSCI 6970 – MS Course Project  
+**Term:** Fall 2026
 
-## Methodology
+## Overview
 
-The project will compare:
+This project investigates whether cited sources support AI-generated
+claims and which specific claim components are supported, unsupported,
+or contradicted by the evidence.
 
-- Natural Language Inference (NLI)-based citation-support evaluation
-- Large Language Model (LLM)-based evaluation
-- A fine-grained claim decomposition and evidence-alignment approach
+## Research Questions
 
-Evaluation will consider both overall citation-support classification and fine-grained localization of evidential mismatches.
+1. How accurately can NLP methods classify overall citation support?
+2. Can claim decomposition and evidence alignment identify the specific
+   components that are supported, unsupported, or contradicted?
+3. Which types of evidential mismatch are most difficult to detect?
 
-## Reproducibility
+## Planned Methods
 
-Experiments will be organized using explicit configurations, held-out evaluation data, and documented model settings. Large datasets, model checkpoints, generated outputs, and credentials will not be committed to the repository.
+- Whole-claim Natural Language Inference (NLI) baseline
+- Prompted Large Language Model (LLM) baseline
+- Component-level claim decomposition and evidence alignment
 
-## Project Status
+## Dataset
 
-Current stage: Dataset acquisition and initial data inspection.
+The project uses the dataset accompanying Liu, Zhang, and Liang (2023),
+“Evaluating Verifiability in Generative Search Engines.”
+
+Dataset repository:
+https://github.com/nelson-liu/evaluating-verifiability-in-generative-search-engines
+
+Original dataset files are stored locally in data/raw/ and excluded
+from Git. The official train, development, and test splits are preserved.
+
+## Repository Structure
+
+- data/: Dataset documentation and local data
+- src/data/: Data loading and preprocessing
+- src/baselines/: NLI and LLM baselines
+- src/fine_grained/: Component-level support evaluation
+- src/evaluation/: Metrics and error analysis
+- annotation/: Manual annotation guidelines and labels
+- configs/: Experiment settings
+- notebooks/: Exploratory analysis
+- docs/: Project documentation
+- tests/: Code verification
+
+Generated experiment artifacts will be stored locally in outputs/.
+
+## Current Status
+
+Repository setup and initial dataset inspection.
+Model implementation and experiments have not started.
