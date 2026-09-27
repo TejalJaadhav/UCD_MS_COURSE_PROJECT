@@ -30,16 +30,23 @@ TRAIN_FILE = (
 
 def main():
     """
-    Read and display the first nonempty training record.
+    Display the first partial-support example from training data.
     """
+    
+    example = None
+    
     with gzip.open(TRAIN_FILE, "rt", encoding="utf-8") as file:
-        example = next(
-            (json.loads(line) for line in file if line.strip()),
-            None,
-        )
+        for line in file:
+            if not line.strip():
+                continue
+            record = json.loads(line)
+            
+            if record["source_supports_statement"] == "partial_support":
+                example = record
+                break
         
         if example is None:
-            print("The training file contains no example.")
+            print("No partial-support example was found.")
             return
         
         print("AVAILABLE FIELDS")
@@ -60,8 +67,9 @@ def main():
 
         source_text = example.get("source_text") or ""
         
-        print("\nSOURCE TEXT PREVIEW — FIRST 1,500 CHARACTERS")
-        print(source_text[:1500])
+        # Show the full source so relevant evidence is not hidden by truncation.
+        print("\nFULL SOURCE TEXT")
+        print(source_text)
         print(f"\nTotal source length: {len(source_text):,} characters")
 
         print("\nSOURCE URL")
