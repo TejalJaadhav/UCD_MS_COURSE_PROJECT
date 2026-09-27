@@ -30,7 +30,7 @@ TRAIN_FILE = (
 
 def main():
     """
-    Display the first partial-support example from training data.
+       Display the first no-support example from training data.
     """
     
     example = None
@@ -41,12 +41,12 @@ def main():
                 continue
             record = json.loads(line)
             
-            if record["source_supports_statement"] == "partial_support":
+            if record["source_supports_statement"] == "no_support":
                 example = record
                 break
         
         if example is None:
-            print("No partial-support example was found.")
+            print("No no-support example was found.")
             return
         
         print("AVAILABLE FIELDS")
@@ -54,6 +54,11 @@ def main():
         
         print("\nORIGINAL QUESTION")
         print(example["query"])
+        
+        # Show the full AI response to understand words such as "Others".
+        # Their meaning may depend on the sentences before the claim.
+        print("\nFULL AI-GENERATED RESPONSE")
+        print(example["response"])
         
         print("\nAI-GENERATED STATEMENT")
         print(example["statement"])
