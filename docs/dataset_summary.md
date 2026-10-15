@@ -76,3 +76,31 @@ are recorded in annotation/pilot_notes.md.
 - src/data/view_example.py: displays a training example by label.
 - src/data/check_dataset.py: checks missing text and invalid labels.
 - src/data/check_splits.py: checks exact question overlap.
+
+
+## Review of Short Claims and Sources
+
+Short claims are not automatically invalid. Examples include
+quoted text and list items that require the surrounding context.
+
+Some source texts contain only headings, such as “From To”
+or “General Information.” These saved texts do not provide enough
+information to evaluate their associated claims.
+
+Training records at lines 4230, 4233, and 6026 are flagged for review.
+No records or original labels have been changed.
+
+Before deciding whether to exclude these records, we will check
+whether source_raw_text contains useful information missing from
+source_text.
+
+### Comparison of Source Fields
+
+For training records 4230, 4233, and 6026, source_text and
+source_raw_text contain the same two-word text.
+
+Neither field provides enough information to assess the full claim.
+These records are flagged as having insufficient saved source text.
+
+Original labels remain unchanged. A rule for handling such records
+will be defined before model evaluation.
