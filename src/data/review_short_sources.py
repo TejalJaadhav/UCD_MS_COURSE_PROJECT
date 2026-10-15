@@ -71,6 +71,13 @@ def main():
 
             print("\nDATASET LABEL")
             print(record["source_supports_statement"])
+            
+                        # The source title may add useful context to a short passage.
+            print("\nSOURCE TITLE")
+            print(record.get("source_title") or "Not provided.")
+
+            print("\nSOURCE CONTENT TITLE")
+            print(record.get("source_content_title") or "Not provided.")
 
             print("\nSOURCE TEXT")
             print(source_text)
