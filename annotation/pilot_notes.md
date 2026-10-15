@@ -99,3 +99,19 @@ less sugary beverages. The reason for the no-support label
 therefore remains unclear.
 
 Decision: Keep the original label and flag this example for review.
+
+## Example 3: NHL Shots Record
+
+The dataset labels this claim `complete_support`. The claim says
+that 92 shots is the record for a single team in an NHL game.
+
+The source says the 92-shot figure is unofficial and gives 88 as
+the record in the NHL record books. The claim leaves out the word
+“unofficial.”
+
+The NLI model predicted contradiction for several source sections
+and did not predict entailment for any section.
+
+This example needs manual review. Leaving out “unofficial” may change
+the meaning of the claim. Keep the original dataset label, and use
+this example when we decide how to handle missing qualifiers.
