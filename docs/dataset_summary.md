@@ -104,3 +104,15 @@ These records are flagged as having insufficient saved source text.
 
 Original labels remain unchanged. A rule for handling such records
 will be defined before model evaluation.
+
+## Training Source Lengths
+
+- Median source length: 943 words.
+- Longest source: 74,768 words.
+- 10 records have sources of 10 words or fewer.
+- 145 records have sources of 50 words or fewer.
+- 457 records have sources longer than 5,000 words.
+
+Length counts refer to claim–source records, not unique sources.
+Short sources require review; length alone is not an exclusion rule.
+Long sources will need an input-handling strategy for model evaluation.

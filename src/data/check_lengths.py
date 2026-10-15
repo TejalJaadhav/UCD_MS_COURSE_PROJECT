@@ -75,6 +75,20 @@ def main():
 
     # These thresholds describe the data.
     # They are not model limits or rules for cutting text.
+    
+        # Count very short sources to understand how common they are.
+    # These thresholds are for inspection only, not automatic removal.
+    print("\nRECORDS WITH SHORT SOURCES")
+
+    for threshold in (5, 10, 20, 50):
+        count = sum(length <= threshold for length in source_lengths)
+        percentage = count / len(source_lengths) * 100
+
+        print(
+            f"  At most {threshold} words: "
+            f"{count:,} records ({percentage:.1f}%)"
+        )
+        
     print("\nRECORDS WITH LONG SOURCES")
     for threshold in (500, 1000, 2000, 5000):
         count = sum(length > threshold for length in source_lengths)
