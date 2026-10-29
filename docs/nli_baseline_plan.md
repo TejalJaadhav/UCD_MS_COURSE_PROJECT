@@ -101,3 +101,14 @@ only makes sense when sections are read together.
 
 Keep the claim intact. Check that each title, section, and claim fits
 within the model's 512-token limit. Flag pairs that do not fit.
+
+
+## Three-label test idea
+
+Check each part of a claim against all sections of its source.
+
+- If every part is supported, predict `complete_support`.
+- If some parts are supported, predict `partial_support`.
+- If no parts are supported, predict `no_support`.
+
+For the first small test, split the claims into parts by hand. Keep the dataset labels unchanged.

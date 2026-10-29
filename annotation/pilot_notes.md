@@ -180,3 +180,13 @@ this example when we decide how to handle missing qualifiers.
 This pilot predicts only two groups: `fully_supported` and `not_fully_supported`. It does not predict `partial_support` by itself.
 
 The current rule calls a claim fully supported if any one source section gets an entailment prediction. For a claim with several parts, that section may support only some of them. We need a better rule before the model can reliably separate complete support from partial support.
+
+## Three-label test idea
+
+For a claim with several parts, check each part against all source sections.
+
+- If every part has supporting evidence, predict `complete_support`.
+- If some parts have supporting evidence, predict `partial_support`.
+- If no parts have supporting evidence, predict `no_support`.
+
+For the first small test, we will split claims into parts by hand. We will not change the dataset labels.
