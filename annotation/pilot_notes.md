@@ -115,3 +115,68 @@ and did not predict entailment for any section.
 This example needs manual review. Leaving out “unofficial” may change
 the meaning of the claim. Keep the original dataset label, and use
 this example when we decide how to handle missing qualifiers.
+
+
+### Possible label issue: dev line 726
+
+- Dataset label: `no_support`
+- The source text appears to state the claim directly.
+- The human-selected evidence field is empty.
+- The NLI model predicted entailment.
+- Flag this example for review; keep the original dataset label unchanged for now.
+
+### Ambiguous case: dev line 925
+
+- Dataset label: `partial_support`
+- The selected evidence gives reasons for changes in artistic style beyond changing preferences.
+- The NLI model predicted entailment.
+- The reason for the partial-support label is unclear from this example.
+- Keep the original label unchanged and flag it for review.
+
+
+### Partial-support false positive: dev line 698
+
+- The claim includes regret, responsibility, and a remedy.
+- The selected evidence mainly supports the regret part.
+- The full source discusses responsibility and ways to repair harm elsewhere.
+- The NLI model predicted entailment for one section, so the pilot rule marked the whole claim fully supported.
+- Keep the dataset label unchanged. This example shows that one entailed section may not support every part of a claim.
+
+### Missed support: dev line 870
+
+- Dataset label: `complete_support`
+- The human-selected evidence directly supports the claim.
+- The NLI model predicted `neutral` for the strongest section.
+- This may be a model miss on a context-dependent claim.
+- Keep the dataset label unchanged.
+
+
+### Missed support with a qualification: dev line 1009
+
+- Dataset label: `complete_support`
+- The selected evidence lists the same Silver, Gold, and Diamond subscriber thresholds as the claim.
+- The NLI model predicted `neutral` for its strongest section.
+- The source later says awards are not automatic and depend on eligibility, which may add ambiguity.
+- Keep the dataset label unchanged.
+
+### Missed support with an unclear reference: dev line 361
+
+- Dataset label: `complete_support`
+- The selected evidence directly supports the facts about Wai.
+- The NLI model predicted `neutral` for its strongest section.
+- The phrase “Some of them” may need context from before the claim.
+- Keep the dataset label unchanged.
+
+### Missed direct evidence: dev line 320
+
+- Dataset label: `complete_support`
+- The human-selected evidence directly matches the claim.
+- The NLI model predicted `neutral` for its strongest section.
+- Keep the dataset label unchanged.
+
+
+### Pilot limitation: partial support
+
+This pilot predicts only two groups: `fully_supported` and `not_fully_supported`. It does not predict `partial_support` by itself.
+
+The current rule calls a claim fully supported if any one source section gets an entailment prediction. For a claim with several parts, that section may support only some of them. We need a better rule before the model can reliably separate complete support from partial support.
