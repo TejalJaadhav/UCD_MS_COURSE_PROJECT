@@ -116,3 +116,15 @@ will be defined before model evaluation.
 Length counts refer to claim–source records, not unique sources.
 Short sources require review; length alone is not an exclusion rule.
 Long sources will need an input-handling strategy for model evaluation.
+
+## Source Input Decision
+
+Models will receive the saved source title, when available,
+along with the source text. This provides context for short passages.
+
+The same input format will be used for all compared methods.
+Missing titles will be allowed.
+
+With this input format, record 2050 is usable.
+The other nine reviewed records remain flagged for insufficient
+saved source information.
