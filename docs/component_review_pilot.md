@@ -48,3 +48,21 @@ labels. No original labels were changed.
 These are three exploratory examples, not a representative evaluation
 sample. The notes do not establish annotation agreement or validate a
 component-level method. Original dataset labels remain unchanged.
+
+
+## NLI Comparison for Reviewed Examples
+
+The same 15-example dev pilot included lines 29, 97, and 408. NLI outputs
+are recorded here separately from the manual component judgments.
+
+| Original dev line | Gold label | Localized-evidence NLI | Full-source NLI | Manual review |
+|---:|---|---|---|---|
+| 29 | `complete_support` | `entailment` | `neutral` | Matchup and score supported |
+| 408 | `partial_support` | `neutral` | `neutral` | Replacement options supported; 1:2 ratio contradicted |
+| 97 | `no_support` | unavailable | `contradiction` | “69 points” unsupported by the source as reviewed |
+
+The line 97 model output and manual judgment differ. The source lists
+2,048 points against Cleveland, but does not explain what the claim's
+69-point figure refers to. This difference should be reviewed carefully.
+NLI outputs are not treated as component labels, and the dataset gold
+labels remain unchanged.
