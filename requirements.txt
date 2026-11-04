@@ -1,0 +1,4 @@
+# Libraries for loading and running the pretrained NLI model.
+torch
+transformers
+sentencepiece
