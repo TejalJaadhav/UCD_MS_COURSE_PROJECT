@@ -36,12 +36,16 @@ def normalize_example(example, split):
     }
     
 def load_and_normalize_split(split, path):
-    """Load and normalize all examples from one dataset split."""
-
+    """Normalize examples while preserving their original file line numbers."""
     examples = []
 
-    for raw_example in load_jsonl_gz(path):
+    for raw_line_number, raw_example in enumerate(
+        load_jsonl_gz(path), start=1
+    ):
         normalized = normalize_example(raw_example, split)
+
+        # Keep the original position so cleaned records remain traceable.
+        normalized["raw_line_number"] = raw_line_number
         examples.append(normalized)
 
     return examples
@@ -67,13 +71,18 @@ def clean_exact_duplicates(all_splits):
     return cleaned_splits
     
 def remove_exact_duplicates(examples):
-    """Remove rows that are completely identical."""
-
+    """Remove identical normalized records, ignoring their original positions."""
     seen = set()
     unique_examples = []
 
     for example in examples:
-        key = json.dumps(example, sort_keys=True)
+        # Line numbers identify locations, not differences in content.
+        content = {
+            key: value
+            for key, value in example.items()
+            if key != "raw_line_number"
+        }
+        key = json.dumps(content, sort_keys=True)
 
         if key not in seen:
             seen.add(key)
@@ -112,14 +121,55 @@ def remove_cross_split_overlap(all_splits):
     return cleaned_splits
 
 def assign_example_ids(all_splits):
-    """Assign a unique ID to each processed example."""
-
+    """Assign stable IDs using each example's original split and line number."""
     for split, examples in all_splits.items():
-        for index, example in enumerate(examples, start=1):
-            example["example_id"] = f"{split}_{index:05d}"
+        for example in examples:
+            # For example, original dev line 749 becomes dev_00749.
+            raw_line_number = example["raw_line_number"]
+            example["example_id"] = f"{split}_{raw_line_number:05d}"
 
     return all_splits
 
+def validate_processed_examples(all_splits):
+    """Check IDs and labels against the original compressed records."""
+    seen_ids = set()
+
+    for split, examples in all_splits.items():
+        # Read original records independently to verify their labels.
+        raw_examples = list(load_jsonl_gz(FILES[split]))
+
+        for example in examples:
+            line_number = example["raw_line_number"]
+            expected_id = f"{split}_{line_number:05d}"
+
+            assert 1 <= line_number <= len(raw_examples), "Invalid raw line"
+            assert example["example_id"] == expected_id, "ID mismatch"
+            assert expected_id not in seen_ids, "Duplicate ID"
+            seen_ids.add(expected_id)
+
+            # Compare the retained label with its original dataset label.
+            raw_example = raw_examples[line_number - 1]
+            assert (
+                example["support_label"]
+                == raw_example["source_supports_statement"]
+            ), f"Label changed for {expected_id}"
+
+        print(f"Validated {len(examples)} {split} records: IDs and labels OK")
+
+def save_cleaned_splits(all_splits):
+    """Save experimental cleaned splits as compressed JSON Lines files."""
+    output_dir = Path("outputs/preprocessing/cleaned")
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    for split, examples in all_splits.items():
+        output_path = output_dir / f"{split}.jsonl.gz"
+
+        # Write generated copies; original files in data/raw stay unchanged.
+        with gzip.open(output_path, "wt", encoding="utf-8") as file:
+            for example in examples:
+                file.write(json.dumps(example, ensure_ascii=False) + "\n")
+
+        print(f"Saved {len(examples)} records to {output_path}")
 
 def main():
     """Inspect record counts before and after each cleaning step."""
@@ -128,6 +178,20 @@ def main():
     # Inspect overlaps before deciding whether to exclude them.
     inspect_cross_split_overlap(deduplicated)
     cleaned = remove_cross_split_overlap(deduplicated)
+    
+    cleaned = assign_example_ids(cleaned)
+    
+        # Validate all remaining records before adding any saving step.
+    validate_processed_examples(cleaned)
+
+    # Display one example per split to check its ID and original position.
+    for split, examples in cleaned.items():
+        if examples:
+            example = examples[0]
+            print(
+                f"{split}: ID={example['example_id']}, "
+                f"raw line={example['raw_line_number']}"
+            )
 
     # Show the effect of each step separately for every split.
     for split in ["train", "dev", "test"]:
@@ -146,6 +210,8 @@ def main():
             f"{deduplicated_count - cleaned_count}"
         )
         print(f"  Remaining records: {cleaned_count}")
+        
+    save_cleaned_splits(cleaned)
         
         
 def inspect_cross_split_overlap(all_splits):

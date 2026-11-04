@@ -46,3 +46,6 @@ results/
 # Temporary files
 tmp/
 temp/
+
+# Ignore generated preprocessing datasets.
+outputs/preprocessing/
