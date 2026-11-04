@@ -66,3 +66,30 @@ The line 97 model output and manual judgment differ. The source lists
 69-point figure refers to. This difference should be reviewed carefully.
 NLI outputs are not treated as component labels, and the dataset gold
 labels remain unchanged.
+
+## Draft Rule for Combining Component Labels
+
+This is a project annotation rule for further piloting. It does not change
+the original dataset labels.
+
+- `complete_support`: every independently checkable claim part is supported.
+- `partial_support`: at least one part is supported, and at least one part
+  is unsupported or contradicted.
+- `no_support`: no claim part is supported.
+
+A claim with both supported and contradicted parts is `partial_support`
+under this draft rule. A claim with only contradicted parts is `no_support`.
+
+### Applying the Draft Rule to Reviewed Examples
+
+- Original dev line 29: all reviewed parts are supported. Draft overall
+  judgment: `complete_support`.
+- Original dev line 408: the replacement options are supported, while the
+  stated ratio is contradicted. Draft overall judgment: `partial_support`.
+- Original dev line 97: the source does not establish what “69 points”
+  refers to, and lists 2,048 points against Cleveland. Draft overall
+  judgment: uncertain. Review whether the source directly contradicts the
+  claim before assigning an overall project judgment.
+
+These draft judgments are exploratory project annotations. The dataset's
+gold labels remain unchanged.
