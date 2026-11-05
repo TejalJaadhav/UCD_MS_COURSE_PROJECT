@@ -78,3 +78,22 @@ categories separately by gold dataset label.
 Further work should focus on refining claim-component annotation and
 reviewing a small set of examples. Keep original dataset labels unchanged
 and keep test examples out of development.
+## Six-example component review pilot
+
+Six dev examples were reviewed at the claim-component level, with two
+examples from each original dataset label. The reviews identified supported
+details alongside unsupported or contradicted details in several claims.
+This illustrates how component-level notes can explain why a claim may be
+only partly supported.
+
+The draft rule classified four reviewed examples as fully supported and
+two as partially supported. One no-support dataset example received a
+partial-support draft judgment because the source supported some details
+but did not establish the claimed stadium. These are exploratory
+judgments from a small pilot. They do not replace or change the original
+dataset labels.
+
+The component reviews were manual and were not independently double
+annotated. They do not establish inter-annotator agreement or overall
+method performance. Further work should refine the annotation guidelines
+and evaluate a larger reviewed subset before making performance claims.
