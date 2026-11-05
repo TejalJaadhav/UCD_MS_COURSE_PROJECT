@@ -1,99 +1,75 @@
-# NLI Evaluation Plan
+# Evaluation Plan
 
-## Dataset labels and NLI outputs
+## Project scope
 
-The dataset uses `complete_support`, `partial_support`, and `no_support`.
-The NLI model outputs `entailment`, `neutral`, and `contradiction`.
+This project uses the majority-label baseline, a local NLI model, and a
+small manual component-review pilot. It does not include an API-based
+prompted-model baseline.
 
-These labels describe related ideas, but they are not interchangeable.
-In particular, `neutral` alone cannot distinguish partial support from
-no support. Therefore, the NLI output will not be directly converted into
-the dataset's three labels.
+The original dataset labels remain unchanged:
+`complete_support`, `partial_support`, and `no_support`.
 
-## Planned NLI reporting
+## Majority-label baseline
 
-The NLI baseline will report its three output categories separately.
-Results will be grouped by the dataset's gold label so we can see how
-often each NLI category occurs for complete, partial, and no support.
+The baseline selects the most common label in the original training split
+and predicts it for every original dev example.
 
-We will not report three-class accuracy or macro-F1 for NLI unless we
-define and justify a mapping from NLI outputs to dataset labels.
+On dev, it achieved 0.7505 accuracy and 0.2858 macro-F1. It predicted
+`complete_support` for every example and missed both other labels.
 
-## Input text comparison
+This baseline provides a reference point for the project.
 
-The small dev pilot compares each claim against the full source and,
-where available, localized evidence. The pilot is descriptive. It does
-not establish which input method performs best.
+## NLI experiment
 
-No-support examples in this dataset have no localized evidence, so
-localized-evidence scoring cannot be compared for that label.
+The local model is `cross-encoder/nli-deberta-v3-small`. It produces
+`entailment`, `neutral`, and `contradiction` scores for a source and claim.
 
-## Fine-grained component analysis
+These outputs do not map directly to the dataset's three labels.
+In particular, `neutral` can mean that the source gives partial support
+or gives no support. The NLI experiment will therefore report model output
+counts grouped by dataset gold label. It will not report three-class
+accuracy or macro-F1 without a justified mapping.
 
-A separate component-level method may help distinguish partial support
-from no support by checking which parts of a claim are supported. This
-requires a small manually reviewed dev subset and explicit annotation
-guidelines.
+A 15-example dev pilot compared full-source input with localized evidence
+when available. On this small sample, full-source predictions were often
+`neutral`, including for all five `complete_support` and all five
+`partial_support` examples. Localized-evidence predictions were more mixed
+and produced `entailment` for four of five sampled `complete_support`
+examples. These are descriptive pilot results, not overall performance
+estimates.
 
-Any component-level results will be reported separately from the NLI
-baseline. Original dataset labels will remain unchanged.
+The model also missed evidence in controlled checks on individual examples.
+For original dev line 749, it predicted `entailment` when given the
+matching source sentence, but `neutral` when given the long source truncated
+to the model's 512-token input limit.
 
-## Data split use
+## Component-review pilot
 
-Use the training split to develop methods where appropriate. Use dev for
-method development and pilot analysis. Keep test examples out of model
-and rule development, and use test only for final evaluation after the
-method and decision rules are fixed.
+Six dev examples were manually reviewed at the claim-component level.
+The reviews identified supported, unsupported, and contradicted claim
+parts, with draft overall judgments recorded separately from the dataset
+labels.
 
-## Findings from the 15-example pilot
+This pilot is exploratory. It was reviewed by one annotator and does not
+establish annotation agreement or component-level model performance.
+The original dataset labels were not changed.
 
-The pilot sampled five examples from each original dev label using random
-seed 42. NLI outputs were summarized separately from the dataset labels
-because the two label sets do not map directly.
+## Data split use and reporting
 
-For full-source input, the model predicted `neutral` for all five
-`complete_support` and all five `partial_support` examples. For the five
-`no_support` examples, it predicted `contradiction` twice and `neutral`
-three times.
+The original train and dev files are used for baseline development and
+pilot analysis. The test split has not been used for model or rule
+development.
 
-For localized-evidence input, which was available for the sampled
-`complete_support` and `partial_support` examples, predictions were:
+If a final test evaluation is conducted, the method and decision rules
+must first be fixed. Report its results separately and leave the original
+dataset labels unchanged.
 
-| Gold dataset label | Contradiction | Entailment | Neutral |
-|---|---:|---:|---:|
-| `complete_support` | 1 | 4 | 0 |
-| `partial_support` | 0 | 1 | 4 |
+## Limits and next work
 
-The pilot also included three examples reviewed manually at the claim
-component level. The model's predictions did not consistently match those
-component judgments. These small, selected results are descriptive and do
-not establish overall model performance.
+The current NLI setup is not a validated three-class classifier for the
+dataset labels. Do not convert its outputs directly into
+`complete_support`, `partial_support`, and `no_support`.
 
-## Current evaluation decision
-
-Do not scale the current full-source NLI scoring setup to the whole dev
-set. Treat NLI as an exploratory baseline and report its three output
-categories separately by gold dataset label.
-
-Further work should focus on refining claim-component annotation and
-reviewing a small set of examples. Keep original dataset labels unchanged
-and keep test examples out of development.
-## Six-example component review pilot
-
-Six dev examples were reviewed at the claim-component level, with two
-examples from each original dataset label. The reviews identified supported
-details alongside unsupported or contradicted details in several claims.
-This illustrates how component-level notes can explain why a claim may be
-only partly supported.
-
-The draft rule classified four reviewed examples as fully supported and
-two as partially supported. One no-support dataset example received a
-partial-support draft judgment because the source supported some details
-but did not establish the claimed stadium. These are exploratory
-judgments from a small pilot. They do not replace or change the original
-dataset labels.
-
-The component reviews were manual and were not independently double
-annotated. They do not establish inter-annotator agreement or overall
-method performance. Further work should refine the annotation guidelines
-and evaluate a larger reviewed subset before making performance claims.
+The component-review pilot is too small for quantitative performance
+claims. Further work would require a larger, reviewed annotation subset
+and clear annotation guidelines.
