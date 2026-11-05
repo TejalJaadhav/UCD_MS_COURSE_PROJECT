@@ -49,3 +49,5 @@ temp/
 
 # Ignore generated preprocessing datasets.
 outputs/preprocessing/
+
+outputs/annotation_pilot/
