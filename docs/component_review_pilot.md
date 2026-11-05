@@ -93,3 +93,48 @@ under this draft rule. A claim with only contradicted parts is `no_support`.
 
 These draft judgments are exploratory project annotations. The dataset's
 gold labels remain unchanged.
+## Additional Reviews from the Six-Example Pilot
+
+These are exploratory component judgments. Original dataset labels remain
+unchanged.
+
+### Original dev line 872
+
+- Original dataset label: `complete_support`
+- Claim parts:
+  - Room-temperature water (20°C / 68°F) is best for flavor.
+  - Chilled water (6°C / 43°F) is best for refreshment.
+- Component judgments: Both parts are supported.
+- Reason: The source states the same temperatures and purposes. “Flavor”
+  and “flavour” are spelling variants with the same meaning.
+- Draft overall judgment: `complete_support`.
+
+### Original dev line 228
+
+- Original dataset label: `partial_support`
+- Claim parts:
+  - “Non, Je Ne Regrette Rien” is an Edith Piaf song.
+  - The song is sung in *Madagascar 3*.
+- Component judgments:
+  - Song identity: supported by the source.
+  - Use in *Madagascar 3*: unsupported by the source reviewed.
+- Reason: The source identifies the song and says it was featured in
+  *Inception*. It does not mention *Madagascar 3*.
+- Draft overall judgment: `partial_support`.
+
+### Original dev line 32
+
+- Original dataset label: `no_support`
+- Claim parts:
+  - Dallas last won the Super Bowl in 1995.
+  - Dallas defeated Pittsburgh 27–17 in Super Bowl XXX.
+  - The game was at Sun Devil Stadium in Arizona.
+- Component judgments:
+  - The 1995 win, Pittsburgh matchup, and 27–17 score: supported.
+  - Sun Devil Stadium in Arizona: unsupported by the source reviewed.
+- Reason: The source gives the matchup and score but does not establish the
+  stadium location.
+- Draft overall judgment: `partial_support`.
+
+These draft overall judgments are project annotations for the pilot.
+They do not replace or modify the dataset's gold labels.
