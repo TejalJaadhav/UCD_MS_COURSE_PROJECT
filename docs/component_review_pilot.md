@@ -138,3 +138,28 @@ unchanged.
 
 These draft overall judgments are project annotations for the pilot.
 They do not replace or modify the dataset's gold labels.
+
+## Component-Level NLI Scoring Check
+
+The component scorer compared the six reviewed examples with the
+`cross-encoder/nli-deberta-v3-small` model. It scored 12 components that
+had recorded evidence passages and skipped two without a specific passage.
+
+After the evidence passages were made more self-contained, the Super Bowl
+components on dev lines 29 and 32 changed to `entailment`. This suggests
+that the context included in an evidence passage can affect the model's
+prediction.
+
+Two differences remained:
+
+- Dev line 408: the human component label for the 1:2 ratio was
+  `contradicted`; NLI predicted `neutral`, despite the source specifying
+  equal amounts.
+- Dev line 97: the human component label was `unsupported`; NLI predicted
+  `contradiction`. The source lists 2,048 points against Cleveland, while
+  the claim's 69-point figure remains unclear. Keep this case flagged for
+  review.
+
+These results come from six exploratory examples. They are not a
+performance estimate. NLI outputs are recorded separately from component
+labels, and the original dataset gold labels remain unchanged.
