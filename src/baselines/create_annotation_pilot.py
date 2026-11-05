@@ -1,21 +1,28 @@
-"""Create a balanced dev worksheet for manual claim-component annotation."""
+"""Create a six-example worksheet for claim-component annotation."""
 
+import csv
 import gzip
 import json
 import random
-import csv
 from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 DEV_FILE = PROJECT_ROOT / "data/raw/verifiability_judgments_dev.jsonl.gz"
-OUTPUT_FILE = PROJECT_ROOT / "outputs/annotation_pilot/dev_annotation_pilot.csv"
+OUTPUT_FILE = (
+    PROJECT_ROOT / "outputs/annotation_pilot/dev_annotation_pilot_6.csv"
+)
+
 GOLD_LABELS = ("complete_support", "partial_support", "no_support")
-SAMPLE_PER_LABEL = 5
+REVIEWED_LINES = {
+    "complete_support": 29,
+    "partial_support": 408,
+    "no_support": 97,
+}
 RANDOM_SEED = 42
 
 
 def main():
-    """Sample five original dev examples per label and write a CSV worksheet."""
+    """Keep the reviewed examples and add one sampled example per label."""
     examples_by_label = {label: [] for label in GOLD_LABELS}
 
     with gzip.open(DEV_FILE, "rt", encoding="utf-8") as file:
@@ -28,12 +35,26 @@ def main():
     selected = []
 
     for label in GOLD_LABELS:
-        selected.extend(
-            random_generator.sample(
-                examples_by_label[label],
-                SAMPLE_PER_LABEL,
-            )
+        reviewed_line = REVIEWED_LINES[label]
+        reviewed_example = next(
+            (item for item in examples_by_label[label] if item[0] == reviewed_line),
+            None,
         )
+
+        if reviewed_example is None:
+            raise ValueError(
+                f"Dev line {reviewed_line} was not found under {label}"
+            )
+
+        selected.append(reviewed_example)
+
+        # Sample a second example of the same gold label.
+        remaining_examples = [
+            item
+            for item in examples_by_label[label]
+            if item[0] != reviewed_line
+        ]
+        selected.append(random_generator.choice(remaining_examples))
 
     OUTPUT_FILE.parent.mkdir(parents=True, exist_ok=True)
 
@@ -78,7 +99,11 @@ def main():
     print(f"Created worksheet with {len(selected)} examples:")
     print(OUTPUT_FILE)
     for label in GOLD_LABELS:
-        print(f"{label}: {SAMPLE_PER_LABEL}")
+        count = sum(
+            example["source_supports_statement"] == label
+            for _, example in selected
+        )
+        print(f"{label}: {count}")
 
 
 if __name__ == "__main__":
