@@ -2,164 +2,138 @@
 
 ## Purpose
 
-This note records exploratory manual reviews of three original dev
-examples. The component judgments are separate from the dataset's original
-labels. No original labels were changed.
+This pilot explores whether reviewing individual claim parts helps explain how
+a cited source supports a claim. The review began with three dev examples,
+expanded to six, and then included a 12-example NLI scoring run. The manual
+component judgments and draft overall judgments are recorded alongside the
+original dataset labels.
 
-## Reviewed examples
+## Initial Three Reviewed Examples
 
 ### Original dev line 29
 
 - Original dataset label: `complete_support`
-- Claim: The team won Super Bowl XXX against the Pittsburgh Steelers with
-  a score of 27-17.
-- Source evidence: The source says the 1995 season included a win against
-  the Pittsburgh Steelers in Super Bowl XXX, 27-17.
-- Component judgment: The matchup, event, and score are supported.
-- Reason: The source passage states these details directly.
+- Claim: Dallas won Super Bowl XXX against the Pittsburgh Steelers, 27–17.
+- Source evidence: The source lists the Super Bowl XXX win against Pittsburgh
+  and gives the same score.
+- Component judgment: The win, opponent, and score are supported.
+- Draft overall judgment: `complete_support`
 
 ### Original dev line 408
 
 - Original dataset label: `partial_support`
-- Claim: Cream of tartar can be replaced with vinegar or lemon juice in a
-  1:2 ratio.
-- Source evidence: The source says to use an equal amount of lemon juice
-  or distilled white vinegar as a replacement.
-- Component judgments:
-  - Replacement with lemon juice: supported.
-  - Replacement with vinegar: supported.
-  - A 1:2 ratio: contradicted.
-- Reason: The source gives an equal-amount ratio, which conflicts with
-  the claim's 1:2 ratio.
+- Claim: Cream of tartar can be replaced with vinegar or lemon juice in a 1:2 ratio.
+- Source evidence: The source says to use an equal amount of lemon juice or
+  distilled white vinegar.
+- Component judgments: Both replacement options are supported. The 1:2 ratio
+  is contradicted by the equal-amount instruction.
+- Draft overall judgment: `partial_support`
 
 ### Original dev line 97
 
 - Original dataset label: `no_support`
 - Claim: “Cleveland Cavaliers: 69 points.”
-- Source evidence: The source lists Michael Jordan's points by opponent,
-  including 2,048 against Cleveland. It does not explain what the claimed
-  69 points refers to.
-- Component judgment: Unsupported.
-- Reason: The source does not establish the 69-point detail, and it does
-  not directly state that detail is false.
+- Source evidence: The source lists 2,048 points against Cleveland in a table
+  of Michael Jordan's points by opponent. The claim leaves the meaning of the
+  69-point figure unclear.
+- Component judgment: The 69-point figure is unsupported by the reviewed passage.
+- Draft overall judgment: `uncertain`, pending review of what the figure refers to.
 
-## Scope and limits
+## NLI Comparison for the Initial Examples
 
-These are three exploratory examples, not a representative evaluation
-sample. The notes do not establish annotation agreement or validate a
-component-level method. Original dataset labels remain unchanged.
+The earlier 15-example dev pilot scored whole claims using the full source
+or the dataset's localized evidence when available.
 
+| Original dev line | Gold label | Localized evidence NLI | Full source NLI |
+|---:|---|---|---|
+| 29 | `complete_support` | `entailment` | `neutral` |
+| 408 | `partial_support` | `neutral` | `neutral` |
+| 97 | `no_support` | Unavailable | `contradiction` |
 
-## NLI Comparison for Reviewed Examples
+For line 97, the NLI prediction was `contradiction`, while the manual review
+marked the 69-point figure as unsupported. The source's 2,048-point total
+and the claim's 69-point figure may refer to different measures.
 
-The same 15-example dev pilot included lines 29, 97, and 408. NLI outputs
-are recorded here separately from the manual component judgments.
+## Draft Rule for Combining Component Judgments
 
-| Original dev line | Gold label | Localized-evidence NLI | Full-source NLI | Manual review |
-|---:|---|---|---|---|
-| 29 | `complete_support` | `entailment` | `neutral` | Matchup and score supported |
-| 408 | `partial_support` | `neutral` | `neutral` | Replacement options supported; 1:2 ratio contradicted |
-| 97 | `no_support` | unavailable | `contradiction` | “69 points” unsupported by the source as reviewed |
+- `complete_support`: Every independently checkable claim part is supported.
+- `partial_support`: At least one part is supported and at least one is
+  unsupported or contradicted.
+- `no_support`: The review is conclusive and none of the claim parts is supported.
+- `uncertain`: An unresolved ambiguity prevents an overall judgment. This is
+  a review status for the pilot.
 
-The line 97 model output and manual judgment differ. The source lists
-2,048 points against Cleveland, but does not explain what the claim's
-69-point figure refers to. This difference should be reviewed carefully.
-NLI outputs are not treated as component labels, and the dataset gold
-labels remain unchanged.
-
-## Draft Rule for Combining Component Labels
-
-This is a project annotation rule for further piloting. It does not change
-the original dataset labels.
-
-- `complete_support`: every independently checkable claim part is supported.
-- `partial_support`: at least one part is supported, and at least one part
-  is unsupported or contradicted.
-- `no_support`: no claim part is supported.
-
-A claim with both supported and contradicted parts is `partial_support`
-under this draft rule. A claim with only contradicted parts is `no_support`.
-
-### Applying the Draft Rule to Reviewed Examples
-
-- Original dev line 29: all reviewed parts are supported. Draft overall
-  judgment: `complete_support`.
-- Original dev line 408: the replacement options are supported, while the
-  stated ratio is contradicted. Draft overall judgment: `partial_support`.
-- Original dev line 97: the source does not establish what “69 points”
-  refers to, and lists 2,048 points against Cleveland. Draft overall
-  judgment: uncertain. Review whether the source directly contradicts the
-  claim before assigning an overall project judgment.
-
-These draft judgments are exploratory project annotations. The dataset's
-gold labels remain unchanged.
 ## Additional Reviews from the Six-Example Pilot
-
-These are exploratory component judgments. Original dataset labels remain
-unchanged.
 
 ### Original dev line 872
 
 - Original dataset label: `complete_support`
-- Claim parts:
-  - Room-temperature water (20°C / 68°F) is best for flavor.
-  - Chilled water (6°C / 43°F) is best for refreshment.
-- Component judgments: Both parts are supported.
-- Reason: The source states the same temperatures and purposes. “Flavor”
-  and “flavour” are spelling variants with the same meaning.
-- Draft overall judgment: `complete_support`.
+- Claim parts: Room-temperature water (20°C / 68°F) is best for flavor, and
+  chilled water (6°C / 43°F) is best for refreshment.
+- Component judgments: The source supports both temperature and purpose pairings.
+- Draft overall judgment: `complete_support`
 
 ### Original dev line 228
 
 - Original dataset label: `partial_support`
-- Claim parts:
-  - “Non, Je Ne Regrette Rien” is an Edith Piaf song.
-  - The song is sung in *Madagascar 3*.
-- Component judgments:
-  - Song identity: supported by the source.
-  - Use in *Madagascar 3*: unsupported by the source reviewed.
-- Reason: The source identifies the song and says it was featured in
-  *Inception*. It does not mention *Madagascar 3*.
-- Draft overall judgment: `partial_support`.
+- Claim parts: “Non, Je Ne Regrette Rien” is an Edith Piaf song, and it is sung
+  in *Madagascar 3*.
+- Component judgments: The source supports the song identity. It mentions
+  *Inception* and leaves the claim about *Madagascar 3* unsupported.
+- Draft overall judgment: `partial_support`
 
 ### Original dev line 32
 
 - Original dataset label: `no_support`
-- Claim parts:
-  - Dallas last won the Super Bowl in 1995.
-  - Dallas defeated Pittsburgh 27–17 in Super Bowl XXX.
-  - The game was at Sun Devil Stadium in Arizona.
-- Component judgments:
-  - The 1995 win, Pittsburgh matchup, and 27–17 score: supported.
-  - Sun Devil Stadium in Arizona: unsupported by the source reviewed.
-- Reason: The source gives the matchup and score but does not establish the
-  stadium location.
-- Draft overall judgment: `partial_support`.
+- Claim parts: Dallas last won the Super Bowl in 1995, defeated Pittsburgh
+  27–17 in Super Bowl XXX, and played the game at Sun Devil Stadium in Arizona.
+- Component judgments: The reviewed source supports the 1995 win, opponent,
+  and score. It leaves the stadium location unsupported.
+- Draft overall judgment: `partial_support`
 
-These draft overall judgments are project annotations for the pilot.
-They do not replace or modify the dataset's gold labels.
+## Component NLI Scoring on Six Examples
 
-## Component-Level NLI Scoring Check
+The `cross-encoder/nli-deberta-v3-small` model scored 12 components with
+recorded evidence passages and skipped two without a specific passage.
 
-The component scorer compared the six reviewed examples with the
-`cross-encoder/nli-deberta-v3-small` model. It scored 12 components that
-had recorded evidence passages and skipped two without a specific passage.
-
-After the evidence passages were made more self-contained, the Super Bowl
-components on dev lines 29 and 32 changed to `entailment`. This suggests
-that the context included in an evidence passage can affect the model's
-prediction.
+After the evidence passages were revised to include more context, the
+prediction for the Dallas win on line 29 changed from `contradiction` to
+`entailment`. The prediction for the matchup and score on line 32 changed
+from `neutral` to `entailment`. These changes show that the choice of passage
+can affect the prediction.
 
 Two differences remained:
 
-- Dev line 408: the human component label for the 1:2 ratio was
-  `contradicted`; NLI predicted `neutral`, despite the source specifying
-  equal amounts.
-- Dev line 97: the human component label was `unsupported`; NLI predicted
-  `contradiction`. The source lists 2,048 points against Cleveland, while
-  the claim's 69-point figure remains unclear. Keep this case flagged for
-  review.
+- Dev line 408: The reviewer marked the 1:2 ratio `contradicted` because the
+  source specifies equal amounts. NLI predicted `neutral`.
+- Dev line 97: The reviewer marked the 69-point figure `unsupported`.
+  NLI predicted `contradiction`.
 
-These results come from six exploratory examples. They are not a
-performance estimate. NLI outputs are recorded separately from component
-labels, and the original dataset gold labels remain unchanged.
+## Twelve-Example Scoring Summary
+
+In the expanded pilot, the NLI model scored 25 claim components. Four
+components were skipped because they had no recorded evidence passage.
+The model often predicted `entailment` for components marked supported by
+the reviewer. It also predicted `neutral` for some components marked
+supported or contradicted, and `contradiction` for some marked unsupported.
+
+These comparisons show where model predictions and manual judgments differ
+on this pilot. The run reported descriptive results and did not calculate
+accuracy. The pilot judgments and model outputs are recorded separately
+from the original dataset labels.
+
+
+## Context Check for Dev Line 874
+
+The original evidence passage gave the game counts but omitted the
+preceding explanation that each team plays every other team. We expanded
+both component evidence passages to include that explanation and the
+number of teams.
+
+Both predictions remained neutral. The neutral score changed from 0.9914
+to 0.9981 for the men's and women's component, and from 0.8953 to 0.9830
+for mixed doubles.
+
+The expanded passage supports the reviewed game counts and tournament
+format, but the model still failed to recognize support. This case
+illustrates a limitation of the current NLI setup.
