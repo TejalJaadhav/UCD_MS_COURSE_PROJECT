@@ -137,3 +137,36 @@ for mixed doubles.
 The expanded passage supports the reviewed game counts and tournament
 format, but the model still failed to recognize support. This case
 illustrates a limitation of the current NLI setup.
+
+
+## Saved Run Summary
+
+Run file: `component_scores_20261111T203106_160088Z.json`
+
+The run covered 12 examples containing 29 manually reviewed components.
+The model scored 25 components and skipped four without recorded evidence.
+
+| Human component label | Entailment | Neutral | Contradiction | Skipped |
+|---|---:|---:|---:|---:|
+| Supported | 12 | 5 | 0 | 0 |
+| Unsupported | 0 | 2 | 3 | 4 |
+| Contradicted | 0 | 2 | 1 | 0 |
+
+The model predicted entailment for 12 of 17 components marked supported.
+Five supported components received neutral predictions. Differences also
+occurred between unsupported and contradicted component judgments.
+
+All four skipped components were marked unsupported. Excluding them
+limits what the scored subset tells us about unsupported content.
+
+These are descriptive results from a small, single-reviewer pilot.
+The human component judgments are exploratory, and the counts do not
+establish dataset-level accuracy or validate the component method.
+Original dataset labels remain unchanged.
+
+Predictions, scores, and inputs are saved under outputs/annotation_pilot/.
+The summary can be reproduced from the saved JSON without rerunning
+the model.
+
+This pilot is complete for the current scope. Further manual expansion
+is paused while the project moves to a reproducible evaluation pipeline.
