@@ -1,0 +1,647 @@
+[
+  {
+    "example_id": "test_00415",
+    "output_status": "component_scored",
+    "reference_parts": [
+      {
+        "reference_number": 1,
+        "text": "Gaga co-wrote the song with Natalie Hemby.",
+        "label": "supported",
+        "mismatch_types": [],
+        "matched_prediction_numbers": [
+          1
+        ],
+        "match_status": "matched",
+        "review_note": ""
+      },
+      {
+        "reference_number": 2,
+        "text": "Gaga co-wrote the song with Hillary Lindsey.",
+        "label": "supported",
+        "mismatch_types": [],
+        "matched_prediction_numbers": [
+          2
+        ],
+        "match_status": "matched",
+        "review_note": ""
+      },
+      {
+        "reference_number": 3,
+        "text": "Gaga co-wrote the song with Aaron Raitiere.",
+        "label": "supported",
+        "mismatch_types": [],
+        "matched_prediction_numbers": [
+          3
+        ],
+        "match_status": "matched",
+        "review_note": ""
+      },
+      {
+        "reference_number": 4,
+        "text": "These co-writers are Nashville songwriters.",
+        "label": "unsupported",
+        "mismatch_types": [
+          "qualifier"
+        ],
+        "matched_prediction_numbers": [],
+        "match_status": "omitted",
+        "review_note": "The model dropped the Nashville qualifier."
+      }
+    ],
+    "predicted_parts": [
+      {
+        "prediction_number": 1,
+        "text": "Gaga wrote the song with Natalie Hemby",
+        "label": "supported"
+      },
+      {
+        "prediction_number": 2,
+        "text": "Gaga wrote the song with Hillary Lindsey",
+        "label": "supported"
+      },
+      {
+        "prediction_number": 3,
+        "text": "Gaga wrote the song with Aaron Raitiere",
+        "label": "supported"
+      }
+    ],
+    "added_prediction_numbers": [],
+    "matching_reviewed": true
+  },
+  {
+    "example_id": "test_01039",
+    "output_status": "component_scored",
+    "reference_parts": [
+      {
+        "reference_number": 1,
+        "text": "The song has been performed by Joe Cocker.",
+        "label": "supported",
+        "mismatch_types": [],
+        "matched_prediction_numbers": [
+          1
+        ],
+        "match_status": "matched",
+        "review_note": ""
+      },
+      {
+        "reference_number": 2,
+        "text": "The song has been performed by Tom Jones.",
+        "label": "unsupported",
+        "mismatch_types": [
+          "unsupported_addition"
+        ],
+        "matched_prediction_numbers": [
+          2
+        ],
+        "match_status": "matched",
+        "review_note": "The detail matches, but the model predicted contradicted while the reference label is unsupported."
+      }
+    ],
+    "predicted_parts": [
+      {
+        "prediction_number": 1,
+        "text": "It has been covered by Joe Cocker.",
+        "label": "supported"
+      },
+      {
+        "prediction_number": 2,
+        "text": "It has been covered by Tom Jones.",
+        "label": "contradicted"
+      }
+    ],
+    "added_prediction_numbers": [],
+    "matching_reviewed": true
+  },
+  {
+    "example_id": "test_00180",
+    "output_status": "component_scored",
+    "reference_parts": [
+      {
+        "reference_number": 1,
+        "text": "The Second Amendment to the US Constitution gives Americans the right to bear arms.",
+        "label": "unsupported",
+        "mismatch_types": [
+          "unsupported_addition"
+        ],
+        "matched_prediction_numbers": [
+          1
+        ],
+        "match_status": "matched",
+        "review_note": "The model predicted supported, but the reference label is unsupported because the source does not discuss the Second Amendment."
+      },
+      {
+        "reference_number": 2,
+        "text": "Some argue that gun ownership does not make us safer.",
+        "label": "supported",
+        "mismatch_types": [],
+        "matched_prediction_numbers": [
+          2
+        ],
+        "match_status": "matched",
+        "review_note": ""
+      }
+    ],
+    "predicted_parts": [
+      {
+        "prediction_number": 1,
+        "text": "The Second Amendment to the US Constitution gives Americans the right to bear arms.",
+        "label": "supported"
+      },
+      {
+        "prediction_number": 2,
+        "text": "Some argue that gun ownership does not make us safer.",
+        "label": "supported"
+      }
+    ],
+    "added_prediction_numbers": [],
+    "matching_reviewed": true
+  },
+  {
+    "example_id": "test_00360",
+    "output_status": "component_scored",
+    "reference_parts": [
+      {
+        "reference_number": 1,
+        "text": "Sean Giambrone plays Adam Goldberg on The Goldbergs.",
+        "label": "supported",
+        "mismatch_types": [],
+        "matched_prediction_numbers": [
+          1
+        ],
+        "match_status": "matched",
+        "review_note": ""
+      },
+      {
+        "reference_number": 2,
+        "text": "Adam Goldberg is the youngest son in the family on The Goldbergs.",
+        "label": "supported",
+        "mismatch_types": [],
+        "matched_prediction_numbers": [],
+        "match_status": "omitted",
+        "review_note": "The model omitted the youngest-son detail."
+      }
+    ],
+    "predicted_parts": [
+      {
+        "prediction_number": 1,
+        "text": "Sean Giambrone plays Adam Goldberg on The Goldbergs.",
+        "label": "supported"
+      }
+    ],
+    "added_prediction_numbers": [],
+    "matching_reviewed": true
+  },
+  {
+    "example_id": "test_01094",
+    "output_status": "component_scored",
+    "reference_parts": [
+      {
+        "reference_number": 1,
+        "text": "Johnny Depp plays Captain Jack Sparrow in Pirates of the Caribbean: On Stranger Tides.",
+        "label": "supported",
+        "mismatch_types": [],
+        "matched_prediction_numbers": [
+          1
+        ],
+        "match_status": "matched",
+        "review_note": "Actor-role detail supported."
+      },
+      {
+        "reference_number": 2,
+        "text": "On Stranger Tides is the fourth installment in the Pirates of the Caribbean series.",
+        "label": "unsupported",
+        "mismatch_types": [
+          "unsupported_addition"
+        ],
+        "matched_prediction_numbers": [
+          1
+        ],
+        "match_status": "matched",
+        "review_note": "Model predicted supported; the reference detail is unsupported."
+      },
+      {
+        "reference_number": 3,
+        "text": "Jack Sparrow searches for the Fountain of Youth.",
+        "label": "unsupported",
+        "mismatch_types": [
+          "unsupported_addition"
+        ],
+        "matched_prediction_numbers": [
+          1
+        ],
+        "match_status": "matched",
+        "review_note": "Model predicted supported; the reference detail is unsupported."
+      },
+      {
+        "reference_number": 4,
+        "text": "Joshamee Gibbs helps Jack Sparrow and is his trusty mate.",
+        "label": "unsupported",
+        "mismatch_types": [
+          "unsupported_addition"
+        ],
+        "matched_prediction_numbers": [
+          2
+        ],
+        "match_status": "matched",
+        "review_note": "Model predicted supported; the reference detail is unsupported."
+      },
+      {
+        "reference_number": 5,
+        "text": "Angelica helps Jack Sparrow and is his former lover.",
+        "label": "unsupported",
+        "mismatch_types": [
+          "unsupported_addition"
+        ],
+        "matched_prediction_numbers": [
+          3
+        ],
+        "match_status": "matched",
+        "review_note": "Model predicted supported; the reference detail is unsupported."
+      },
+      {
+        "reference_number": 6,
+        "text": "Captain Barbossa helps Jack Sparrow and is his old rival.",
+        "label": "unsupported",
+        "mismatch_types": [
+          "unsupported_addition"
+        ],
+        "matched_prediction_numbers": [
+          4
+        ],
+        "match_status": "matched",
+        "review_note": "Model predicted supported; the reference detail is unsupported."
+      }
+    ],
+    "predicted_parts": [
+      {
+        "prediction_number": 1,
+        "text": "The fourth installment in the Pirates of the Caribbean series, starring Johnny Depp as Captain Jack Sparrow, follows Jack as he searches for the Fountain of Youth.",
+        "label": "supported"
+      },
+      {
+        "prediction_number": 2,
+        "text": "The fourth installment in the Pirates of the Caribbean series, starring Johnny Depp as Captain Jack Sparrow, has the help of his trusty mate Joshamee Gibbs.",
+        "label": "supported"
+      },
+      {
+        "prediction_number": 3,
+        "text": "The fourth installment in the Pirates of the Caribbean series, starring Johnny Depp as Captain Jack Sparrow, has the help of his former lover Angelica.",
+        "label": "supported"
+      },
+      {
+        "prediction_number": 4,
+        "text": "The fourth installment in the Pirates of the Caribbean series, starring Johnny Depp as Captain Jack Sparrow, has the help of his old rival Captain Barbossa.",
+        "label": "supported"
+      }
+    ],
+    "added_prediction_numbers": [],
+    "matching_reviewed": true,
+    "review_note": "Helper predictions use the film as grammatical subject. Matches follow their intended Jack Sparrow relationships; wording distortion is retained as a limitation."
+  },
+  {
+    "example_id": "test_00154",
+    "output_status": "component_scored",
+    "reference_parts": [
+      {
+        "reference_number": 1,
+        "text": "Networking with other industry professionals is recommended.",
+        "label": "supported",
+        "mismatch_types": [],
+        "matched_prediction_numbers": [
+          1
+        ],
+        "match_status": "matched",
+        "review_note": ""
+      }
+    ],
+    "predicted_parts": [
+      {
+        "prediction_number": 1,
+        "text": "Networking with other industry professionals.",
+        "label": "supported"
+      }
+    ],
+    "added_prediction_numbers": [],
+    "matching_reviewed": true
+  },
+  {
+    "example_id": "test_00042",
+    "output_status": "component_scored",
+    "reference_parts": [
+      {
+        "reference_number": 1,
+        "text": "The statement that America is a land of opportunity is attributed to Will Rogers.",
+        "label": "supported",
+        "mismatch_types": [],
+        "matched_prediction_numbers": [
+          1
+        ],
+        "match_status": "matched",
+        "review_note": ""
+      },
+      {
+        "reference_number": 2,
+        "text": "Will Rogers is described as a humorist and Oklahoma Democrat.",
+        "label": "supported",
+        "mismatch_types": [],
+        "matched_prediction_numbers": [
+          1
+        ],
+        "match_status": "matched",
+        "review_note": ""
+      }
+    ],
+    "predicted_parts": [
+      {
+        "prediction_number": 1,
+        "text": "The phrase 'America is the land of opportunity' has been attributed to humorist and Oklahoma Democrat Will Rogers.",
+        "label": "supported"
+      }
+    ],
+    "added_prediction_numbers": [],
+    "matching_reviewed": true
+  },
+  {
+    "example_id": "test_00900",
+    "output_status": "component_scored",
+    "reference_parts": [
+      {
+        "reference_number": 1,
+        "text": "Some people argue that abhorrent views should be listened to because one might learn something.",
+        "label": "supported",
+        "mismatch_types": [],
+        "matched_prediction_numbers": [
+          2
+        ],
+        "match_status": "matched",
+        "review_note": ""
+      }
+    ],
+    "predicted_parts": [
+      {
+        "prediction_number": 1,
+        "text": "Some argue that even abhorrent views should be listened to.",
+        "label": "supported"
+      },
+      {
+        "prediction_number": 2,
+        "text": "Some argue that even abhorrent views should be listened to because you might learn something.",
+        "label": "supported"
+      }
+    ],
+    "added_prediction_numbers": [],
+    "matching_reviewed": true,
+    "redundant_prediction_numbers": [
+      1
+    ],
+    "review_note": "Prediction 1 repeats part of prediction 2 and is redundant, rather than an added claim."
+  },
+  {
+    "example_id": "test_01061",
+    "output_status": "fallback",
+    "reference_parts": [
+      {
+        "reference_number": 1,
+        "text": "Determinate sentencing assigns an offender a fixed amount of time.",
+        "label": "supported",
+        "mismatch_types": [],
+        "matched_prediction_numbers": [],
+        "match_status": "no_component_output",
+        "review_note": "The pipeline used whole-claim fallback; no component judgments were produced."
+      },
+      {
+        "reference_number": 2,
+        "text": "Determinate sentencing uses a fixed term rather than a range of time or an indeterminate length of time.",
+        "label": "supported",
+        "mismatch_types": [],
+        "matched_prediction_numbers": [],
+        "match_status": "no_component_output",
+        "review_note": "The pipeline used whole-claim fallback; no component judgments were produced."
+      }
+    ],
+    "predicted_parts": [],
+    "added_prediction_numbers": [],
+    "matching_reviewed": true
+  },
+  {
+    "example_id": "test_00116",
+    "output_status": "component_scored",
+    "reference_parts": [
+      {
+        "reference_number": 1,
+        "text": "Civil servants answer to the government.",
+        "label": "supported",
+        "mismatch_types": [],
+        "matched_prediction_numbers": [
+          1
+        ],
+        "match_status": "matched",
+        "review_note": ""
+      },
+      {
+        "reference_number": 2,
+        "text": "Civil servants do not answer to a political party.",
+        "label": "supported",
+        "mismatch_types": [],
+        "matched_prediction_numbers": [
+          2
+        ],
+        "match_status": "matched",
+        "review_note": "Model predicted contradicted; reference is supported under the recorded civil-servants interpretation."
+      }
+    ],
+    "predicted_parts": [
+      {
+        "prediction_number": 1,
+        "text": "They answer to the government.",
+        "label": "supported"
+      },
+      {
+        "prediction_number": 2,
+        "text": "They do not answer to a political party.",
+        "label": "contradicted"
+      }
+    ],
+    "added_prediction_numbers": [],
+    "matching_reviewed": true
+  },
+  {
+    "example_id": "test_00952",
+    "output_status": "fallback",
+    "reference_parts": [
+      {
+        "reference_number": 1,
+        "text": "The couch armrest feels different from a pillow on the bed.",
+        "label": "supported",
+        "mismatch_types": [],
+        "matched_prediction_numbers": [],
+        "match_status": "no_component_output",
+        "review_note": "No component judgments were produced: fallback."
+      },
+      {
+        "reference_number": 2,
+        "text": "The different feeling of the armrest helps people relax and fall asleep faster.",
+        "label": "unsupported",
+        "mismatch_types": [
+          "unsupported_addition"
+        ],
+        "matched_prediction_numbers": [],
+        "match_status": "no_component_output",
+        "review_note": "No component judgments were produced: fallback."
+      }
+    ],
+    "predicted_parts": [],
+    "added_prediction_numbers": [],
+    "matching_reviewed": true
+  },
+  {
+    "example_id": "test_00229",
+    "output_status": "fallback",
+    "reference_parts": [
+      {
+        "reference_number": 1,
+        "text": "Facial recognition can be used for mass surveillance.",
+        "label": "supported",
+        "mismatch_types": [],
+        "matched_prediction_numbers": [],
+        "match_status": "no_component_output",
+        "review_note": "No component judgments were produced: fallback."
+      },
+      {
+        "reference_number": 2,
+        "text": "Some argue that strict regulation is needed to prevent abuse of facial recognition.",
+        "label": "supported",
+        "mismatch_types": [],
+        "matched_prediction_numbers": [],
+        "match_status": "no_component_output",
+        "review_note": "No component judgments were produced: fallback."
+      },
+      {
+        "reference_number": 3,
+        "text": "Some argue that outright bans on facial recognition are not necessary.",
+        "label": "supported",
+        "mismatch_types": [],
+        "matched_prediction_numbers": [],
+        "match_status": "no_component_output",
+        "review_note": "No component judgments were produced: fallback."
+      }
+    ],
+    "predicted_parts": [],
+    "added_prediction_numbers": [],
+    "matching_reviewed": true
+  },
+  {
+    "example_id": "test_00378",
+    "output_status": "fallback",
+    "reference_parts": [
+      {
+        "reference_number": 1,
+        "text": "From this viewpoint, charity can sometimes be seen as accepting injustice while trying to mitigate its consequences.",
+        "label": "supported",
+        "mismatch_types": [],
+        "matched_prediction_numbers": [],
+        "match_status": "no_component_output",
+        "review_note": "No component judgments were produced: fallback."
+      }
+    ],
+    "predicted_parts": [],
+    "added_prediction_numbers": [],
+    "matching_reviewed": true
+  },
+  {
+    "example_id": "test_00731",
+    "output_status": "component_scored",
+    "reference_parts": [
+      {
+        "reference_number": 1,
+        "text": "George Clooney is in the cast of O Brother, Where Art Thou?",
+        "label": "supported",
+        "mismatch_types": [],
+        "matched_prediction_numbers": [
+          1
+        ],
+        "match_status": "matched",
+        "review_note": ""
+      },
+      {
+        "reference_number": 2,
+        "text": "John Turturro is in the cast of O Brother, Where Art Thou?",
+        "label": "supported",
+        "mismatch_types": [],
+        "matched_prediction_numbers": [
+          2
+        ],
+        "match_status": "matched",
+        "review_note": ""
+      },
+      {
+        "reference_number": 3,
+        "text": "Tim Blake Nelson is in the cast of O Brother, Where Art Thou?",
+        "label": "supported",
+        "mismatch_types": [],
+        "matched_prediction_numbers": [
+          3
+        ],
+        "match_status": "matched",
+        "review_note": ""
+      },
+      {
+        "reference_number": 4,
+        "text": "John Goodman is in the cast of O Brother, Where Art Thou?",
+        "label": "unsupported",
+        "mismatch_types": [
+          "unsupported_addition"
+        ],
+        "matched_prediction_numbers": [
+          4
+        ],
+        "match_status": "matched",
+        "review_note": "Model predicted supported; reference is unsupported because the source does not establish John Goodman as a cast member."
+      }
+    ],
+    "predicted_parts": [
+      {
+        "prediction_number": 1,
+        "text": "George Clooney is in the cast of O Brother, Where Art Thou?",
+        "label": "supported"
+      },
+      {
+        "prediction_number": 2,
+        "text": "John Turturro is in the cast of O Brother, Where Art Thou?",
+        "label": "supported"
+      },
+      {
+        "prediction_number": 3,
+        "text": "Tim Blake Nelson is in the cast of O Brother, Where Art Thou?",
+        "label": "supported"
+      },
+      {
+        "prediction_number": 4,
+        "text": "John Goodman is in the cast of O Brother, Where Art Thou?",
+        "label": "supported"
+      }
+    ],
+    "added_prediction_numbers": [],
+    "matching_reviewed": true
+  },
+  {
+    "example_id": "test_00783",
+    "output_status": "failed",
+    "reference_parts": [
+      {
+        "reference_number": 1,
+        "text": "Some people find it easier to become invested in characters across multiple episodes than in one film.",
+        "label": "unsupported",
+        "mismatch_types": [
+          "unsupported_addition"
+        ],
+        "matched_prediction_numbers": [],
+        "match_status": "no_component_output",
+        "review_note": "No component judgments were produced: failed."
+      }
+    ],
+    "predicted_parts": [],
+    "added_prediction_numbers": [],
+    "matching_reviewed": true
+  }
+]
