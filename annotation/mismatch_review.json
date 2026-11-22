@@ -1,0 +1,73 @@
+[
+    {
+    "example_id": "dev_00094",
+    "claim": "• Brooklyn Nets: 50 points",
+    "reference_parts": [
+        {
+        "component": "Michael Jordan's best scoring performance against the Nets was 50 points.",
+        "label": "contradicted",
+        "mismatch_types": ["numerical"]
+        }
+    ],
+    "evidence_quote": "Jordan’s greatest game against the Nets came during a 128-113 victory with MJ exploding for 58 points that included a near perfect 26-for-27 effort from the free throw line.",
+    "review_note": "The claim says 50; the source says 58. The component expands the list fragment using its context. Brooklyn and New Jersey refer to the same Nets franchise.",
+    "reviewed": true
+    }, 
+    {
+    "example_id": "dev_00085",
+    "claim": "Assassin's Creed Mirage is set to release in August 2023.",
+    "reference_parts": [
+        {
+        "component": "Assassin's Creed Mirage is set to release in 2023.",
+        "label": "supported",
+        "mismatch_types": []
+        },
+        {
+        "component": "The release month is August.",
+        "label": "unsupported",
+        "mismatch_types": ["temporal"]
+        }
+    ],
+    "evidence_quote": "For fans of the franchise, Assassin’s Creed Mirage will arrive sometime in 2023.",
+    "review_note": "The source establishes the year but does not establish August as the release month.",
+    "reviewed": true
+    },
+    {
+    "example_id": "dev_00223",
+    "claim": "The song was written by Lucio Quarantotto (lyrics) and Francesco Sartori (music).",
+    "reference_parts": [
+        {
+        "component": "Lucio Quarantotto wrote the lyrics to Non, je ne regrette rien.",
+        "label": "contradicted",
+        "mismatch_types": ["entity"]
+        },
+        {
+        "component": "Francesco Sartori composed the music for Non, je ne regrette rien.",
+        "label": "contradicted",
+        "mismatch_types": ["entity"]
+        }
+    ],
+    "evidence_quote": "\" Non, je ne regrette rien \" ( French pronunciation: [nɔ̃ ʒə nə ʁəɡʁɛtə ʁjɛ̃] 'No, I do not regret anything') is a French song composed in 1956 by Charles Dumont , with lyrics by Michel Vaucaire .",
+    "review_note": "The source credits different people for both roles. Resolving 'the song' to Non, je ne regrette rien relies on the surrounding response context.",
+    "reviewed": true
+    },
+    {
+    "example_id": "dev_00846",
+    "claim": "All visitors need a valid passport and a tourist card (or FMM – Forma Migratoria Múltiple).",
+    "reference_parts": [
+        {
+        "component": "All visitors to Mexico need a valid passport.",
+        "label": "contradicted",
+        "mismatch_types": ["scope"]
+        },
+        {
+        "component": "All visitors to Mexico need a tourist card.",
+        "label": "contradicted",
+        "mismatch_types": ["scope"]
+        }
+    ],
+    "evidence_quote": "The only exception applies to visits of less than three days to the 20km, duty-free strip adjoining the US border, into which you can come and go more or less as you please (though you still need a passport or photo ID).",
+    "review_note": "The universal claim omits the source's explicit exception. This annotation evaluates the saved source, not current entry requirements.",
+    "reviewed": true
+    }
+]
