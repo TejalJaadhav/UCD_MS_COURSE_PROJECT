@@ -1,0 +1,50 @@
+[
+  {
+    "example_id": "dev_01005",
+    "claim": "Adult polar bears have no natural predators except other polar bears.",
+    "reference_parts": [
+      {
+        "component": "Adult polar bears have no natural predators except other polar bears.",
+        "label": "supported",
+        "mismatch_types": []
+      }
+    ],
+    "evidence_quote": "Adult polar bears have no natural predators except other polar bears.",
+    "review_note": "Supported control: the claim preserves the source's adult restriction and explicit exception.",
+    "reviewed": true
+  },
+  {
+  "example_id": "dev_00996",
+  "claim": "Polar bears are apex predators and do not have natural predators except for humans.",
+  "reference_parts": [
+    {
+      "component": "Polar bears are apex predators.",
+      "label": "supported",
+      "mismatch_types": []
+    },
+    {
+      "component": "Polar bears have no natural predators except humans.",
+      "label": "contradicted",
+      "mismatch_types": ["scope"]
+    }
+  ],
+  "evidence_quote": "Polar bears are apex predators, and due to their size and strength, adult ones do not have natural predators, except for humans. However, polar bear cubs are eaten by wolves, killer whales, and other polar bears.",
+  "review_note": "The claim omits the adult restriction and extends the statement to cubs. Related in topic to dev_01005; these are not independent topic examples.",
+  "reviewed": true
+  },
+  {
+  "example_id": "dev_00217",
+  "claim": "Some experts suggest monitoring and reporting suspicious activity, while others recommend only monitoring employees' activity if there is a valid reason or goal related to the business.",
+  "reference_parts": [
+    {
+      "component": "The source recommends monitoring employees' activity only if there is a valid reason or goal related to the business.",
+      "label": "supported",
+      "mismatch_types": []
+    }
+  ],
+  "evidence_quote": "A good rule of thumb is to monitor employees’ activity only if you have a valid reason or goal related to the business.",
+  "review_scope": "targeted_component_only",
+  "review_note": "Supported control: the selected component preserves the only-if restriction. Other details in the full claim have not been annotated.",
+  "reviewed": true
+  }
+]
