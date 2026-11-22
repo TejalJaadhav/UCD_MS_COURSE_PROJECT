@@ -87,10 +87,21 @@ def ask_local(model, instruction, data, properties):
         value = judgment[name]
         if "enum" in spec and value not in spec["enum"]:
             raise ValueError(f"Unexpected local response label: {name}")
-        if spec["type"] == "array" and (
-            not isinstance(value, list) or not all(isinstance(x, str) for x in value)
-        ):
-            raise ValueError(f"Expected a list of strings: {name}")
+        if spec["type"] == "array":
+            if not isinstance(value, list):
+                raise ValueError(f"Expected an array: {name}")
+
+            # Validate array items using the type requested by the caller.
+            item_type = spec.get("items", {}).get("type")
+            if item_type == "string":
+                valid_items = all(isinstance(item, str) for item in value)
+            elif item_type == "integer":
+                valid_items = all(type(item) is int for item in value)
+            else:
+                raise ValueError(f"Unsupported array item type: {item_type}")
+
+            if not valid_items:
+                raise ValueError(f"Expected an array of {item_type}: {name}")
     usage = {key: result.get(key) for key in ("prompt_eval_count", "eval_count")}
     return judgment, usage
 
@@ -242,7 +253,7 @@ def open_checkpoint(path, settings):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("method", choices=("llm", "components", "nli"))
+    parser.add_argument("method", choices=("llm", "components", "components_verified", "nli"))
     parser.add_argument("--model", default=MODEL, help=f"Model ID or ollama:{LOCAL_MODEL}")
     parser.add_argument("--split", choices=("dev", "test"), default="dev")
     parser.add_argument("--dataset-version", choices=("raw", "cleaned"), default="raw")
@@ -313,6 +324,9 @@ def main():
             claim, source = record["claim"], record["source"] or ""
             if args.method == "nli":
                 row["prediction"], row["details"] = baseline.predict(claim, source)
+            elif args.method == "components_verified":
+                from src.evaluation.verified_pipeline import predict_verified
+                row["prediction"], row["details"] = predict_verified(args.model, claim, source)
             else:
                 row["prediction"], row["details"] = predict(args.method, args.model, claim, source)
         except ValueError as error:
@@ -331,9 +345,9 @@ def main():
     report = {**metadata, "method": args.method, "model": args.model, "split": args.split,
               "dataset_version": args.dataset_version, "dataset_sha256": fingerprint,
               "created_at_utc": now.isoformat(),
-              "decomposition_prompt_version": 3 if args.method == "components" else None,
-              "split_review_enabled": args.method == "components",
-              "split_coverage_check_enabled": args.method == "components",
+              "decomposition_prompt_version": 3 if args.method in {"components", "components_verified"} else None,
+              "split_review_enabled": args.method in {"components", "components_verified"},
+              "split_coverage_check_enabled": args.method in {"components", "components_verified"},
               "sampling": {"per_label": args.per_label, "seed": 42} if args.per_label else {"limit": args.limit},
               "example_ids": [row["example_id"] for row in rows], "predictions": rows}
     report["metrics"] = evaluate(report)
