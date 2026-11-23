@@ -1,36 +1,59 @@
 # Python
 __pycache__/
 *.py[cod]
-.pytest_cache/
+*.pyo
 
 # Virtual environments
 .venv/
 venv/
+env/
+ENV/
 
 # Jupyter
 .ipynb_checkpoints/
 
-# Secrets
+# macOS
+.DS_Store
+
+# IDE
+.vscode/
+.idea/
+
+# Environment variables and secrets
 .env
 .env.*
-!.env.example
 
-# Local datasets; preserve folder placeholders
+# Data files
 data/raw/*
-!data/raw/.gitkeep
 data/processed/*
+!data/raw/.gitkeep
 !data/processed/.gitkeep
 
-# Generated experiment outputs
-outputs/
-
-# Model files and caches
-.cache/
-checkpoints/
+# Model files and checkpoints
 *.pt
 *.pth
+*.bin
 *.safetensors
+checkpoints/
 
-# System files
-.DS_Store
+# Experiment outputs
+experiments/runs/
+results/
+
+# Logs
+*.log
+
+# Temporary files
+tmp/
+temp/
+
+# Ignore generated preprocessing datasets.
+outputs/preprocessing/
+
+outputs/annotation_pilot/
+# Additional exclusions retained from develop
+.pytest_cache/
+.cache/
+outputs/
 Thumbs.db
+!.env.example

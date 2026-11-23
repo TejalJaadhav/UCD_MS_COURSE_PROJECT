@@ -1,2 +1,4 @@
-# Initial dataset inspection uses Python's standard library.
-# Model and analysis dependencies will be added as implemented.
+# Libraries for loading and running the pretrained NLI model.
+torch
+transformers
+sentencepiece

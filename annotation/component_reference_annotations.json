@@ -1,0 +1,355 @@
+[
+  {
+    "example_id": "test_00415",
+    "annotation_status": "user_reviewed",
+    "annotation_method": "AI-assisted draft reviewed by the user; model outputs previously seen",
+    "components": [
+      {
+        "text": "Gaga co-wrote the song with Natalie Hemby.",
+        "label": "supported"
+      },
+      {
+        "text": "Gaga co-wrote the song with Hillary Lindsey.",
+        "label": "supported"
+      },
+      {
+        "text": "Gaga co-wrote the song with Aaron Raitiere.",
+        "label": "supported"
+      },
+      {
+        "text": "These co-writers are Nashville songwriters.",
+        "label": "unsupported",
+        "mismatch_types": [
+          "qualifier"
+        ]
+      }
+    ],
+    "evidence": "Gaga wrote the song with Natalie Hemby, Hillary Lindsey, and Aaron Raitiere.",
+    "reason": "The source names all three co-writers but does not establish the Nashville qualifier.",
+    "reference_overall_label": "partial_support"
+  },
+  {
+    "example_id": "test_01039",
+    "annotation_status": "user_reviewed",
+    "annotation_method": "AI-assisted draft reviewed by the user; model outputs previously seen",
+    "components": [
+      {
+        "text": "The song has been performed by Joe Cocker.",
+        "label": "supported"
+      },
+      {
+        "text": "The song has been performed by Tom Jones.",
+        "label": "unsupported",
+        "mismatch_types": [
+          "unsupported_addition"
+        ]
+      }
+    ],
+    "evidence": "The official video for Joe Cocker - You Can Leave Your Hat On.",
+    "reason": "The source identifies Joe Cocker's performance but provides no information about Tom Jones.",
+    "reference_overall_label": "partial_support"
+  },
+  {
+    "example_id": "test_00180",
+    "annotation_status": "user_reviewed",
+    "annotation_method": "AI-assisted draft reviewed by the user; model outputs previously seen",
+    "components": [
+      {
+        "text": "The Second Amendment to the US Constitution gives Americans the right to bear arms.",
+        "label": "unsupported",
+        "mismatch_types": [
+          "unsupported_addition"
+        ]
+      },
+      {
+        "text": "Some argue that gun ownership does not make us safer.",
+        "label": "supported"
+      }
+    ],
+    "evidence": "Hemenway added that there is no good evidence that using a gun in self-defense reduces the likelihood of injury.",
+    "reason": "The source discusses arguments questioning the safety benefits of guns but does not discuss the Second Amendment.",
+    "reference_overall_label": "partial_support"
+  },
+  {
+    "example_id": "test_00360",
+    "annotation_status": "user_reviewed",
+    "annotation_method": "AI-assisted draft reviewed by the user; model outputs previously seen",
+    "components": [
+      {
+        "text": "Sean Giambrone plays Adam Goldberg on The Goldbergs.",
+        "label": "supported"
+      },
+      {
+        "text": "Adam Goldberg is the youngest son in the family on The Goldbergs.",
+        "label": "supported"
+      }
+    ],
+    "evidence": "From 2013-2023, Giambrone played the part of Adam Goldberg, the youngest child of Wendi McLendon-Covey and Jeff Garlin characters, Beverly and Murray, in the ABC comedy series The Goldbergs.",
+    "reason": "The full source identifies the role and describes Adam as the youngest child. The reviewer accepts this as support for the youngest-son detail.",
+    "reference_overall_label": "complete_support",
+    "original_gold_label": "partial_support",
+    "label_disagreement": "The full-source reference review supports both details. The original dataset label remains partial_support.",
+    "model_decomposition_issue": "The generated part omitted the youngest-son detail."
+  },
+  {
+    "example_id": "test_01094",
+    "annotation_status": "user_reviewed",
+    "annotation_method": "AI-assisted draft reviewed by the user; model outputs previously seen",
+    "components": [
+      {
+        "text": "Johnny Depp plays Captain Jack Sparrow in Pirates of the Caribbean: On Stranger Tides.",
+        "label": "supported"
+      },
+      {
+        "text": "On Stranger Tides is the fourth installment in the Pirates of the Caribbean series.",
+        "label": "unsupported",
+        "mismatch_types": [
+          "unsupported_addition"
+        ]
+      },
+      {
+        "text": "Jack Sparrow searches for the Fountain of Youth.",
+        "label": "unsupported",
+        "mismatch_types": [
+          "unsupported_addition"
+        ]
+      },
+      {
+        "text": "Joshamee Gibbs helps Jack Sparrow and is his trusty mate.",
+        "label": "unsupported",
+        "mismatch_types": [
+          "unsupported_addition"
+        ]
+      },
+      {
+        "text": "Angelica helps Jack Sparrow and is his former lover.",
+        "label": "unsupported",
+        "mismatch_types": [
+          "unsupported_addition"
+        ]
+      },
+      {
+        "text": "Captain Barbossa helps Jack Sparrow and is his old rival.",
+        "label": "unsupported",
+        "mismatch_types": [
+          "unsupported_addition"
+        ]
+      }
+    ],
+    "evidence": "Pirates of the Caribbean: On Stranger Tides Johnny Depp returns as Captain Jack Sparrow.",
+    "reason": "The full source establishes the title and role but provides no installment number, plot, assistance, or relationship details.",
+    "reference_overall_label": "partial_support",
+    "original_gold_label": "no_support",
+    "label_disagreement": "The source supports the Depp role detail. The original dataset label remains no_support."
+  },
+  {
+    "example_id": "test_00154",
+    "annotation_status": "user_reviewed",
+    "annotation_method": "AI-assisted draft reviewed by the user; model outputs previously seen",
+    "components": [
+      {
+        "text": "Networking with other industry professionals is recommended.",
+        "label": "supported"
+      }
+    ],
+    "evidence": "Network with other industry professionals.",
+    "reason": "The source explicitly recommends networking with other industry professionals as a tip for establishing an acting career.",
+    "reference_overall_label": "complete_support",
+    "original_gold_label": "complete_support"
+  },
+  {
+    "example_id": "test_00042",
+    "annotation_status": "user_reviewed",
+    "annotation_method": "AI-assisted draft reviewed by the user; model outputs previously seen",
+    "components": [
+      {
+        "text": "The statement that America is a land of opportunity is attributed to Will Rogers.",
+        "label": "supported"
+      },
+      {
+        "text": "Will Rogers is described as a humorist and Oklahoma Democrat.",
+        "label": "supported"
+      }
+    ],
+    "evidence": "As humorist and Oklahoma Democrat Will Rogers once admonished, America is a land of opportunity and do not ever forget it.",
+    "reason": "The source explicitly identifies Rogers and attributes a close variant of the statement to him. The reviewer accepts the wording as a paraphrase rather than an exact quotation.",
+    "reference_overall_label": "complete_support",
+    "original_gold_label": "complete_support"
+  },
+  {
+    "example_id": "test_00900",
+    "annotation_status": "user_reviewed",
+    "annotation_method": "AI-assisted draft reviewed by the user; model outputs previously seen",
+    "components": [
+      {
+        "text": "Some people argue that abhorrent views should be listened to because one might learn something.",
+        "label": "supported"
+      }
+    ],
+    "evidence": "So why should anyone listen to abhorrent speech from an abhorrent speaker? The standard reason is because you might learn something.",
+    "reason": "The source explicitly describes learning something as a commonly offered reason for listening to abhorrent speech. The claim reports the existence of that argument.",
+    "reference_overall_label": "complete_support",
+    "original_gold_label": "complete_support"
+  },
+  {
+    "example_id": "test_01061",
+    "annotation_status": "user_reviewed",
+    "annotation_method": "AI-assisted draft reviewed by the user; model outputs previously seen",
+    "components": [
+      {
+        "text": "Determinate sentencing assigns an offender a fixed amount of time.",
+        "label": "supported"
+      },
+      {
+        "text": "Determinate sentencing uses a fixed term rather than a range of time or an indeterminate length of time.",
+        "label": "supported"
+      }
+    ],
+    "evidence": "A prison sentence for a fixed amount of time, rather than a range of time, or indeterminate length of time.",
+    "reason": "The source definition directly establishes both the fixed duration and the contrast with a range or indeterminate term.",
+    "reference_overall_label": "complete_support",
+    "original_gold_label": "complete_support",
+    "model_decomposition_issue": "The proposed split omitted the comparison; model review flagged it, and the whole-claim fallback predicted partial_support."
+  },
+  {
+    "example_id": "test_00116",
+    "annotation_status": "user_reviewed",
+    "annotation_method": "AI-assisted draft reviewed by the user; model outputs previously seen",
+    "components": [
+      {
+        "text": "Civil servants answer to the government.",
+        "label": "supported"
+      },
+      {
+        "text": "Civil servants do not answer to a political party.",
+        "label": "supported"
+      }
+    ],
+    "evidence": "Civil servants work for central and state governments, and answer to the government, not a political party.",
+    "reason": "The source explicitly states both details, assuming the claim pronoun refers to civil servants.",
+    "reference_overall_label": "complete_support",
+    "original_gold_label": "no_support",
+    "context_assumption": "They refers to civil servants; this interpretation is inferred from the cited source.",
+    "label_disagreement": "The full source supports the claim under the recorded pronoun interpretation. The original dataset label remains no_support."
+  },
+  {
+    "example_id": "test_00952",
+    "annotation_status": "user_reviewed",
+    "annotation_method": "AI-assisted draft reviewed by the user; model outputs previously seen",
+    "components": [
+      {
+        "text": "The couch armrest feels different from a pillow on the bed.",
+        "label": "supported"
+      },
+      {
+        "text": "The different feeling of the armrest helps people relax and fall asleep faster.",
+        "label": "unsupported",
+        "mismatch_types": [
+          "unsupported_addition"
+        ],
+        "mismatch_note": "Unsupported causal relationship."
+      }
+    ],
+    "evidence": "A pillow can help elevate your head on the bed, but the armrest on your couch feels different and is much higher.",
+    "reason": "The source establishes the different feeling and links easier sleep to elevation. The reviewer judged the specific causal claim about the different feeling producing relaxation and faster sleep insufficiently established.",
+    "reference_overall_label": "partial_support",
+    "original_gold_label": "no_support",
+    "label_disagreement": "The reviewer finds the different-feeling component supported. The original dataset label remains no_support.",
+    "uncertainty": "The source links elevation, comfort, and sleep; the causal distinction is interpretive and should be reported as a review limitation."
+  },
+  {
+    "example_id": "test_00229",
+    "annotation_status": "user_reviewed",
+    "annotation_method": "AI-assisted draft reviewed by the user; model outputs previously seen",
+    "original_claim": "Some argue that it can be used for mass surveillance and that strict regulation is needed to prevent abuse, while others believe that outright bans are not necessary.",
+    "components": [
+      {
+        "text": "Facial recognition can be used for mass surveillance.",
+        "label": "supported"
+      },
+      {
+        "text": "Some argue that strict regulation is needed to prevent abuse of facial recognition.",
+        "label": "supported"
+      },
+      {
+        "text": "Some argue that outright bans on facial recognition are not necessary.",
+        "label": "supported"
+      }
+    ],
+    "reason": "The source explicitly discusses mass surveillance, regulation and oversight, and alternatives to outright bans.",
+    "reference_overall_label": "complete_support",
+    "original_gold_label": "partial_support",
+    "evidence": "Absent regulation and adequate transparency and oversight we should expect more episodes of mass surveillance to emerge. Facial recognition is an ideal technology for mass surveillance. That facial recognition can be used for mass surveillance does not warrant outright bans on the technology.",
+    "context_assumption": "It refers to facial recognition.",
+    "label_disagreement": "User-reviewed full-source judgment differs from the original dataset label, which remains unchanged."
+  },
+  {
+    "example_id": "test_00378",
+    "annotation_status": "user_reviewed",
+    "annotation_method": "AI-assisted draft reviewed by the user; model outputs previously seen",
+    "original_claim": "From this viewpoint, charity can sometimes be seen as actually accepting the injustice itself while trying to mitigate its consequences.",
+    "components": [
+      {
+        "text": "From this viewpoint, charity can sometimes be seen as accepting injustice while trying to mitigate its consequences.",
+        "label": "supported"
+      }
+    ],
+    "reason": "The source directly states the claim.",
+    "reference_overall_label": "complete_support",
+    "original_gold_label": "complete_support",
+    "evidence": "Charity, from this viewpoint, can sometimes be seen as actually accepting the injustice itself, while trying to mitigate the consequences of the injustice."
+  },
+  {
+    "example_id": "test_00731",
+    "annotation_status": "user_reviewed",
+    "annotation_method": "AI-assisted draft reviewed by the user; model outputs previously seen",
+    "original_claim": "The cast of O Brother, Where Art Thou? includes George Clooney, John Turturro, Tim Blake Nelson, and John Goodman.",
+    "components": [
+      {
+        "text": "George Clooney is in the cast of O Brother, Where Art Thou?",
+        "label": "supported"
+      },
+      {
+        "text": "John Turturro is in the cast of O Brother, Where Art Thou?",
+        "label": "supported"
+      },
+      {
+        "text": "Tim Blake Nelson is in the cast of O Brother, Where Art Thou?",
+        "label": "supported"
+      },
+      {
+        "text": "John Goodman is in the cast of O Brother, Where Art Thou?",
+        "label": "unsupported",
+        "mismatch_types": [
+          "unsupported_addition"
+        ]
+      }
+    ],
+    "reason": "The source names Clooney, Turturro and Nelson in its plot description but does not establish Goodman as a cast member.",
+    "reference_overall_label": "partial_support",
+    "original_gold_label": "no_support",
+    "evidence": "Ulysses Everett McGill (George Clooney) ... simple Delmar (Tim Blake Nelson) and maladjusted Pete (John Turturro).",
+    "label_disagreement": "User-reviewed full-source judgment differs from the original dataset label, which remains unchanged."
+  },
+  {
+    "example_id": "test_00783",
+    "annotation_status": "user_reviewed",
+    "annotation_method": "AI-assisted draft reviewed by the user; model outputs previously seen",
+    "original_claim": "Additionally, some people find it easier to get invested in characters over multiple episodes rather than just one film.",
+    "components": [
+      {
+        "text": "Some people find it easier to become invested in characters across multiple episodes than in one film.",
+        "label": "unsupported",
+        "mismatch_types": [
+          "unsupported_addition"
+        ],
+        "mismatch_note": "Unsupported comparison of episodic versus film character investment."
+      }
+    ],
+    "reason": "The source discusses rewatching familiar entertainment, without establishing the claimed comparison between episodic and film character investment.",
+    "reference_overall_label": "no_support",
+    "original_gold_label": "no_support",
+    "evidence": "",
+    "evidence_note": "No passage in the full source establishes the episodic-versus-film comparison."
+  }
+]
