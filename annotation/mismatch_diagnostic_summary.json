@@ -1,0 +1,19 @@
+{
+  "prediction_report": "mismatch_review_verified_20261122T193333_338992Z.json",
+  "review_file": "annotation/mismatch_diagnostic_review.json",
+  "claim_source_pairs": 5,
+  "categories": {
+    "entity": {"correct": 0, "total": 2, "no_component_output": 2},
+    "numerical": {"correct": 0, "total": 1, "no_component_output": 0},
+    "qualifier": {"correct": 0, "total": 1, "no_component_output": 0},
+    "scope": {"correct": 0, "total": 2, "no_component_output": 0},
+    "temporal": {"correct": 1, "total": 2, "no_component_output": 0}
+  },
+  "limitations": [
+    "Targeted exploratory sample, not representative.",
+    "Categories overlap; totals must not be summed as independent details.",
+    "Two pairs share the same claim.",
+    "Results do not establish a general ranking of category difficulty.",
+    "Later context experiments are evaluated separately."
+  ]
+}
