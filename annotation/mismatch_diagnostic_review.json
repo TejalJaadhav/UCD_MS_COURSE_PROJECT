@@ -1,0 +1,101 @@
+{
+  "prediction_report": "mismatch_review_verified_20261122T193333_338992Z.json",
+  "review_process": "AI-assisted, user-reviewed analysis after inspecting predictions",
+  "cases": [
+    {
+      "example_id": "dev_00094",
+      "reference_matches": [
+        {
+          "reference_number": 1,
+          "prediction_numbers": [1],
+          "reference_label": "contradicted",
+          "predicted_label": "unsupported"
+        }
+      ],
+      "finding": "Relevant 58-point evidence was retrieved, but the model failed to recognize the numerical contradiction."
+    },
+    {
+      "example_id": "dev_00085",
+      "reference_matches": [
+        {
+          "reference_number": 1,
+          "prediction_numbers": [3],
+          "reference_label": "supported",
+          "predicted_label": "unsupported"
+        },
+        {
+          "reference_number": 2,
+          "prediction_numbers": [2],
+          "reference_label": "unsupported",
+          "predicted_label": "unsupported"
+        }
+      ],
+      "finding": "Verification correctly rejected August but incorrectly rejected the explicitly stated year.",
+      "unmatched_prediction_numbers": [1],
+      "matching_note": "Prediction 1 states only that release is planned; it does not establish the annotated year detail."
+    },
+    {
+      "example_id": "dev_00223",
+      "reference_matches": [
+        {
+          "reference_number": 1,
+          "prediction_numbers": [],
+          "reference_label": "contradicted",
+          "predicted_label": null
+        },
+        {
+          "reference_number": 2,
+          "prediction_numbers": [],
+          "reference_label": "contradicted",
+          "predicted_label": null
+        }
+      ],
+      "finding": "Split review rejected the proposed role-based decomposition. Whole-claim fallback produced no localized component judgments."
+    },
+    {
+      "example_id": "dev_00846",
+      "reference_matches": [
+        {
+          "reference_number": 1,
+          "prediction_numbers": [1],
+          "reference_label": "contradicted",
+          "predicted_label": "unsupported"
+        },
+        {
+          "reference_number": 2,
+          "prediction_numbers": [2],
+          "reference_label": "contradicted",
+          "predicted_label": "supported"
+        }
+      ],
+      "finding": "Selected evidence omitted the following exception, preventing correct scope judgments."
+    },
+    {
+      "example_id": "dev_00083",
+      "reference_matches": [
+        {
+          "reference_number": 1,
+          "prediction_numbers": [3],
+          "reference_label": "supported",
+          "predicted_label": "supported"
+        },
+        {
+          "reference_number": 2,
+          "prediction_numbers": [2],
+          "reference_label": "unsupported",
+          "predicted_label": "supported"
+        }
+      ],
+      "finding": "The August report was accepted without the following rumour qualification.",
+      "unmatched_prediction_numbers": [1],
+      "matching_note": "Prediction 1 states only that release is planned; it does not establish the annotated year detail."
+    }
+  ],
+  "limitations": [
+    "Five targeted claim-source pairs, including two with the same claim.",
+    "Matches are semantic alignments, not exact text matches.",
+    "Unmatched predictions are not automatically hallucinations.",
+    "Null labels indicate no localized component judgment.",
+    "This file describes the verified diagnostic run, not the later context experiments."
+  ]
+}
