@@ -69,5 +69,24 @@
     "evidence_quote": "The only exception applies to visits of less than three days to the 20km, duty-free strip adjoining the US border, into which you can come and go more or less as you please (though you still need a passport or photo ID).",
     "review_note": "The universal claim omits the source's explicit exception. This annotation evaluates the saved source, not current entry requirements.",
     "reviewed": true
+    },
+    {
+    "example_id": "dev_00083",
+    "claim": "Assassin's Creed Mirage is set to release in August 2023.",
+    "reference_parts": [
+        {
+        "component": "Assassin's Creed Mirage is set to release in 2023.",
+        "label": "supported",
+        "mismatch_types": []
+        },
+        {
+        "component": "August is the established release month for Assassin's Creed Mirage.",
+        "label": "unsupported",
+        "mismatch_types": ["temporal", "qualifier"]
+        }
+    ],
+    "evidence_quote": "This is a rumour, however, and as such it should be taken with a pinch of salt. The official release window is still listed as a vague 2023.",
+    "review_note": "The source describes August as a rumour, not an established release month. This repeats the claim in dev_00085 with a different source; the two examples are not independent claims.",
+    "reviewed": true
     }
 ]
