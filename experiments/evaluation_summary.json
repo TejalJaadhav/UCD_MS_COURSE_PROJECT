@@ -1,0 +1,61 @@
+{
+  "dataset": {
+    "version": "cleaned",
+    "test_examples": 1085,
+    "test_label_counts": {
+      "complete_support": 787,
+      "partial_support": 183,
+      "no_support": 115
+    }
+  },
+  "completed_test_runs": [
+    {
+      "method": "majority",
+      "report": "majority_test_20261111T221104_803708Z.json"
+    },
+    {
+      "method": "whole_claim_nli",
+      "model": "cross-encoder/nli-deberta-v3-small",
+      "report": "nli_test_20261111T221445_798912Z.json"
+    },
+    {
+      "method": "whole_claim_llm",
+      "model": "ollama:qwen2.5:3b",
+      "report": "llm_test_20261112T034120_341499Z.json"
+    },
+    {
+      "method": "components",
+      "model": "ollama:qwen2.5:3b",
+      "report": "components_test_20261112T201634_714712Z.json"
+    }
+  ],
+  "pending_test_run": {
+    "method": "components_verified",
+    "model": "ollama:qwen2.5:7b",
+    "checkpoint": "verified_7b_test.sqlite",
+    "status": "in_progress"
+  },
+  "report_directory": "outputs/annotation_pilot/evaluation",
+  "manual_component_review": {
+    "claims": 15,
+    "reference_details": 35,
+    "annotations": "annotation/component_reference_annotations.json",
+    "matching": "annotation/component_matching.json",
+    "review_process": "AI-assisted and user-reviewed; model outputs previously seen"
+  },
+  "bootstrap": {
+    "resamples": 2000,
+    "seed": 42,
+    "unit": "claim-source example",
+    "interval": "95 percent percentile interval",
+    "difference": "candidate minus baseline"
+  },
+  "limitations": [
+    "Revised methods were developed after inspecting earlier test errors; the reused test set is not an untouched final evaluation.",
+    "The original and verified test pipelines use different model sizes; their comparison cannot isolate verification alone.",
+    "The manual component sample is small and does not cover all mismatch categories.",
+    "Targeted diagnostic examples are not a representative benchmark.",
+    "Example-level bootstrap does not account for shared questions or sources, model-run variation, or method selection.",
+    "Failed predictions remain in evaluation denominators."
+  ]
+} 
