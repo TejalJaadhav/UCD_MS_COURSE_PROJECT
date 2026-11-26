@@ -1,0 +1,642 @@
+[
+  {
+    "example_id": "test_00415",
+    "output_status": "fallback",
+    "reference_parts": [
+      {
+        "reference_number": 1,
+        "text": "Gaga co-wrote the song with Natalie Hemby.",
+        "label": "supported",
+        "mismatch_types": [],
+        "matched_prediction_numbers": [],
+        "match_status": "no_component_output",
+        "review_note": "No scored component output; reference label retained."
+      },
+      {
+        "reference_number": 2,
+        "text": "Gaga co-wrote the song with Hillary Lindsey.",
+        "label": "supported",
+        "mismatch_types": [],
+        "matched_prediction_numbers": [],
+        "match_status": "no_component_output",
+        "review_note": "No scored component output; reference label retained."
+      },
+      {
+        "reference_number": 3,
+        "text": "Gaga co-wrote the song with Aaron Raitiere.",
+        "label": "supported",
+        "mismatch_types": [],
+        "matched_prediction_numbers": [],
+        "match_status": "no_component_output",
+        "review_note": "No scored component output; reference label retained."
+      },
+      {
+        "reference_number": 4,
+        "text": "These co-writers are Nashville songwriters.",
+        "label": "unsupported",
+        "mismatch_types": [
+          "qualifier"
+        ],
+        "matched_prediction_numbers": [],
+        "match_status": "no_component_output",
+        "review_note": "No scored component output; reference label retained."
+      }
+    ],
+    "predicted_parts": [],
+    "added_prediction_numbers": [],
+    "matching_reviewed": true,
+    "matching_review_method": "AI-assisted matching completed by assistant at user request; not an independent human review."
+  },
+  {
+    "example_id": "test_01039",
+    "output_status": "component_scored",
+    "reference_parts": [
+      {
+        "reference_number": 1,
+        "text": "The song has been performed by Joe Cocker.",
+        "label": "supported",
+        "mismatch_types": [],
+        "matched_prediction_numbers": [
+          2
+        ],
+        "match_status": "matched",
+        "review_note": "Semantic correspondence reviewed; predicted labels retained unchanged."
+      },
+      {
+        "reference_number": 2,
+        "text": "The song has been performed by Tom Jones.",
+        "label": "unsupported",
+        "mismatch_types": [
+          "unsupported_addition"
+        ],
+        "matched_prediction_numbers": [
+          3
+        ],
+        "match_status": "matched",
+        "review_note": "Semantic correspondence reviewed; predicted labels retained unchanged."
+      }
+    ],
+    "predicted_parts": [
+      {
+        "prediction_number": 1,
+        "text": "Several artists have covered it.",
+        "label": "unsupported"
+      },
+      {
+        "prediction_number": 2,
+        "text": "Joe Cocker has covered it.",
+        "label": "supported"
+      },
+      {
+        "prediction_number": 3,
+        "text": "Tom Jones has covered it.",
+        "label": "contradicted"
+      }
+    ],
+    "added_prediction_numbers": [],
+    "matching_reviewed": true,
+    "matching_review_method": "AI-assisted matching completed by assistant at user request; not an independent human review.",
+    "unmatched_prediction_numbers": [
+      1
+    ],
+    "matching_note": "Broad coverage statement has no separate reference match; not automatically an unsupported addition."
+  },
+  {
+    "example_id": "test_00180",
+    "output_status": "component_scored",
+    "reference_parts": [
+      {
+        "reference_number": 1,
+        "text": "The Second Amendment to the US Constitution gives Americans the right to bear arms.",
+        "label": "unsupported",
+        "mismatch_types": [
+          "unsupported_addition"
+        ],
+        "matched_prediction_numbers": [
+          1
+        ],
+        "match_status": "matched",
+        "review_note": "Semantic correspondence reviewed; predicted labels retained unchanged."
+      },
+      {
+        "reference_number": 2,
+        "text": "Some argue that gun ownership does not make us safer.",
+        "label": "supported",
+        "mismatch_types": [],
+        "matched_prediction_numbers": [
+          2
+        ],
+        "match_status": "matched",
+        "review_note": "Semantic correspondence reviewed; predicted labels retained unchanged."
+      }
+    ],
+    "predicted_parts": [
+      {
+        "prediction_number": 1,
+        "text": "The Second Amendment to the US Constitution gives Americans the right to bear arms.",
+        "label": "supported"
+      },
+      {
+        "prediction_number": 2,
+        "text": "Some argue that gun ownership does not make us safer.",
+        "label": "contradicted"
+      }
+    ],
+    "added_prediction_numbers": [],
+    "matching_reviewed": true,
+    "matching_review_method": "AI-assisted matching completed by assistant at user request; not an independent human review."
+  },
+  {
+    "example_id": "test_00360",
+    "output_status": "component_scored",
+    "reference_parts": [
+      {
+        "reference_number": 1,
+        "text": "Sean Giambrone plays Adam Goldberg on The Goldbergs.",
+        "label": "supported",
+        "mismatch_types": [],
+        "matched_prediction_numbers": [
+          1,
+          3
+        ],
+        "match_status": "matched",
+        "review_note": "Shared show context is supplied by prediction 3; matching interpreted jointly in the original claim context."
+      },
+      {
+        "reference_number": 2,
+        "text": "Adam Goldberg is the youngest son in the family on The Goldbergs.",
+        "label": "supported",
+        "mismatch_types": [],
+        "matched_prediction_numbers": [
+          2,
+          3
+        ],
+        "match_status": "matched",
+        "review_note": "Shared show context is supplied by prediction 3; matching interpreted jointly in the original claim context."
+      }
+    ],
+    "predicted_parts": [
+      {
+        "prediction_number": 1,
+        "text": "Sean Giambrone plays Adam Goldberg.",
+        "label": "supported"
+      },
+      {
+        "prediction_number": 2,
+        "text": "Adam Goldberg is the youngest son.",
+        "label": "supported"
+      },
+      {
+        "prediction_number": 3,
+        "text": "Adam Goldberg is on The Goldbergs.",
+        "label": "supported"
+      }
+    ],
+    "added_prediction_numbers": [],
+    "matching_reviewed": true,
+    "matching_review_method": "AI-assisted matching completed by assistant at user request; not an independent human review."
+  },
+  {
+    "example_id": "test_01094",
+    "output_status": "fallback",
+    "reference_parts": [
+      {
+        "reference_number": 1,
+        "text": "Johnny Depp plays Captain Jack Sparrow in Pirates of the Caribbean: On Stranger Tides.",
+        "label": "supported",
+        "mismatch_types": [],
+        "matched_prediction_numbers": [],
+        "match_status": "no_component_output",
+        "review_note": "No scored component output; reference label retained."
+      },
+      {
+        "reference_number": 2,
+        "text": "On Stranger Tides is the fourth installment in the Pirates of the Caribbean series.",
+        "label": "unsupported",
+        "mismatch_types": [
+          "unsupported_addition"
+        ],
+        "matched_prediction_numbers": [],
+        "match_status": "no_component_output",
+        "review_note": "No scored component output; reference label retained."
+      },
+      {
+        "reference_number": 3,
+        "text": "Jack Sparrow searches for the Fountain of Youth.",
+        "label": "unsupported",
+        "mismatch_types": [
+          "unsupported_addition"
+        ],
+        "matched_prediction_numbers": [],
+        "match_status": "no_component_output",
+        "review_note": "No scored component output; reference label retained."
+      },
+      {
+        "reference_number": 4,
+        "text": "Joshamee Gibbs helps Jack Sparrow and is his trusty mate.",
+        "label": "unsupported",
+        "mismatch_types": [
+          "unsupported_addition"
+        ],
+        "matched_prediction_numbers": [],
+        "match_status": "no_component_output",
+        "review_note": "No scored component output; reference label retained."
+      },
+      {
+        "reference_number": 5,
+        "text": "Angelica helps Jack Sparrow and is his former lover.",
+        "label": "unsupported",
+        "mismatch_types": [
+          "unsupported_addition"
+        ],
+        "matched_prediction_numbers": [],
+        "match_status": "no_component_output",
+        "review_note": "No scored component output; reference label retained."
+      },
+      {
+        "reference_number": 6,
+        "text": "Captain Barbossa helps Jack Sparrow and is his old rival.",
+        "label": "unsupported",
+        "mismatch_types": [
+          "unsupported_addition"
+        ],
+        "matched_prediction_numbers": [],
+        "match_status": "no_component_output",
+        "review_note": "No scored component output; reference label retained."
+      }
+    ],
+    "predicted_parts": [],
+    "added_prediction_numbers": [],
+    "matching_reviewed": true,
+    "matching_review_method": "AI-assisted matching completed by assistant at user request; not an independent human review."
+  },
+  {
+    "example_id": "test_00154",
+    "output_status": "component_scored",
+    "reference_parts": [
+      {
+        "reference_number": 1,
+        "text": "Networking with other industry professionals is recommended.",
+        "label": "supported",
+        "mismatch_types": [],
+        "matched_prediction_numbers": [
+          1
+        ],
+        "match_status": "matched",
+        "review_note": "Prediction is a fragment interpreted as a recommendation in the original claim context."
+      }
+    ],
+    "predicted_parts": [
+      {
+        "prediction_number": 1,
+        "text": "Networking with other industry professionals",
+        "label": "supported"
+      }
+    ],
+    "added_prediction_numbers": [],
+    "matching_reviewed": true,
+    "matching_review_method": "AI-assisted matching completed by assistant at user request; not an independent human review."
+  },
+  {
+    "example_id": "test_00042",
+    "output_status": "fallback",
+    "reference_parts": [
+      {
+        "reference_number": 1,
+        "text": "The statement that America is a land of opportunity is attributed to Will Rogers.",
+        "label": "supported",
+        "mismatch_types": [],
+        "matched_prediction_numbers": [],
+        "match_status": "no_component_output",
+        "review_note": "No scored component output; reference label retained."
+      },
+      {
+        "reference_number": 2,
+        "text": "Will Rogers is described as a humorist and Oklahoma Democrat.",
+        "label": "supported",
+        "mismatch_types": [],
+        "matched_prediction_numbers": [],
+        "match_status": "no_component_output",
+        "review_note": "No scored component output; reference label retained."
+      }
+    ],
+    "predicted_parts": [],
+    "added_prediction_numbers": [],
+    "matching_reviewed": true,
+    "matching_review_method": "AI-assisted matching completed by assistant at user request; not an independent human review."
+  },
+  {
+    "example_id": "test_00900",
+    "output_status": "component_scored",
+    "reference_parts": [
+      {
+        "reference_number": 1,
+        "text": "Some people argue that abhorrent views should be listened to because one might learn something.",
+        "label": "supported",
+        "mismatch_types": [],
+        "matched_prediction_numbers": [
+          1,
+          2
+        ],
+        "match_status": "matched",
+        "review_note": "Predictions jointly express the recommendation and learning rationale; causal linkage is interpreted in original claim context."
+      }
+    ],
+    "predicted_parts": [
+      {
+        "prediction_number": 1,
+        "text": "Some argue that even abhorrent views should be listened to.",
+        "label": "supported"
+      },
+      {
+        "prediction_number": 2,
+        "text": "You might learn something from listening to abhorrent views.",
+        "label": "supported"
+      }
+    ],
+    "added_prediction_numbers": [],
+    "matching_reviewed": true,
+    "matching_review_method": "AI-assisted matching completed by assistant at user request; not an independent human review."
+  },
+  {
+    "example_id": "test_01061",
+    "output_status": "fallback",
+    "reference_parts": [
+      {
+        "reference_number": 1,
+        "text": "Determinate sentencing assigns an offender a fixed amount of time.",
+        "label": "supported",
+        "mismatch_types": [],
+        "matched_prediction_numbers": [],
+        "match_status": "no_component_output",
+        "review_note": "No scored component output; reference label retained."
+      },
+      {
+        "reference_number": 2,
+        "text": "Determinate sentencing uses a fixed term rather than a range of time or an indeterminate length of time.",
+        "label": "supported",
+        "mismatch_types": [],
+        "matched_prediction_numbers": [],
+        "match_status": "no_component_output",
+        "review_note": "No scored component output; reference label retained."
+      }
+    ],
+    "predicted_parts": [],
+    "added_prediction_numbers": [],
+    "matching_reviewed": true,
+    "matching_review_method": "AI-assisted matching completed by assistant at user request; not an independent human review."
+  },
+  {
+    "example_id": "test_00116",
+    "output_status": "fallback",
+    "reference_parts": [
+      {
+        "reference_number": 1,
+        "text": "Civil servants answer to the government.",
+        "label": "supported",
+        "mismatch_types": [],
+        "matched_prediction_numbers": [],
+        "match_status": "no_component_output",
+        "review_note": "No scored component output; reference label retained."
+      },
+      {
+        "reference_number": 2,
+        "text": "Civil servants do not answer to a political party.",
+        "label": "supported",
+        "mismatch_types": [],
+        "matched_prediction_numbers": [],
+        "match_status": "no_component_output",
+        "review_note": "No scored component output; reference label retained."
+      }
+    ],
+    "predicted_parts": [],
+    "added_prediction_numbers": [],
+    "matching_reviewed": true,
+    "matching_review_method": "AI-assisted matching completed by assistant at user request; not an independent human review."
+  },
+  {
+    "example_id": "test_00952",
+    "output_status": "component_scored",
+    "reference_parts": [
+      {
+        "reference_number": 1,
+        "text": "The couch armrest feels different from a pillow on the bed.",
+        "label": "supported",
+        "mismatch_types": [],
+        "matched_prediction_numbers": [
+          1,
+          2
+        ],
+        "match_status": "matched",
+        "review_note": "Joint semantic match in original claim context. Predictions 1 and 2 weaken the explicit comparison; predictions 3 and 4 split the relaxation and sleep outcomes. Matching does not establish decomposition fidelity."
+      },
+      {
+        "reference_number": 2,
+        "text": "The different feeling of the armrest helps people relax and fall asleep faster.",
+        "label": "unsupported",
+        "mismatch_types": [
+          "unsupported_addition"
+        ],
+        "matched_prediction_numbers": [
+          3,
+          4
+        ],
+        "match_status": "matched",
+        "review_note": "Joint semantic match in original claim context. Predictions 1 and 2 weaken the explicit comparison; predictions 3 and 4 split the relaxation and sleep outcomes. Matching does not establish decomposition fidelity."
+      }
+    ],
+    "predicted_parts": [
+      {
+        "prediction_number": 1,
+        "text": "The armrest on the couch provides a different feeling.",
+        "label": "supported"
+      },
+      {
+        "prediction_number": 2,
+        "text": "A pillow on the bed provides a different feeling.",
+        "label": "supported"
+      },
+      {
+        "prediction_number": 3,
+        "text": "The different feelings can help people relax.",
+        "label": "unsupported"
+      },
+      {
+        "prediction_number": 4,
+        "text": "The different feelings can help people fall asleep faster.",
+        "label": "supported"
+      }
+    ],
+    "added_prediction_numbers": [],
+    "matching_reviewed": true,
+    "matching_review_method": "AI-assisted matching completed by assistant at user request; not an independent human review."
+  },
+  {
+    "example_id": "test_00229",
+    "output_status": "fallback",
+    "reference_parts": [
+      {
+        "reference_number": 1,
+        "text": "Facial recognition can be used for mass surveillance.",
+        "label": "supported",
+        "mismatch_types": [],
+        "matched_prediction_numbers": [],
+        "match_status": "no_component_output",
+        "review_note": "No scored component output; reference label retained."
+      },
+      {
+        "reference_number": 2,
+        "text": "Some argue that strict regulation is needed to prevent abuse of facial recognition.",
+        "label": "supported",
+        "mismatch_types": [],
+        "matched_prediction_numbers": [],
+        "match_status": "no_component_output",
+        "review_note": "No scored component output; reference label retained."
+      },
+      {
+        "reference_number": 3,
+        "text": "Some argue that outright bans on facial recognition are not necessary.",
+        "label": "supported",
+        "mismatch_types": [],
+        "matched_prediction_numbers": [],
+        "match_status": "no_component_output",
+        "review_note": "No scored component output; reference label retained."
+      }
+    ],
+    "predicted_parts": [],
+    "added_prediction_numbers": [],
+    "matching_reviewed": true,
+    "matching_review_method": "AI-assisted matching completed by assistant at user request; not an independent human review."
+  },
+  {
+    "example_id": "test_00378",
+    "output_status": "component_scored",
+    "reference_parts": [
+      {
+        "reference_number": 1,
+        "text": "From this viewpoint, charity can sometimes be seen as accepting injustice while trying to mitigate its consequences.",
+        "label": "supported",
+        "mismatch_types": [],
+        "matched_prediction_numbers": [
+          1,
+          2
+        ],
+        "match_status": "matched",
+        "review_note": "Joint semantic match in original claim context; the viewpoint framing is not explicit in the predictions."
+      }
+    ],
+    "predicted_parts": [
+      {
+        "prediction_number": 1,
+        "text": "Charity can sometimes be seen as accepting injustice itself.",
+        "label": "supported"
+      },
+      {
+        "prediction_number": 2,
+        "text": "Charity tries to mitigate the consequences of injustice.",
+        "label": "supported"
+      }
+    ],
+    "added_prediction_numbers": [],
+    "matching_reviewed": true,
+    "matching_review_method": "AI-assisted matching completed by assistant at user request; not an independent human review."
+  },
+  {
+    "example_id": "test_00731",
+    "output_status": "component_scored",
+    "reference_parts": [
+      {
+        "reference_number": 1,
+        "text": "George Clooney is in the cast of O Brother, Where Art Thou?",
+        "label": "supported",
+        "mismatch_types": [],
+        "matched_prediction_numbers": [
+          1
+        ],
+        "match_status": "matched",
+        "review_note": "Semantic correspondence reviewed; predicted labels retained unchanged."
+      },
+      {
+        "reference_number": 2,
+        "text": "John Turturro is in the cast of O Brother, Where Art Thou?",
+        "label": "supported",
+        "mismatch_types": [],
+        "matched_prediction_numbers": [
+          2
+        ],
+        "match_status": "matched",
+        "review_note": "Semantic correspondence reviewed; predicted labels retained unchanged."
+      },
+      {
+        "reference_number": 3,
+        "text": "Tim Blake Nelson is in the cast of O Brother, Where Art Thou?",
+        "label": "supported",
+        "mismatch_types": [],
+        "matched_prediction_numbers": [
+          3
+        ],
+        "match_status": "matched",
+        "review_note": "Semantic correspondence reviewed; predicted labels retained unchanged."
+      },
+      {
+        "reference_number": 4,
+        "text": "John Goodman is in the cast of O Brother, Where Art Thou?",
+        "label": "unsupported",
+        "mismatch_types": [
+          "unsupported_addition"
+        ],
+        "matched_prediction_numbers": [
+          4
+        ],
+        "match_status": "matched",
+        "review_note": "Semantic correspondence reviewed; predicted labels retained unchanged."
+      }
+    ],
+    "predicted_parts": [
+      {
+        "prediction_number": 1,
+        "text": "The cast of O Brother, Where Art Thou? includes George Clooney.",
+        "label": "supported"
+      },
+      {
+        "prediction_number": 2,
+        "text": "The cast of O Brother, Where Art Thou? includes John Turturro.",
+        "label": "supported"
+      },
+      {
+        "prediction_number": 3,
+        "text": "The cast of O Brother, Where Art Thou? includes Tim Blake Nelson.",
+        "label": "supported"
+      },
+      {
+        "prediction_number": 4,
+        "text": "The cast of O Brother, Where Art Thou? includes John Goodman.",
+        "label": "supported"
+      }
+    ],
+    "added_prediction_numbers": [],
+    "matching_reviewed": true,
+    "matching_review_method": "AI-assisted matching completed by assistant at user request; not an independent human review."
+  },
+  {
+    "example_id": "test_00783",
+    "output_status": "fallback",
+    "reference_parts": [
+      {
+        "reference_number": 1,
+        "text": "Some people find it easier to become invested in characters across multiple episodes than in one film.",
+        "label": "unsupported",
+        "mismatch_types": [
+          "unsupported_addition"
+        ],
+        "matched_prediction_numbers": [],
+        "match_status": "no_component_output",
+        "review_note": "No scored component output; reference label retained."
+      }
+    ],
+    "predicted_parts": [],
+    "added_prediction_numbers": [],
+    "matching_reviewed": true,
+    "matching_review_method": "AI-assisted matching completed by assistant at user request; not an independent human review."
+  }
+]
