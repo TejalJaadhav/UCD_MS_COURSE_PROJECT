@@ -1,0 +1,45 @@
+1 Introduction
+
+1.1 Problem
+
+Large language models can generate answers that include citations to external sources. These citations give readers a way to inspect the evidence behind a statement, but their presence does not establish that every detail in the statement is supported. Liu, Zhang, and Liang [1] documented this distinction in their evaluation of generative search engines, finding that generated sentences were often not fully supported by their citations. Citation evaluation therefore requires assessing the relationship between the content of a claim and the evidence available in its cited source.
+
+Partial support is particularly important when a single sentence contains several independently verifiable details. Consider an illustrative source stating that Maria Chen directed a film released in 2016. The claim that Maria Chen directed the film and that it was released in 2017 combines a supported director attribution with a contradicted release year. An overall partially supported label identifies a problem, but it does not tell the reader which detail is responsible. Assessing the two components separately makes that distinction explicit.
+
+Similar difficulties arise when a claim adds an unmentioned date, substitutes an entity, drops a restriction, extends a statement beyond the source's scope, or changes a relationship between events. The source may concern the same topic while providing insufficient evidence for the specific wording of the claim. Identifying such differences requires more than recognizing broad semantic similarity: the evaluator must preserve the details and relationships that determine what the source establishes.
+
+This project investigated whether claim decomposition and evidence alignment could make citation-support assessment more informative by identifying the components associated with an overall judgment. Existing citation research already includes automatic citation evaluation, as illustrated by ALCE [2]. The contribution of this project is an implemented and measured comparison of component-level assessment with conventional whole-claim classification, together with an analysis of the localized judgments and their failure modes. It does not claim to introduce atomic-claim evaluation as a new research area.
+
+The scope is evidential support relative to supplied source text. A detail is supported when the source establishes it, unsupported when the available source does not establish it, and contradicted when the source directly conflicts with it. An unsupported detail may still be true in the world; missing source evidence alone does not establish falsehood. The system does not independently verify the source's reliability or search the web to establish external truth.
+
+1.2 Objective
+
+The objective was to implement and evaluate an NLP pipeline that decomposes generated claims, aligns their components with cited source passages, and produces component-level support labels alongside an overall assessment. The study examined whether this representation provides useful localized information and how its overall classification performance compares with whole-claim baselines.
+
+1.3 Approach
+
+The implemented pipeline accepts a generated claim and its cited source text. It proposes smaller verifiable components, checks decomposition coverage and fidelity, retrieves relevant passages, and assesses each component as supported, unsupported, or contradicted. Component judgments are aggregated into complete support when all components are supported, partial support when some are supported, and no support when none are supported. Rejected decompositions use a whole-claim fallback, while invalid outputs are recorded as failures. Fallback results are explicitly distinguished because they do not provide localized component judgments.
+
+The experimental comparison used the dataset released with Liu et al. [1]. Overall classification was evaluated on 1,085 cleaned test pairs with the original human support labels preserved. The comparison included a majority baseline, a pretrained natural language inference model, a prompted whole-claim language model, and component methods using Qwen 2.5 models. An additional evidence-selection and verification stage was evaluated using saved judgments from the same 7B run. Accuracy, macro-F1, per-class precision and recall, and failure counts were used to assess performance. In these experiments, the pre-verification 7B component method achieved the highest macro-F1, while the majority baseline achieved the highest accuracy. This distinction motivates examining multiple measures rather than treating a single score as sufficient evidence of success.
+
+Fine-grained evaluation examined an exploratory subset of 15 claims containing 35 reference details, supplemented by 10 additional claim-source pairs containing 21 selected target details. The supplementary labels were confirmed by the author after AI-assisted review of saved-source evidence. The analysis distinguished exact component labeling from binary detection of unsupported or contradicted content, and examined mismatches involving numbers, entities, dates, qualifiers, scope, and unsupported additions. Direct contradiction was treated as a support-label outcome that can arise from different mismatch types. These samples provide descriptive evidence rather than a representative ranking of general category difficulty.
+
+The investigation retained the three research questions from the proposal:
+
+RQ1. How accurately can Natural Language Processing (NLP) methods determine the overall level of evidential support between an AI-generated claim and its cited evidence?
+
+RQ2. Can fine-grained claim decomposition and evidence alignment identify which specific components of an AI-generated claim are supported, unsupported, or contradicted by the cited evidence?
+
+RQ3. Which types of fine-grained evidential mismatches, such as numerical discrepancies, entity or temporal differences, qualifiers, scope changes, unsupported additions, and contradictions, are most difficult for automatic citation-support methods to identify?
+
+The resulting contribution combines a working claim-checking tool, comparisons of overall classification, reviewed component annotations, and reproducible localization analyses. The experiments also establish practical limits: test examples were reused during development, and the small, AI-assisted annotation samples do not provide an independent population-level estimate. These conditions guide the interpretation of the findings throughout the report.
+
+1.4 Organization of This Project Report
+
+Chapter 2 introduces the concepts needed to distinguish overall support, component labels, and evidence alignment, and reviews related citation-evaluation research. Chapter 3 describes the pipeline architecture, decomposition checks, retrieval, component assessment, aggregation, and implementation. Chapter 4 presents the dataset preparation, experimental methodology, overall results, localization evaluation, mismatch analysis, and limitations. Chapter 5 summarizes the findings and contributions and identifies directions for future work. The references document the sources used, and appendices provide supporting experimental and reproducibility details where appropriate.
+
+References cited in this section
+
+[1] N. F. Liu, T. Zhang, and P. Liang, "Evaluating Verifiability in Generative Search Engines," Findings of the Association for Computational Linguistics: EMNLP 2023, pp. 7001-7025, 2023. https://doi.org/10.18653/v1/2023.findings-emnlp.467
+
+[2] T. Gao, H. Yen, J. Yu, and D. Chen, "Enabling Large Language Models to Generate Text with Citations," Proceedings of the 2023 Conference on Empirical Methods in Natural Language Processing, pp. 6465-6488, 2023. https://doi.org/10.18653/v1/2023.emnlp-main.398
