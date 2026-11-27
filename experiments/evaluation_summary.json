@@ -29,11 +29,25 @@
       "report": "components_test_20261112T201634_714712Z.json"
     }
   ],
-  "pending_test_run": {
-    "method": "components_verified",
-    "model": "ollama:qwen2.5:7b",
-    "checkpoint": "verified_7b_test.sqlite",
-    "status": "in_progress"
+  "completed_7b_test_run": {
+  "method": "components_verified",
+  "model": "ollama:qwen2.5:7b",
+  "status": "completed",
+  "report": "components_verified_test_20261126T014726_177544Z.json",
+  "before_verification_report": "components_verified_test_20261126T014726_177544Z_before_verification.json",
+  "before_verification": {
+    "accuracy": 0.671889400921659,
+    "macro_f1": 0.5378,
+    "failed": 19
+  },
+  "after_verification": {
+    "accuracy": 0.5548387096774193,
+    "macro_f1": 0.4998,
+    "failed": 49
+  },
+  "fixed_predictions": 74,
+  "broken_predictions": 201,
+  "note": "Before-verification judgments were recovered from the same run, not independently rerun. Macro-F1 values here are rounded; saved reports contain full precision."
   },
   "report_directory": "outputs/annotation_pilot/evaluation",
   "manual_component_review": {
