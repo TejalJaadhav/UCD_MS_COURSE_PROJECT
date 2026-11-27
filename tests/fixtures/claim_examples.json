@@ -1,0 +1,9 @@
+{
+  "source": "The film was released in 2016. Maria Chen directed the film.",
+  "provenance": "Synthetic command smoke tests; excluded from research evaluation.",
+  "cases": [
+    {"claim": "Maria Chen directed the film, which was released in 2016.", "expected": "complete_support"},
+    {"claim": "Maria Chen directed the film, which was released in 2017.", "expected": "partial_support"},
+    {"claim": "The film was released in 2017.", "expected": "no_support"}
+  ]
+}

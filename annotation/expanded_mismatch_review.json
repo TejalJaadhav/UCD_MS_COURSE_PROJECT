@@ -1,0 +1,323 @@
+{
+  "dataset_version": "cleaned",
+  "split": "test",
+  "dataset_sha256": "da6d94246ff3a3700b03c9275b9b95fcc19e29918a90b0ee3dcaaf52554ac095",
+  "created_at_utc": "2026-11-27T18:13:07.329466+00:00",
+  "selection": "Purposive candidates screened from non-complete dataset labels, using claim/source content before inspecting their component predictions. No random or representative sampling claimed.",
+  "provenance": "All 21 selected detail labels in 10 cases were confirmed by the user after assistant-guided review of saved-source evidence and explanations in chat. AI-assisted, user-reviewed annotations; not independent human gold. Quotes for unsupported details provide context, not proof of absence.",
+  "limitations": [
+    "Selected components are not an exhaustive decomposition; do not calculate full-claim reference coverage from this supplement.",
+    "Previously inspected test set; not a fresh held-out benchmark.",
+    "No outside-world facts used to override the saved source.",
+    "Small category counts and overlapping tags do not support a reliable general difficulty ranking."
+  ],
+  "cases": [
+    {
+      "example_id": "test_00398",
+      "claim": "She has accumulated **10,585 points** and holds the No. 1 position in the Women's Tennis Association rankings.",
+      "source_sha256": "6e1c4948e2f2df7d2d2944eabee5d8f737d60770cfaf7aac33fe71ba04bfd7fb",
+      "source_characters": 1850,
+      "reference_parts": [
+        {
+          "text": "Iga Swiatek has 10,585 WTA ranking points.",
+          "label": "contradicted",
+          "mismatch_types": [
+            "numerical"
+          ],
+          "evidence_quote": "|1||-||Iga Swiatek||8,975|",
+          "reason": "The saved ranking table gives 8,975, not 10,585. This evaluates the source snapshot, not current rankings."
+        },
+        {
+          "text": "Iga Swiatek is ranked No. 1 in the WTA rankings.",
+          "label": "supported",
+          "mismatch_types": [],
+          "evidence_quote": "Iga Swiatek remains the current world No.1 after replacing the retired Ashleigh Barty early in 2022.",
+          "reason": "The source explicitly identifies the top-ranked player; she is resolved to Iga from source context."
+        }
+      ],
+      "review_scope": "selected_target_components_only",
+      "annotation_status": "user_confirmed_after_assisted_review",
+      "human_reviewed": true,
+      "human_review_note": "User confirmed both proposed labels after seeing the claim, saved-source evidence and explanations in chat. AI-assisted review; not independent annotation.",
+      "human_reviewed_at_utc": "2026-11-27T18:36:30.370479+00:00"
+    },
+    {
+      "example_id": "test_00963",
+      "claim": "This brings the total number of high schools in Tracy to six.",
+      "source_sha256": "1c0ef7c75000763ab0b7b510b0c3ac80f9ed6b8c28369a0aaa5a619004a5d5b8",
+      "source_characters": 353,
+      "reference_parts": [
+        {
+          "text": "The total number of high schools in Tracy is six.",
+          "label": "unsupported",
+          "mismatch_types": [
+            "numerical",
+            "unsupported_addition"
+          ],
+          "evidence_quote": "An excellent education for every child",
+          "reason": "The entire saved source is a 353-character GreatSchools boilerplate; it gives no school count. This is missing saved evidence, not proof that the real-world count is wrong."
+        }
+      ],
+      "review_scope": "selected_target_components_only",
+      "annotation_status": "user_confirmed_after_assisted_review",
+      "human_reviewed": true,
+      "human_review_note": "User confirmed the proposed unsupported label after seeing the claim and saved-source explanation in chat. AI-assisted review; not independent annotation.",
+      "human_reviewed_at_utc": "2026-11-27T18:36:51.722936+00:00"
+    },
+    {
+      "example_id": "test_00995",
+      "claim": "The 2022 Great New York State Fair will take place from August 24 to September 5.",
+      "source_sha256": "83e06817b02f6b3ab3a484afc7354a6a6f9c2909df60aecb9e9a69c3a05d935e",
+      "source_characters": 399,
+      "reference_parts": [
+        {
+          "text": "The 2022 Great New York State Fair takes place from August 24 to September 5.",
+          "label": "unsupported",
+          "mismatch_types": [
+            "temporal"
+          ],
+          "evidence_quote": "People from across New York State will come together next year to experience an affordable, 13-day celebration of delicious food, eye-opening exhibits, captivating entertainment, and great fun.",
+          "reason": "The saved 399-character source states a 13-day duration but does not establish the year or exact dates."
+        }
+      ],
+      "review_scope": "selected_target_components_only",
+      "annotation_status": "user_confirmed_after_assisted_review",
+      "human_reviewed": true,
+      "human_review_note": "User confirmed the proposed unsupported label after seeing the claim, saved-source wording and explanation in chat. AI-assisted review; not independent annotation.",
+      "human_reviewed_at_utc": "2026-11-27T18:38:26.031194+00:00"
+    },
+    {
+      "example_id": "test_01088",
+      "claim": "\"Let's Get This Party Started\" was originally recorded by the American band The Black Eyed Peas and released in 2003 as the lead single from their album Elephunk.",
+      "source_sha256": "f749724862b00a8c3f179b0673ddce68779461d072c61afe8bec24f0b930281d",
+      "source_characters": 1278,
+      "reference_parts": [
+        {
+          "text": "The Black Eyed Peas originally recorded Let's Get This Party Started.",
+          "label": "unsupported",
+          "mismatch_types": [
+            "entity"
+          ],
+          "evidence_quote": "This disambiguation page lists articles associated with the title Let's Get This Party Started .",
+          "reason": "The source lists several different works with this title, but does not establish this artist attribution. Multiple works mean omission is not direct contradiction."
+        },
+        {
+          "text": "The claimed recording was released in 2003.",
+          "label": "unsupported",
+          "mismatch_types": [
+            "temporal"
+          ],
+          "evidence_quote": "This disambiguation page lists articles associated with the title Let's Get This Party Started .",
+          "reason": "The saved page does not establish 2003 for this claimed recording."
+        },
+        {
+          "text": "The claimed recording was the lead single from Elephunk.",
+          "label": "unsupported",
+          "mismatch_types": [
+            "entity",
+            "unsupported_addition"
+          ],
+          "evidence_quote": "This disambiguation page lists articles associated with the title Let's Get This Party Started .",
+          "reason": "The saved page does not identify Elephunk or establish the lead-single relationship."
+        }
+      ],
+      "review_scope": "selected_target_components_only",
+      "annotation_status": "user_confirmed_after_assisted_review",
+      "human_reviewed": true,
+      "human_review_note": "User confirmed all three proposed unsupported labels after seeing the claim, saved-source summary and explanations in chat. AI-assisted review; not independent annotation.",
+      "human_reviewed_at_utc": "2026-11-27T18:39:15.940991+00:00"
+    },
+    {
+      "example_id": "test_00887",
+      "claim": "The fiscal year can begin and end on any month except December, and is used for accounting purposes to prepare financial statements.",
+      "source_sha256": "a4f2ec3c3db79512fac350c1d3d94604f80d34bfdda42d67b893797ff7806aec",
+      "source_characters": 3325,
+      "reference_parts": [
+        {
+          "text": "A fiscal year can begin and end in any month except December.",
+          "label": "unsupported",
+          "mismatch_types": [
+            "scope"
+          ],
+          "evidence_quote": "At UCI, the fiscal year begins on July 1 and ends on June 30.",
+          "reason": "The institution-specific source does not establish this general rule. The December restriction is also separately localized below; these reference targets overlap."
+        },
+        {
+          "text": "December is excluded as a possible fiscal-year boundary month.",
+          "label": "unsupported",
+          "mismatch_types": [
+            "qualifier",
+            "temporal"
+          ],
+          "evidence_quote": "At UCI, the fiscal year begins on July 1 and ends on June 30.",
+          "reason": "The source never establishes the December exclusion; a December fiscal period is not a fiscal-year boundary."
+        },
+        {
+          "text": "Fiscal years are used for accounting and preparing annual financial statements.",
+          "label": "supported",
+          "mismatch_types": [],
+          "evidence_quote": "A fiscal year is important for accounting purposes and for preparing annual financial statements.",
+          "reason": "Direct statement."
+        }
+      ],
+      "review_scope": "selected_target_components_only",
+      "annotation_status": "user_confirmed_after_assisted_review",
+      "human_reviewed": true,
+      "human_review_note": "User confirmed all three proposed labels after seeing the claim, saved-source evidence, explanations and overlap caveat in chat. AI-assisted review; not independent annotation.",
+      "human_reviewed_at_utc": "2026-11-27T18:40:27.759403+00:00"
+    },
+    {
+      "example_id": "test_00983",
+      "claim": "Hamilton's last Grey Cup win was in 2021 when the Winnipeg Blue Bombers defeated the Hamilton Tiger-Cats 33-25 in overtime at Tim Hortons Field in Hamilton.",
+      "source_sha256": "df7f6d37fd3a7e5f71e1ba68a2254005d38db366bc958ea77162f4eb92ed06b9",
+      "source_characters": 7385,
+      "reference_parts": [
+        {
+          "text": "Hamilton won the Grey Cup in 2021.",
+          "label": "contradicted",
+          "mismatch_types": [
+            "entity",
+            "temporal"
+          ],
+          "evidence_quote": "|2021||Winnipeg Blue Bombers (12)||33-25||Hamilton Tiger-Cats|",
+          "reason": "The table explicitly identifies Winnipeg as champion and Hamilton as runner-up."
+        },
+        {
+          "text": "Winnipeg defeated Hamilton 33-25 in the 2021 Grey Cup.",
+          "label": "supported",
+          "mismatch_types": [],
+          "evidence_quote": "|2021||Winnipeg Blue Bombers (12)||33-25||Hamilton Tiger-Cats|",
+          "reason": "The year, winner, runner-up and score are explicit table fields. Model alignments containing overtime are contextual target matches only: the saved table does not independently establish overtime."
+        }
+      ],
+      "review_scope": "selected_target_components_only",
+      "annotation_status": "user_confirmed_after_assisted_review",
+      "human_reviewed": true,
+      "human_review_note": "User confirmed both proposed labels after seeing the claim, saved-source table evidence and review-scope explanation in chat. AI-assisted review; not independent annotation.",
+      "human_reviewed_at_utc": "2026-11-27T18:41:40.791037+00:00"
+    },
+    {
+      "example_id": "test_01032",
+      "claim": "If you are referring to the French thriller-romance series created and written by Guillaume Nicloux, it was released on Netflix on December 19, 2019.",
+      "source_sha256": "0181bd70ba312c54679fbda80b9cdd1e6a941fa3bf0b88d5de5b13e7f401c809",
+      "source_characters": 2843,
+      "reference_parts": [
+        {
+          "text": "Twice Upon a Time is a French series created by Guillaume Nicloux.",
+          "label": "supported",
+          "mismatch_types": [],
+          "evidence_quote": "|Created by||Guillaume Nicloux|",
+          "reason": "The creator is explicit; the title and country are established by the surrounding source."
+        },
+        {
+          "text": "Guillaume Nicloux contributed to writing Twice Upon a Time.",
+          "label": "supported",
+          "mismatch_types": [],
+          "evidence_quote": "|Written by|| Guillaume Nicloux |",
+          "reason": "The source lists Nicloux with a co-writer. The claim does not state he was the only writer."
+        },
+        {
+          "text": "Twice Upon a Time was released on Netflix on December 19, 2019.",
+          "label": "supported",
+          "mismatch_types": [],
+          "evidence_quote": "It was released in the United States on Netflix on 19 December 2019.",
+          "reason": "The date and platform are supported for the US release. No worldwide-release interpretation is assumed."
+        }
+      ],
+      "review_scope": "selected_target_components_only",
+      "annotation_status": "user_confirmed_after_assisted_review",
+      "human_reviewed": true,
+      "human_review_note": "User confirmed all three proposed supported labels after seeing saved-source evidence, co-writer qualification and US-release scope in chat. AI-assisted review; not independent annotation.",
+      "human_reviewed_at_utc": "2026-11-27T18:42:02.903610+00:00"
+    },
+    {
+      "example_id": "test_00471",
+      "claim": "Washing machines account for a quarter of domestic wastewater, so reusing this water can save a lot of water.",
+      "source_sha256": "9180fc2ee9a74db18ee3bea9582b2ff8fe58908ce3aa7db8a51ddcf8c673afd0",
+      "source_characters": 3010,
+      "reference_parts": [
+        {
+          "text": "Washing machines account for a quarter of domestic wastewater.",
+          "label": "unsupported",
+          "mismatch_types": [
+            "numerical",
+            "scope"
+          ],
+          "evidence_quote": "One wash cycle in a washing machine can easily take up about 30% of the total water consumed in one house per day.",
+          "reason": "The source measures household water consumed, not the share of wastewater; 30% versus 25% is not a direct numerical contradiction because denominators differ."
+        },
+        {
+          "text": "Reusing washing-machine water can substantially reduce fresh-water requirements.",
+          "label": "supported",
+          "mismatch_types": [],
+          "evidence_quote": "By using this system, we (a family of two) have been able to offset most of our flushing requirements.",
+          "reason": "The source gives a concrete water-reuse example. This does not imply all households have the same savings."
+        }
+      ],
+      "review_scope": "selected_target_components_only",
+      "annotation_status": "user_confirmed_after_assisted_review",
+      "human_reviewed": true,
+      "human_review_note": "User confirmed both proposed labels after seeing saved-source evidence and the distinction between household water consumed and wastewater in chat. AI-assisted review; not independent annotation.",
+      "human_reviewed_at_utc": "2026-11-27T18:43:06.323820+00:00"
+    },
+    {
+      "example_id": "test_00958",
+      "claim": "Precision is the accuracy of a measurement or prediction, and can be calculated by subtracting the lowest measured value from the highest measured value.",
+      "source_sha256": "c66b0db6e9f2bae22bb3129a15e421db2be63563863c505b6457a615ecb73c9d",
+      "source_characters": 9731,
+      "reference_parts": [
+        {
+          "text": "Measurement precision is the same as measurement accuracy.",
+          "label": "contradicted",
+          "mismatch_types": [
+            "conceptual_relation"
+          ],
+          "evidence_quote": "Precision is not the same as accuracy. Accuracy measures how close experimental values come to the true or theoretical value, while precision measures how close the measured values are to each other.",
+          "reason": "The source explicitly distinguishes the concepts. This is an additional relation category, not relabeled as a number error."
+        },
+        {
+          "text": "A precision measure can be calculated by subtracting the lowest measured value from the highest.",
+          "label": "supported",
+          "mismatch_types": [],
+          "evidence_quote": "The range of a set of data is the difference between the highest and lowest measurements. Just subtract one from the other.",
+          "reason": "The article permits reporting range as a precision measure; it does not call range the only precision measure."
+        }
+      ],
+      "review_scope": "selected_target_components_only",
+      "annotation_status": "user_confirmed_after_assisted_review",
+      "human_reviewed": true,
+      "human_review_note": "User confirmed both proposed labels after seeing the saved-source distinction between precision and accuracy and its allowance of range as a precision measure. AI-assisted review; not independent annotation.",
+      "human_reviewed_at_utc": "2026-11-27T18:43:44.337358+00:00"
+    },
+    {
+      "example_id": "test_00252",
+      "claim": "They are 33 cm (13 in) in height and 43 cm (17 in) in length and have an average lifespan of 6.5 years.",
+      "source_sha256": "287cbc7f30da6f7f98804dc653d35ac53ccd9d004cb91bd1adef9b37fd9639f1",
+      "source_characters": 10193,
+      "reference_parts": [
+        {
+          "text": "Little penguins are 43 cm (17 inches) in length.",
+          "label": "unsupported",
+          "mismatch_types": [
+            "numerical"
+          ],
+          "evidence_quote": "Eudyptula species typically grow to between 30 and 33 cm (12 and 13 in) tall and on average weigh 1.5 kg (3.3 lb).",
+          "reason": "The saved article gives height and weight, but does not establish the claimed length. Height is not treated as a conflicting length."
+        },
+        {
+          "text": "Little penguins have an average lifespan of 6.5 years.",
+          "label": "supported",
+          "mismatch_types": [],
+          "evidence_quote": "The average for the species is 6.5 years, but flipper ringing experiments show that in very exceptional cases they may live up to 25 years in captivity.",
+          "reason": "The average is explicitly stated and distinguished from an exceptional maximum."
+        }
+      ],
+      "review_scope": "selected_target_components_only",
+      "annotation_status": "user_confirmed_after_assisted_review",
+      "human_reviewed": true,
+      "human_review_note": "User confirmed both proposed labels after seeing the saved-source evidence and height-versus-length distinction in chat. AI-assisted review; not independent annotation.",
+      "human_reviewed_at_utc": "2026-11-27T18:47:48.248859+00:00"
+    }
+  ],
+  "alignment_note": "References are selected targets, and model components may contain extra content. Contextual mappings are recorded explicitly; no span-level equivalence claimed. Structure was reviewed again after prediction inspection."
+}

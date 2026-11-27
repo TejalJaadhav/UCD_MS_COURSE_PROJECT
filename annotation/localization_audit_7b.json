@@ -1,0 +1,79 @@
+{
+  "worksheet": "annotation/component_matching_7b_before_verification.json",
+  "provenance": "Assistant-completed source review; no independent human review claimed.",
+  "prediction_reviews": [
+    {
+      "example_id": "test_01039",
+      "prediction_number": 1,
+      "text": "Several artists have covered it.",
+      "predicted_label": "unsupported",
+      "reference_label": "unsupported",
+      "source_quote": "10M views 13 years ago The official video for Joe Cocker - You Can Leave Your Hat On. Listen to Joe Cocker: https://lnk.to/ListenJoeCocker Show more",
+      "reason": "The complete saved snippet establishes only Joe Cocker, not several distinct artists.",
+      "review_status": "assistant_reviewed"
+    },
+    {
+      "example_id": "test_01039",
+      "prediction_number": 3,
+      "text": "Tom Jones has covered it.",
+      "predicted_label": "contradicted",
+      "reference_label": "unsupported",
+      "reason": "The complete saved snippet names Joe Cocker only; silence about Tom Jones is insufficient evidence, not direct conflict.",
+      "review_status": "assistant_reviewed"
+    },
+    {
+      "example_id": "test_00180",
+      "prediction_number": 2,
+      "text": "Some argue that gun ownership does not make us safer.",
+      "predicted_label": "contradicted",
+      "reference_label": "supported",
+      "reason": "Retain the existing user-reviewed source-relative reference label; this is an attributed argument, not an unconditional factual claim.",
+      "review_status": "assistant_reviewed"
+    },
+    {
+      "example_id": "test_00952",
+      "prediction_number": 3,
+      "text": "The different feelings can help people relax.",
+      "predicted_label": "unsupported",
+      "reference_label": "unsupported",
+      "reason": "The source does not establish that the armrest/pillow feeling difference causes relaxation. Contextual reading of the generated fragment; confidence limited by source interpretation.",
+      "review_status": "assistant_reviewed",
+      "interpretation_sensitive": true
+    }
+  ],
+  "alignment_sensitivity": [
+    {
+      "example_id": "test_00154",
+      "reference_number": 1,
+      "strict_match": false,
+      "reason": "Fragment has no explicit recommendation predicate; accepted only with original claim context."
+    },
+    {
+      "example_id": "test_00900",
+      "reference_number": 1,
+      "strict_match": false,
+      "reason": "Recommendation and learning possibility are separate; attributed causal linkage is reconstructed from original claim."
+    },
+    {
+      "example_id": "test_00952",
+      "reference_number": 1,
+      "strict_match": false,
+      "reason": "Separate different-feeling statements do not explicitly retain the armrest-versus-pillow comparison."
+    },
+    {
+      "example_id": "test_00952",
+      "reference_number": 2,
+      "strict_match": false,
+      "reason": "Armrest reference and causal connection are supplied by original claim context."
+    },
+    {
+      "example_id": "test_00378",
+      "reference_number": 1,
+      "strict_match": false,
+      "reason": "Original viewpoint attribution is not explicit in all decomposed statements."
+    }
+  ],
+  "note": "Strict sensitivity treats these linked groups as incomplete alignment, without changing source labels or erasing the original contextual analysis.",
+  "prediction_level_definition": "Positive predictions are generated components labeled unsupported or contradicted. Each such prediction is independently reviewed in source/claim context; correct binary error detection need not have the correct error subtype. This precision is separate from reference-unit recall.",
+  "prediction_level_note": "All four error-labeled 7B outputs are covered. The supported outputs have not all received independent prediction-level source labels; this is not full three-class component accuracy."
+}

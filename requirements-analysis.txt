@@ -1,0 +1,2 @@
+# Optional dependency for python -m src.evaluation.build_final_results
+matplotlib>=3.8,<4

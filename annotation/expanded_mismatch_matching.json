@@ -1,0 +1,1385 @@
+{
+  "3b": {
+    "parent_report": "components_test_20261112T201634_714712Z.json",
+    "parent_report_sha256": "18004644689291ec0edec9cae4c07858ef255bf0f3547afcfd5f761956b0f3e0",
+    "rows": [
+      {
+        "example_id": "test_00398",
+        "output_status": "component_scored",
+        "reference_parts": [
+          {
+            "reference_number": 1,
+            "text": "Iga Swiatek has 10,585 WTA ranking points.",
+            "label": "contradicted",
+            "mismatch_types": [
+              "numerical"
+            ],
+            "matched_prediction_numbers": [
+              1
+            ],
+            "match_status": "matched",
+            "review_note": "Target-level match in original claim context; does not establish preservation of all qualifiers or extra content."
+          },
+          {
+            "reference_number": 2,
+            "text": "Iga Swiatek is ranked No. 1 in the WTA rankings.",
+            "label": "supported",
+            "mismatch_types": [],
+            "matched_prediction_numbers": [
+              2
+            ],
+            "match_status": "matched",
+            "review_note": "Target-level match in original claim context; does not establish preservation of all qualifiers or extra content."
+          }
+        ],
+        "predicted_parts": [
+          {
+            "prediction_number": 1,
+            "text": "She has accumulated 10,585 points.",
+            "label": "supported"
+          },
+          {
+            "prediction_number": 2,
+            "text": "She holds the No. 1 position in the Women's Tennis Association rankings.",
+            "label": "supported"
+          }
+        ],
+        "matching_reviewed": true,
+        "matching_review_method": "Assistant-reviewed targeted semantic matches; no independent human review.",
+        "review_scope": "selected_target_components_only"
+      },
+      {
+        "example_id": "test_00963",
+        "output_status": "component_scored",
+        "reference_parts": [
+          {
+            "reference_number": 1,
+            "text": "The total number of high schools in Tracy is six.",
+            "label": "unsupported",
+            "mismatch_types": [
+              "numerical",
+              "unsupported_addition"
+            ],
+            "matched_prediction_numbers": [
+              1
+            ],
+            "match_status": "matched",
+            "review_note": "Target-level match in original claim context; does not establish preservation of all qualifiers or extra content."
+          }
+        ],
+        "predicted_parts": [
+          {
+            "prediction_number": 1,
+            "text": "This brings the total number of high schools in Tracy to six.",
+            "label": "contradicted"
+          }
+        ],
+        "matching_reviewed": true,
+        "matching_review_method": "Assistant-reviewed targeted semantic matches; no independent human review.",
+        "review_scope": "selected_target_components_only"
+      },
+      {
+        "example_id": "test_00995",
+        "output_status": "component_scored",
+        "reference_parts": [
+          {
+            "reference_number": 1,
+            "text": "The 2022 Great New York State Fair takes place from August 24 to September 5.",
+            "label": "unsupported",
+            "mismatch_types": [
+              "temporal"
+            ],
+            "matched_prediction_numbers": [
+              1
+            ],
+            "match_status": "matched",
+            "review_note": "Target-level match in original claim context; does not establish preservation of all qualifiers or extra content."
+          }
+        ],
+        "predicted_parts": [
+          {
+            "prediction_number": 1,
+            "text": "The 2022 Great New York State Fair will take place from August 24 to September 5.",
+            "label": "supported"
+          }
+        ],
+        "matching_reviewed": true,
+        "matching_review_method": "Assistant-reviewed targeted semantic matches; no independent human review.",
+        "review_scope": "selected_target_components_only"
+      },
+      {
+        "example_id": "test_01088",
+        "output_status": "fallback",
+        "reference_parts": [
+          {
+            "reference_number": 1,
+            "text": "The Black Eyed Peas originally recorded Let's Get This Party Started.",
+            "label": "unsupported",
+            "mismatch_types": [
+              "entity"
+            ],
+            "matched_prediction_numbers": [],
+            "match_status": "no_component_output",
+            "review_note": "Target-level match in original claim context; does not establish preservation of all qualifiers or extra content."
+          },
+          {
+            "reference_number": 2,
+            "text": "The claimed recording was released in 2003.",
+            "label": "unsupported",
+            "mismatch_types": [
+              "temporal"
+            ],
+            "matched_prediction_numbers": [],
+            "match_status": "no_component_output",
+            "review_note": "Target-level match in original claim context; does not establish preservation of all qualifiers or extra content."
+          },
+          {
+            "reference_number": 3,
+            "text": "The claimed recording was the lead single from Elephunk.",
+            "label": "unsupported",
+            "mismatch_types": [
+              "entity",
+              "unsupported_addition"
+            ],
+            "matched_prediction_numbers": [],
+            "match_status": "no_component_output",
+            "review_note": "Target-level match in original claim context; does not establish preservation of all qualifiers or extra content."
+          }
+        ],
+        "predicted_parts": [],
+        "matching_reviewed": true,
+        "matching_review_method": "Assistant-reviewed targeted semantic matches; no independent human review.",
+        "review_scope": "selected_target_components_only"
+      },
+      {
+        "example_id": "test_00887",
+        "output_status": "component_scored",
+        "reference_parts": [
+          {
+            "reference_number": 1,
+            "text": "A fiscal year can begin and end in any month except December.",
+            "label": "unsupported",
+            "mismatch_types": [
+              "scope"
+            ],
+            "matched_prediction_numbers": [
+              1
+            ],
+            "match_status": "matched",
+            "review_note": "Target-level match in original claim context; does not establish preservation of all qualifiers or extra content."
+          },
+          {
+            "reference_number": 2,
+            "text": "December is excluded as a possible fiscal-year boundary month.",
+            "label": "unsupported",
+            "mismatch_types": [
+              "qualifier",
+              "temporal"
+            ],
+            "matched_prediction_numbers": [
+              1
+            ],
+            "match_status": "matched",
+            "review_note": "Target-level match in original claim context; does not establish preservation of all qualifiers or extra content."
+          },
+          {
+            "reference_number": 3,
+            "text": "Fiscal years are used for accounting and preparing annual financial statements.",
+            "label": "supported",
+            "mismatch_types": [],
+            "matched_prediction_numbers": [
+              2,
+              3
+            ],
+            "match_status": "matched",
+            "review_note": "Target-level match in original claim context; does not establish preservation of all qualifiers or extra content."
+          }
+        ],
+        "predicted_parts": [
+          {
+            "prediction_number": 1,
+            "text": "The fiscal year can begin and end on any month except December.",
+            "label": "supported"
+          },
+          {
+            "prediction_number": 2,
+            "text": "The fiscal year is used for accounting purposes.",
+            "label": "supported"
+          },
+          {
+            "prediction_number": 3,
+            "text": "The fiscal year is used to prepare financial statements.",
+            "label": "supported"
+          }
+        ],
+        "matching_reviewed": true,
+        "matching_review_method": "Assistant-reviewed targeted semantic matches; no independent human review.",
+        "review_scope": "selected_target_components_only"
+      },
+      {
+        "example_id": "test_00983",
+        "output_status": "component_scored",
+        "reference_parts": [
+          {
+            "reference_number": 1,
+            "text": "Hamilton won the Grey Cup in 2021.",
+            "label": "contradicted",
+            "mismatch_types": [
+              "entity",
+              "temporal"
+            ],
+            "matched_prediction_numbers": [
+              1
+            ],
+            "match_status": "matched",
+            "review_note": "Target-level match in original claim context; does not establish preservation of all qualifiers or extra content."
+          },
+          {
+            "reference_number": 2,
+            "text": "Winnipeg defeated Hamilton 33-25 in the 2021 Grey Cup.",
+            "label": "supported",
+            "mismatch_types": [],
+            "matched_prediction_numbers": [
+              2,
+              3
+            ],
+            "match_status": "matched",
+            "review_note": "Target-level match in original claim context; does not establish preservation of all qualifiers or extra content."
+          }
+        ],
+        "predicted_parts": [
+          {
+            "prediction_number": 1,
+            "text": "Hamilton's last Grey Cup win was in 2021.",
+            "label": "supported"
+          },
+          {
+            "prediction_number": 2,
+            "text": "Winnipeg Blue Bombers defeated Hamilton Tiger-Cats in 2021.",
+            "label": "supported"
+          },
+          {
+            "prediction_number": 3,
+            "text": "The score was 33-25 in overtime.",
+            "label": "supported"
+          },
+          {
+            "prediction_number": 4,
+            "text": "The game was played at Tim Hortons Field in Hamilton.",
+            "label": "supported"
+          }
+        ],
+        "matching_reviewed": true,
+        "matching_review_method": "Assistant-reviewed targeted semantic matches; no independent human review.",
+        "review_scope": "selected_target_components_only"
+      },
+      {
+        "example_id": "test_01032",
+        "output_status": "fallback",
+        "reference_parts": [
+          {
+            "reference_number": 1,
+            "text": "Twice Upon a Time is a French series created by Guillaume Nicloux.",
+            "label": "supported",
+            "mismatch_types": [],
+            "matched_prediction_numbers": [],
+            "match_status": "no_component_output",
+            "review_note": "Target-level match in original claim context; does not establish preservation of all qualifiers or extra content."
+          },
+          {
+            "reference_number": 2,
+            "text": "Guillaume Nicloux contributed to writing Twice Upon a Time.",
+            "label": "supported",
+            "mismatch_types": [],
+            "matched_prediction_numbers": [],
+            "match_status": "no_component_output",
+            "review_note": "Target-level match in original claim context; does not establish preservation of all qualifiers or extra content."
+          },
+          {
+            "reference_number": 3,
+            "text": "Twice Upon a Time was released on Netflix on December 19, 2019.",
+            "label": "supported",
+            "mismatch_types": [],
+            "matched_prediction_numbers": [],
+            "match_status": "no_component_output",
+            "review_note": "Target-level match in original claim context; does not establish preservation of all qualifiers or extra content."
+          }
+        ],
+        "predicted_parts": [],
+        "matching_reviewed": true,
+        "matching_review_method": "Assistant-reviewed targeted semantic matches; no independent human review.",
+        "review_scope": "selected_target_components_only"
+      },
+      {
+        "example_id": "test_00471",
+        "output_status": "component_scored",
+        "reference_parts": [
+          {
+            "reference_number": 1,
+            "text": "Washing machines account for a quarter of domestic wastewater.",
+            "label": "unsupported",
+            "mismatch_types": [
+              "numerical",
+              "scope"
+            ],
+            "matched_prediction_numbers": [
+              1
+            ],
+            "match_status": "matched",
+            "review_note": "Target-level match in original claim context; does not establish preservation of all qualifiers or extra content."
+          },
+          {
+            "reference_number": 2,
+            "text": "Reusing washing-machine water can substantially reduce fresh-water requirements.",
+            "label": "supported",
+            "mismatch_types": [],
+            "matched_prediction_numbers": [
+              2
+            ],
+            "match_status": "matched",
+            "review_note": "Target-level match in original claim context; does not establish preservation of all qualifiers or extra content."
+          }
+        ],
+        "predicted_parts": [
+          {
+            "prediction_number": 1,
+            "text": "Washing machines account for a quarter of domestic wastewater.",
+            "label": "supported"
+          },
+          {
+            "prediction_number": 2,
+            "text": "Reusing this water can save a lot of water.",
+            "label": "supported"
+          }
+        ],
+        "matching_reviewed": true,
+        "matching_review_method": "Assistant-reviewed targeted semantic matches; no independent human review.",
+        "review_scope": "selected_target_components_only"
+      },
+      {
+        "example_id": "test_00958",
+        "output_status": "fallback",
+        "reference_parts": [
+          {
+            "reference_number": 1,
+            "text": "Measurement precision is the same as measurement accuracy.",
+            "label": "contradicted",
+            "mismatch_types": [
+              "conceptual_relation"
+            ],
+            "matched_prediction_numbers": [],
+            "match_status": "no_component_output",
+            "review_note": "Target-level match in original claim context; does not establish preservation of all qualifiers or extra content."
+          },
+          {
+            "reference_number": 2,
+            "text": "A precision measure can be calculated by subtracting the lowest measured value from the highest.",
+            "label": "supported",
+            "mismatch_types": [],
+            "matched_prediction_numbers": [],
+            "match_status": "no_component_output",
+            "review_note": "Target-level match in original claim context; does not establish preservation of all qualifiers or extra content."
+          }
+        ],
+        "predicted_parts": [],
+        "matching_reviewed": true,
+        "matching_review_method": "Assistant-reviewed targeted semantic matches; no independent human review.",
+        "review_scope": "selected_target_components_only"
+      },
+      {
+        "example_id": "test_00252",
+        "output_status": "fallback",
+        "reference_parts": [
+          {
+            "reference_number": 1,
+            "text": "Little penguins are 43 cm (17 inches) in length.",
+            "label": "unsupported",
+            "mismatch_types": [
+              "numerical"
+            ],
+            "matched_prediction_numbers": [],
+            "match_status": "no_component_output",
+            "review_note": "Target-level match in original claim context; does not establish preservation of all qualifiers or extra content."
+          },
+          {
+            "reference_number": 2,
+            "text": "Little penguins have an average lifespan of 6.5 years.",
+            "label": "supported",
+            "mismatch_types": [],
+            "matched_prediction_numbers": [],
+            "match_status": "no_component_output",
+            "review_note": "Target-level match in original claim context; does not establish preservation of all qualifiers or extra content."
+          }
+        ],
+        "predicted_parts": [],
+        "matching_reviewed": true,
+        "matching_review_method": "Assistant-reviewed targeted semantic matches; no independent human review.",
+        "review_scope": "selected_target_components_only"
+      }
+    ]
+  },
+  "7b": {
+    "parent_report": "components_verified_test_20261126T014726_177544Z_before_verification.json",
+    "parent_report_sha256": "d204e29689fc0b124c39a850f24ea22b3403f17e9a05f1a8be9774503e90b664",
+    "rows": [
+      {
+        "example_id": "test_00398",
+        "output_status": "component_scored",
+        "reference_parts": [
+          {
+            "reference_number": 1,
+            "text": "Iga Swiatek has 10,585 WTA ranking points.",
+            "label": "contradicted",
+            "mismatch_types": [
+              "numerical"
+            ],
+            "matched_prediction_numbers": [
+              1
+            ],
+            "match_status": "matched",
+            "review_note": "Target-level match in original claim context; does not establish preservation of all qualifiers or extra content."
+          },
+          {
+            "reference_number": 2,
+            "text": "Iga Swiatek is ranked No. 1 in the WTA rankings.",
+            "label": "supported",
+            "mismatch_types": [],
+            "matched_prediction_numbers": [
+              2
+            ],
+            "match_status": "matched",
+            "review_note": "Target-level match in original claim context; does not establish preservation of all qualifiers or extra content."
+          }
+        ],
+        "predicted_parts": [
+          {
+            "prediction_number": 1,
+            "text": "She has accumulated 10,585 points.",
+            "label": "contradicted"
+          },
+          {
+            "prediction_number": 2,
+            "text": "She holds the No. 1 position in the Women's Tennis Association rankings.",
+            "label": "supported"
+          }
+        ],
+        "matching_reviewed": true,
+        "matching_review_method": "Assistant-reviewed targeted semantic matches; no independent human review.",
+        "review_scope": "selected_target_components_only"
+      },
+      {
+        "example_id": "test_00963",
+        "output_status": "component_scored",
+        "reference_parts": [
+          {
+            "reference_number": 1,
+            "text": "The total number of high schools in Tracy is six.",
+            "label": "unsupported",
+            "mismatch_types": [
+              "numerical",
+              "unsupported_addition"
+            ],
+            "matched_prediction_numbers": [
+              1
+            ],
+            "match_status": "matched",
+            "review_note": "Target-level match in original claim context; does not establish preservation of all qualifiers or extra content."
+          }
+        ],
+        "predicted_parts": [
+          {
+            "prediction_number": 1,
+            "text": "This brings the total number of high schools in Tracy to six.",
+            "label": "unsupported"
+          }
+        ],
+        "matching_reviewed": true,
+        "matching_review_method": "Assistant-reviewed targeted semantic matches; no independent human review.",
+        "review_scope": "selected_target_components_only"
+      },
+      {
+        "example_id": "test_00995",
+        "output_status": "component_scored",
+        "reference_parts": [
+          {
+            "reference_number": 1,
+            "text": "The 2022 Great New York State Fair takes place from August 24 to September 5.",
+            "label": "unsupported",
+            "mismatch_types": [
+              "temporal"
+            ],
+            "matched_prediction_numbers": [
+              1
+            ],
+            "match_status": "matched",
+            "review_note": "Target-level match in original claim context; does not establish preservation of all qualifiers or extra content."
+          }
+        ],
+        "predicted_parts": [
+          {
+            "prediction_number": 1,
+            "text": "The 2022 Great New York State Fair will take place from August 24 to September 5.",
+            "label": "unsupported"
+          }
+        ],
+        "matching_reviewed": true,
+        "matching_review_method": "Assistant-reviewed targeted semantic matches; no independent human review.",
+        "review_scope": "selected_target_components_only"
+      },
+      {
+        "example_id": "test_01088",
+        "output_status": "component_scored",
+        "reference_parts": [
+          {
+            "reference_number": 1,
+            "text": "The Black Eyed Peas originally recorded Let's Get This Party Started.",
+            "label": "unsupported",
+            "mismatch_types": [
+              "entity"
+            ],
+            "matched_prediction_numbers": [
+              1
+            ],
+            "match_status": "matched",
+            "review_note": "Target-level match in original claim context; does not establish preservation of all qualifiers or extra content."
+          },
+          {
+            "reference_number": 2,
+            "text": "The claimed recording was released in 2003.",
+            "label": "unsupported",
+            "mismatch_types": [
+              "temporal"
+            ],
+            "matched_prediction_numbers": [
+              3
+            ],
+            "match_status": "matched",
+            "review_note": "Target-level match in original claim context; does not establish preservation of all qualifiers or extra content."
+          },
+          {
+            "reference_number": 3,
+            "text": "The claimed recording was the lead single from Elephunk.",
+            "label": "unsupported",
+            "mismatch_types": [
+              "entity",
+              "unsupported_addition"
+            ],
+            "matched_prediction_numbers": [
+              4
+            ],
+            "match_status": "matched",
+            "review_note": "Target-level match in original claim context; does not establish preservation of all qualifiers or extra content."
+          }
+        ],
+        "predicted_parts": [
+          {
+            "prediction_number": 1,
+            "text": "\"Let's Get This Party Started\" was originally recorded by The Black Eyed Peas.",
+            "label": "contradicted"
+          },
+          {
+            "prediction_number": 2,
+            "text": "The Black Eyed Peas is an American band.",
+            "label": "unsupported"
+          },
+          {
+            "prediction_number": 3,
+            "text": "\"Let's Get This Party Started\" was released in 2003.",
+            "label": "contradicted"
+          },
+          {
+            "prediction_number": 4,
+            "text": "\"Let's Get This Party Started\" is the lead single from the album Elephunk.",
+            "label": "unsupported"
+          }
+        ],
+        "matching_reviewed": true,
+        "matching_review_method": "Assistant-reviewed targeted semantic matches; no independent human review.",
+        "review_scope": "selected_target_components_only"
+      },
+      {
+        "example_id": "test_00887",
+        "output_status": "component_scored",
+        "reference_parts": [
+          {
+            "reference_number": 1,
+            "text": "A fiscal year can begin and end in any month except December.",
+            "label": "unsupported",
+            "mismatch_types": [
+              "scope"
+            ],
+            "matched_prediction_numbers": [
+              1,
+              2
+            ],
+            "match_status": "matched",
+            "review_note": "Target-level match in original claim context; does not establish preservation of all qualifiers or extra content."
+          },
+          {
+            "reference_number": 2,
+            "text": "December is excluded as a possible fiscal-year boundary month.",
+            "label": "unsupported",
+            "mismatch_types": [
+              "qualifier",
+              "temporal"
+            ],
+            "matched_prediction_numbers": [
+              1,
+              2
+            ],
+            "match_status": "matched",
+            "review_note": "Target-level match in original claim context; does not establish preservation of all qualifiers or extra content."
+          },
+          {
+            "reference_number": 3,
+            "text": "Fiscal years are used for accounting and preparing annual financial statements.",
+            "label": "supported",
+            "mismatch_types": [],
+            "matched_prediction_numbers": [
+              3,
+              4
+            ],
+            "match_status": "matched",
+            "review_note": "Target-level match in original claim context; does not establish preservation of all qualifiers or extra content."
+          }
+        ],
+        "predicted_parts": [
+          {
+            "prediction_number": 1,
+            "text": "The fiscal year can begin on any month except December.",
+            "label": "contradicted"
+          },
+          {
+            "prediction_number": 2,
+            "text": "The fiscal year can end on any month except December.",
+            "label": "contradicted"
+          },
+          {
+            "prediction_number": 3,
+            "text": "The fiscal year is used for accounting purposes.",
+            "label": "supported"
+          },
+          {
+            "prediction_number": 4,
+            "text": "The fiscal year is used to prepare financial statements.",
+            "label": "supported"
+          }
+        ],
+        "matching_reviewed": true,
+        "matching_review_method": "Assistant-reviewed targeted semantic matches; no independent human review.",
+        "review_scope": "selected_target_components_only"
+      },
+      {
+        "example_id": "test_00983",
+        "output_status": "component_scored",
+        "reference_parts": [
+          {
+            "reference_number": 1,
+            "text": "Hamilton won the Grey Cup in 2021.",
+            "label": "contradicted",
+            "mismatch_types": [
+              "entity",
+              "temporal"
+            ],
+            "matched_prediction_numbers": [
+              1
+            ],
+            "match_status": "matched",
+            "review_note": "Target-level match in original claim context; does not establish preservation of all qualifiers or extra content."
+          },
+          {
+            "reference_number": 2,
+            "text": "Winnipeg defeated Hamilton 33-25 in the 2021 Grey Cup.",
+            "label": "supported",
+            "mismatch_types": [],
+            "matched_prediction_numbers": [
+              2
+            ],
+            "match_status": "matched",
+            "review_note": "Target-level match in original claim context; does not establish preservation of all qualifiers or extra content."
+          }
+        ],
+        "predicted_parts": [
+          {
+            "prediction_number": 1,
+            "text": "Hamilton's last Grey Cup win was in 2021.",
+            "label": "supported"
+          },
+          {
+            "prediction_number": 2,
+            "text": "The Winnipeg Blue Bombers defeated the Hamilton Tiger-Cats 33-25 in overtime.",
+            "label": "supported"
+          },
+          {
+            "prediction_number": 3,
+            "text": "The game was played at Tim Hortons Field in Hamilton.",
+            "label": "contradicted"
+          }
+        ],
+        "matching_reviewed": true,
+        "matching_review_method": "Assistant-reviewed targeted semantic matches; no independent human review.",
+        "review_scope": "selected_target_components_only"
+      },
+      {
+        "example_id": "test_01032",
+        "output_status": "fallback",
+        "reference_parts": [
+          {
+            "reference_number": 1,
+            "text": "Twice Upon a Time is a French series created by Guillaume Nicloux.",
+            "label": "supported",
+            "mismatch_types": [],
+            "matched_prediction_numbers": [],
+            "match_status": "no_component_output",
+            "review_note": "Target-level match in original claim context; does not establish preservation of all qualifiers or extra content."
+          },
+          {
+            "reference_number": 2,
+            "text": "Guillaume Nicloux contributed to writing Twice Upon a Time.",
+            "label": "supported",
+            "mismatch_types": [],
+            "matched_prediction_numbers": [],
+            "match_status": "no_component_output",
+            "review_note": "Target-level match in original claim context; does not establish preservation of all qualifiers or extra content."
+          },
+          {
+            "reference_number": 3,
+            "text": "Twice Upon a Time was released on Netflix on December 19, 2019.",
+            "label": "supported",
+            "mismatch_types": [],
+            "matched_prediction_numbers": [],
+            "match_status": "no_component_output",
+            "review_note": "Target-level match in original claim context; does not establish preservation of all qualifiers or extra content."
+          }
+        ],
+        "predicted_parts": [],
+        "matching_reviewed": true,
+        "matching_review_method": "Assistant-reviewed targeted semantic matches; no independent human review.",
+        "review_scope": "selected_target_components_only"
+      },
+      {
+        "example_id": "test_00471",
+        "output_status": "component_scored",
+        "reference_parts": [
+          {
+            "reference_number": 1,
+            "text": "Washing machines account for a quarter of domestic wastewater.",
+            "label": "unsupported",
+            "mismatch_types": [
+              "numerical",
+              "scope"
+            ],
+            "matched_prediction_numbers": [
+              1
+            ],
+            "match_status": "matched",
+            "review_note": "Target-level match in original claim context; does not establish preservation of all qualifiers or extra content."
+          },
+          {
+            "reference_number": 2,
+            "text": "Reusing washing-machine water can substantially reduce fresh-water requirements.",
+            "label": "supported",
+            "mismatch_types": [],
+            "matched_prediction_numbers": [
+              2
+            ],
+            "match_status": "matched",
+            "review_note": "Target-level match in original claim context; does not establish preservation of all qualifiers or extra content."
+          }
+        ],
+        "predicted_parts": [
+          {
+            "prediction_number": 1,
+            "text": "Washing machines account for a quarter of domestic wastewater.",
+            "label": "supported"
+          },
+          {
+            "prediction_number": 2,
+            "text": "Reusing this water can save a lot of water.",
+            "label": "supported"
+          }
+        ],
+        "matching_reviewed": true,
+        "matching_review_method": "Assistant-reviewed targeted semantic matches; no independent human review.",
+        "review_scope": "selected_target_components_only"
+      },
+      {
+        "example_id": "test_00958",
+        "output_status": "component_scored",
+        "reference_parts": [
+          {
+            "reference_number": 1,
+            "text": "Measurement precision is the same as measurement accuracy.",
+            "label": "contradicted",
+            "mismatch_types": [
+              "conceptual_relation"
+            ],
+            "matched_prediction_numbers": [
+              1
+            ],
+            "match_status": "matched",
+            "review_note": "Target-level match in original claim context; does not establish preservation of all qualifiers or extra content."
+          },
+          {
+            "reference_number": 2,
+            "text": "A precision measure can be calculated by subtracting the lowest measured value from the highest.",
+            "label": "supported",
+            "mismatch_types": [],
+            "matched_prediction_numbers": [
+              2
+            ],
+            "match_status": "matched",
+            "review_note": "Target-level match in original claim context; does not establish preservation of all qualifiers or extra content."
+          }
+        ],
+        "predicted_parts": [
+          {
+            "prediction_number": 1,
+            "text": "Precision is the accuracy of a measurement or prediction.",
+            "label": "supported"
+          },
+          {
+            "prediction_number": 2,
+            "text": "Precision can be calculated by subtracting the lowest measured value from the highest measured value.",
+            "label": "supported"
+          }
+        ],
+        "matching_reviewed": true,
+        "matching_review_method": "Assistant-reviewed targeted semantic matches; no independent human review.",
+        "review_scope": "selected_target_components_only"
+      },
+      {
+        "example_id": "test_00252",
+        "output_status": "component_scored",
+        "reference_parts": [
+          {
+            "reference_number": 1,
+            "text": "Little penguins are 43 cm (17 inches) in length.",
+            "label": "unsupported",
+            "mismatch_types": [
+              "numerical"
+            ],
+            "matched_prediction_numbers": [
+              2
+            ],
+            "match_status": "matched",
+            "review_note": "Target-level match in original claim context; does not establish preservation of all qualifiers or extra content."
+          },
+          {
+            "reference_number": 2,
+            "text": "Little penguins have an average lifespan of 6.5 years.",
+            "label": "supported",
+            "mismatch_types": [],
+            "matched_prediction_numbers": [
+              3
+            ],
+            "match_status": "matched",
+            "review_note": "Target-level match in original claim context; does not establish preservation of all qualifiers or extra content."
+          }
+        ],
+        "predicted_parts": [
+          {
+            "prediction_number": 1,
+            "text": "They are 33 cm (13 in) in height.",
+            "label": "supported"
+          },
+          {
+            "prediction_number": 2,
+            "text": "They are 43 cm (17 in) in length.",
+            "label": "unsupported"
+          },
+          {
+            "prediction_number": 3,
+            "text": "They have an average lifespan of 6.5 years.",
+            "label": "supported"
+          }
+        ],
+        "matching_reviewed": true,
+        "matching_review_method": "Assistant-reviewed targeted semantic matches; no independent human review.",
+        "review_scope": "selected_target_components_only"
+      }
+    ]
+  },
+  "verified7b": {
+    "parent_report": "components_verified_test_20261126T014726_177544Z.json",
+    "parent_report_sha256": "81ae79a1100cb49c0e1ed1cf3818427023e4f0b2d4bad24c483f1c4febbd2ac5",
+    "rows": [
+      {
+        "example_id": "test_00398",
+        "output_status": "component_scored",
+        "reference_parts": [
+          {
+            "reference_number": 1,
+            "text": "Iga Swiatek has 10,585 WTA ranking points.",
+            "label": "contradicted",
+            "mismatch_types": [
+              "numerical"
+            ],
+            "matched_prediction_numbers": [
+              1
+            ],
+            "match_status": "matched",
+            "review_note": "Target-level match in original claim context; does not establish preservation of all qualifiers or extra content."
+          },
+          {
+            "reference_number": 2,
+            "text": "Iga Swiatek is ranked No. 1 in the WTA rankings.",
+            "label": "supported",
+            "mismatch_types": [],
+            "matched_prediction_numbers": [
+              2
+            ],
+            "match_status": "matched",
+            "review_note": "Target-level match in original claim context; does not establish preservation of all qualifiers or extra content."
+          }
+        ],
+        "predicted_parts": [
+          {
+            "prediction_number": 1,
+            "text": "She has accumulated 10,585 points.",
+            "label": "unsupported"
+          },
+          {
+            "prediction_number": 2,
+            "text": "She holds the No. 1 position in the Women's Tennis Association rankings.",
+            "label": "supported"
+          }
+        ],
+        "matching_reviewed": true,
+        "matching_review_method": "Assistant-reviewed targeted semantic matches; no independent human review.",
+        "review_scope": "selected_target_components_only"
+      },
+      {
+        "example_id": "test_00963",
+        "output_status": "component_scored",
+        "reference_parts": [
+          {
+            "reference_number": 1,
+            "text": "The total number of high schools in Tracy is six.",
+            "label": "unsupported",
+            "mismatch_types": [
+              "numerical",
+              "unsupported_addition"
+            ],
+            "matched_prediction_numbers": [
+              1
+            ],
+            "match_status": "matched",
+            "review_note": "Target-level match in original claim context; does not establish preservation of all qualifiers or extra content."
+          }
+        ],
+        "predicted_parts": [
+          {
+            "prediction_number": 1,
+            "text": "This brings the total number of high schools in Tracy to six.",
+            "label": "unsupported"
+          }
+        ],
+        "matching_reviewed": true,
+        "matching_review_method": "Assistant-reviewed targeted semantic matches; no independent human review.",
+        "review_scope": "selected_target_components_only"
+      },
+      {
+        "example_id": "test_00995",
+        "output_status": "component_scored",
+        "reference_parts": [
+          {
+            "reference_number": 1,
+            "text": "The 2022 Great New York State Fair takes place from August 24 to September 5.",
+            "label": "unsupported",
+            "mismatch_types": [
+              "temporal"
+            ],
+            "matched_prediction_numbers": [
+              1
+            ],
+            "match_status": "matched",
+            "review_note": "Target-level match in original claim context; does not establish preservation of all qualifiers or extra content."
+          }
+        ],
+        "predicted_parts": [
+          {
+            "prediction_number": 1,
+            "text": "The 2022 Great New York State Fair will take place from August 24 to September 5.",
+            "label": "unsupported"
+          }
+        ],
+        "matching_reviewed": true,
+        "matching_review_method": "Assistant-reviewed targeted semantic matches; no independent human review.",
+        "review_scope": "selected_target_components_only"
+      },
+      {
+        "example_id": "test_01088",
+        "output_status": "component_scored",
+        "reference_parts": [
+          {
+            "reference_number": 1,
+            "text": "The Black Eyed Peas originally recorded Let's Get This Party Started.",
+            "label": "unsupported",
+            "mismatch_types": [
+              "entity"
+            ],
+            "matched_prediction_numbers": [
+              1
+            ],
+            "match_status": "matched",
+            "review_note": "Target-level match in original claim context; does not establish preservation of all qualifiers or extra content."
+          },
+          {
+            "reference_number": 2,
+            "text": "The claimed recording was released in 2003.",
+            "label": "unsupported",
+            "mismatch_types": [
+              "temporal"
+            ],
+            "matched_prediction_numbers": [
+              3
+            ],
+            "match_status": "matched",
+            "review_note": "Target-level match in original claim context; does not establish preservation of all qualifiers or extra content."
+          },
+          {
+            "reference_number": 3,
+            "text": "The claimed recording was the lead single from Elephunk.",
+            "label": "unsupported",
+            "mismatch_types": [
+              "entity",
+              "unsupported_addition"
+            ],
+            "matched_prediction_numbers": [
+              4
+            ],
+            "match_status": "matched",
+            "review_note": "Target-level match in original claim context; does not establish preservation of all qualifiers or extra content."
+          }
+        ],
+        "predicted_parts": [
+          {
+            "prediction_number": 1,
+            "text": "\"Let's Get This Party Started\" was originally recorded by The Black Eyed Peas.",
+            "label": "unsupported"
+          },
+          {
+            "prediction_number": 2,
+            "text": "The Black Eyed Peas is an American band.",
+            "label": "unsupported"
+          },
+          {
+            "prediction_number": 3,
+            "text": "\"Let's Get This Party Started\" was released in 2003.",
+            "label": "unsupported"
+          },
+          {
+            "prediction_number": 4,
+            "text": "\"Let's Get This Party Started\" is the lead single from the album Elephunk.",
+            "label": "unsupported"
+          }
+        ],
+        "matching_reviewed": true,
+        "matching_review_method": "Assistant-reviewed targeted semantic matches; no independent human review.",
+        "review_scope": "selected_target_components_only"
+      },
+      {
+        "example_id": "test_00887",
+        "output_status": "component_scored",
+        "reference_parts": [
+          {
+            "reference_number": 1,
+            "text": "A fiscal year can begin and end in any month except December.",
+            "label": "unsupported",
+            "mismatch_types": [
+              "scope"
+            ],
+            "matched_prediction_numbers": [
+              1,
+              2
+            ],
+            "match_status": "matched",
+            "review_note": "Target-level match in original claim context; does not establish preservation of all qualifiers or extra content."
+          },
+          {
+            "reference_number": 2,
+            "text": "December is excluded as a possible fiscal-year boundary month.",
+            "label": "unsupported",
+            "mismatch_types": [
+              "qualifier",
+              "temporal"
+            ],
+            "matched_prediction_numbers": [
+              1,
+              2
+            ],
+            "match_status": "matched",
+            "review_note": "Target-level match in original claim context; does not establish preservation of all qualifiers or extra content."
+          },
+          {
+            "reference_number": 3,
+            "text": "Fiscal years are used for accounting and preparing annual financial statements.",
+            "label": "supported",
+            "mismatch_types": [],
+            "matched_prediction_numbers": [
+              3,
+              4
+            ],
+            "match_status": "matched",
+            "review_note": "Target-level match in original claim context; does not establish preservation of all qualifiers or extra content."
+          }
+        ],
+        "predicted_parts": [
+          {
+            "prediction_number": 1,
+            "text": "The fiscal year can begin on any month except December.",
+            "label": "unsupported"
+          },
+          {
+            "prediction_number": 2,
+            "text": "The fiscal year can end on any month except December.",
+            "label": "unsupported"
+          },
+          {
+            "prediction_number": 3,
+            "text": "The fiscal year is used for accounting purposes.",
+            "label": "supported"
+          },
+          {
+            "prediction_number": 4,
+            "text": "The fiscal year is used to prepare financial statements.",
+            "label": "supported"
+          }
+        ],
+        "matching_reviewed": true,
+        "matching_review_method": "Assistant-reviewed targeted semantic matches; no independent human review.",
+        "review_scope": "selected_target_components_only"
+      },
+      {
+        "example_id": "test_00983",
+        "output_status": "component_scored",
+        "reference_parts": [
+          {
+            "reference_number": 1,
+            "text": "Hamilton won the Grey Cup in 2021.",
+            "label": "contradicted",
+            "mismatch_types": [
+              "entity",
+              "temporal"
+            ],
+            "matched_prediction_numbers": [
+              1
+            ],
+            "match_status": "matched",
+            "review_note": "Target-level match in original claim context; does not establish preservation of all qualifiers or extra content."
+          },
+          {
+            "reference_number": 2,
+            "text": "Winnipeg defeated Hamilton 33-25 in the 2021 Grey Cup.",
+            "label": "supported",
+            "mismatch_types": [],
+            "matched_prediction_numbers": [
+              2
+            ],
+            "match_status": "matched",
+            "review_note": "Target-level match in original claim context; does not establish preservation of all qualifiers or extra content."
+          }
+        ],
+        "predicted_parts": [
+          {
+            "prediction_number": 1,
+            "text": "Hamilton's last Grey Cup win was in 2021.",
+            "label": "unsupported"
+          },
+          {
+            "prediction_number": 2,
+            "text": "The Winnipeg Blue Bombers defeated the Hamilton Tiger-Cats 33-25 in overtime.",
+            "label": "supported"
+          },
+          {
+            "prediction_number": 3,
+            "text": "The game was played at Tim Hortons Field in Hamilton.",
+            "label": "unsupported"
+          }
+        ],
+        "matching_reviewed": true,
+        "matching_review_method": "Assistant-reviewed targeted semantic matches; no independent human review.",
+        "review_scope": "selected_target_components_only"
+      },
+      {
+        "example_id": "test_01032",
+        "output_status": "fallback",
+        "reference_parts": [
+          {
+            "reference_number": 1,
+            "text": "Twice Upon a Time is a French series created by Guillaume Nicloux.",
+            "label": "supported",
+            "mismatch_types": [],
+            "matched_prediction_numbers": [],
+            "match_status": "no_component_output",
+            "review_note": "Target-level match in original claim context; does not establish preservation of all qualifiers or extra content."
+          },
+          {
+            "reference_number": 2,
+            "text": "Guillaume Nicloux contributed to writing Twice Upon a Time.",
+            "label": "supported",
+            "mismatch_types": [],
+            "matched_prediction_numbers": [],
+            "match_status": "no_component_output",
+            "review_note": "Target-level match in original claim context; does not establish preservation of all qualifiers or extra content."
+          },
+          {
+            "reference_number": 3,
+            "text": "Twice Upon a Time was released on Netflix on December 19, 2019.",
+            "label": "supported",
+            "mismatch_types": [],
+            "matched_prediction_numbers": [],
+            "match_status": "no_component_output",
+            "review_note": "Target-level match in original claim context; does not establish preservation of all qualifiers or extra content."
+          }
+        ],
+        "predicted_parts": [],
+        "matching_reviewed": true,
+        "matching_review_method": "Assistant-reviewed targeted semantic matches; no independent human review.",
+        "review_scope": "selected_target_components_only"
+      },
+      {
+        "example_id": "test_00471",
+        "output_status": "component_scored",
+        "reference_parts": [
+          {
+            "reference_number": 1,
+            "text": "Washing machines account for a quarter of domestic wastewater.",
+            "label": "unsupported",
+            "mismatch_types": [
+              "numerical",
+              "scope"
+            ],
+            "matched_prediction_numbers": [
+              1
+            ],
+            "match_status": "matched",
+            "review_note": "Target-level match in original claim context; does not establish preservation of all qualifiers or extra content."
+          },
+          {
+            "reference_number": 2,
+            "text": "Reusing washing-machine water can substantially reduce fresh-water requirements.",
+            "label": "supported",
+            "mismatch_types": [],
+            "matched_prediction_numbers": [
+              2
+            ],
+            "match_status": "matched",
+            "review_note": "Target-level match in original claim context; does not establish preservation of all qualifiers or extra content."
+          }
+        ],
+        "predicted_parts": [
+          {
+            "prediction_number": 1,
+            "text": "Washing machines account for a quarter of domestic wastewater.",
+            "label": "unsupported"
+          },
+          {
+            "prediction_number": 2,
+            "text": "Reusing this water can save a lot of water.",
+            "label": "unsupported"
+          }
+        ],
+        "matching_reviewed": true,
+        "matching_review_method": "Assistant-reviewed targeted semantic matches; no independent human review.",
+        "review_scope": "selected_target_components_only"
+      },
+      {
+        "example_id": "test_00958",
+        "output_status": "component_scored",
+        "reference_parts": [
+          {
+            "reference_number": 1,
+            "text": "Measurement precision is the same as measurement accuracy.",
+            "label": "contradicted",
+            "mismatch_types": [
+              "conceptual_relation"
+            ],
+            "matched_prediction_numbers": [
+              1
+            ],
+            "match_status": "matched",
+            "review_note": "Target-level match in original claim context; does not establish preservation of all qualifiers or extra content."
+          },
+          {
+            "reference_number": 2,
+            "text": "A precision measure can be calculated by subtracting the lowest measured value from the highest.",
+            "label": "supported",
+            "mismatch_types": [],
+            "matched_prediction_numbers": [
+              2
+            ],
+            "match_status": "matched",
+            "review_note": "Target-level match in original claim context; does not establish preservation of all qualifiers or extra content."
+          }
+        ],
+        "predicted_parts": [
+          {
+            "prediction_number": 1,
+            "text": "Precision is the accuracy of a measurement or prediction.",
+            "label": "unsupported"
+          },
+          {
+            "prediction_number": 2,
+            "text": "Precision can be calculated by subtracting the lowest measured value from the highest measured value.",
+            "label": "supported"
+          }
+        ],
+        "matching_reviewed": true,
+        "matching_review_method": "Assistant-reviewed targeted semantic matches; no independent human review.",
+        "review_scope": "selected_target_components_only"
+      },
+      {
+        "example_id": "test_00252",
+        "output_status": "failed",
+        "reference_parts": [
+          {
+            "reference_number": 1,
+            "text": "Little penguins are 43 cm (17 inches) in length.",
+            "label": "unsupported",
+            "mismatch_types": [
+              "numerical"
+            ],
+            "matched_prediction_numbers": [
+              2
+            ],
+            "match_status": "matched",
+            "review_note": "Target-level match in original claim context; does not establish preservation of all qualifiers or extra content."
+          },
+          {
+            "reference_number": 2,
+            "text": "Little penguins have an average lifespan of 6.5 years.",
+            "label": "supported",
+            "mismatch_types": [],
+            "matched_prediction_numbers": [
+              3
+            ],
+            "match_status": "matched",
+            "review_note": "Target-level match in original claim context; does not establish preservation of all qualifiers or extra content."
+          }
+        ],
+        "predicted_parts": [
+          {
+            "prediction_number": 1,
+            "text": "They are 33 cm (13 in) in height.",
+            "label": "supported"
+          },
+          {
+            "prediction_number": 2,
+            "text": "They are 43 cm (17 in) in length.",
+            "label": "unsupported"
+          },
+          {
+            "prediction_number": 3,
+            "text": "They have an average lifespan of 6.5 years.",
+            "label": null
+          }
+        ],
+        "matching_reviewed": true,
+        "matching_review_method": "Assistant-reviewed targeted semantic matches; no independent human review.",
+        "review_scope": "selected_target_components_only"
+      }
+    ]
+  }
+}

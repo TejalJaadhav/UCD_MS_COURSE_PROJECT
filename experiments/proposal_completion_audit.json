@@ -1,0 +1,128 @@
+{
+  "proposal": "proposal/Proposal.md",
+  "review_date": "2026-11-27",
+  "scope": "Technical proposal audit; final report and presentation deferred. No original proposal promises rewritten.",
+  "items": [
+    {
+      "commitment": "Dataset acquisition, preprocessing and existing overall labels",
+      "status": "implemented",
+      "evidence": [
+        "src/data/preprocess.py",
+        "docs/dataset_summary.md",
+        "outputs/preprocessing/cleaned/test.jsonl.gz"
+      ],
+      "note": "Cleaned test contains 1085 pairs; original support labels preserved."
+    },
+    {
+      "commitment": "NLI and whole-claim LLM baselines; overall accuracy, precision, recall and F1",
+      "status": "implemented",
+      "evidence": [
+        "src/evaluation/run_prompted.py",
+        "src/evaluation/overall.py",
+        "src/evaluation/compare_runs.py",
+        "results/final/metrics.json"
+      ],
+      "note": "Six saved test reports evaluated on identical IDs and dataset fingerprints, with failures retained."
+    },
+    {
+      "commitment": "Claim decomposition, evidence alignment, component labels and overall aggregation",
+      "status": "implemented",
+      "evidence": [
+        "src/evaluation/run_prompted.py",
+        "src/evaluation/verified_pipeline.py",
+        "src/evaluation/check_claim.py"
+      ],
+      "note": "Retrieved passages are model inputs, not independently verified evidence. Whole-claim fallback cannot provide localized judgments."
+    },
+    {
+      "commitment": "Manual component annotation and localization evaluation",
+      "status": "completed_with_limitations",
+      "evidence": [
+        "docs/annotation_guidelines.md",
+        "annotation/component_reference_annotations.json",
+        "annotation/component_matching.json",
+        "annotation/component_matching_7b_before_verification.json",
+        "src/evaluation/evaluate_localization.py",
+        "annotation/localization_audit_7b.json"
+      ],
+      "note": "Original 15 claims / 35 details; AI-assisted annotations and output exposure. Reference-aligned error detection and separate prediction-unit audit; not comprehensive span precision."
+    },
+    {
+      "commitment": "Mismatch-category error analysis",
+      "status": "completed_with_limitations",
+      "evidence": [
+        "annotation/expanded_mismatch_review.json",
+        "annotation/expanded_mismatch_matching.json",
+        "src/evaluation/complete_component_review.py",
+        "results/final/completed_component_review.json"
+      ],
+      "note": "All 21 selected details in 10 additional cases user-confirmed after assisted review. Category coverage achieved; purposive, small, overlapping counts do not establish a general ranking of difficulty."
+    },
+    {
+      "commitment": "Stratified fine-grained subset",
+      "status": "departure_from_plan",
+      "evidence": [
+        "annotation/expanded_mismatch_review.json",
+        "docs/localization_evaluation.md"
+      ],
+      "note": "Targeted category supplement is purposive rather than representative stratified sampling. Keep it separate from the original subset; no population-level claims."
+    },
+    {
+      "commitment": "Examples not used during development / held-out final evaluation",
+      "status": "departure_from_plan",
+      "evidence": [
+        "README.md",
+        "results/final/metrics.json"
+      ],
+      "note": "Earlier test errors informed subsequent development. Existing test results cannot be made untouched retrospectively. Generalization would need a genuinely unexposed dataset and frozen methods."
+    },
+    {
+      "commitment": "Compare fine-grained method with conventional classification",
+      "status": "implemented",
+      "evidence": [
+        "results/final/metrics.json",
+        "src/evaluation/bootstrap_compare.py",
+        "src/evaluation/extract_before_verification.py"
+      ],
+      "note": "7B before verification has highest macro-F1 but lower accuracy than majority. 3B/7B comparison confounds model size. Saved before/after comparison is not an independent rerun."
+    },
+    {
+      "commitment": "Reproducible analysis and usable demonstration",
+      "status": "implemented",
+      "evidence": [
+        "src/evaluation/package_evaluation.py",
+        "tests/test_artifact_integrity.py",
+        "tests/test_check_claim.py",
+        "tests/fixtures/claim_examples.json",
+        "results/final/reproducibility_check.json",
+        "results/final/cli_smoke_results.json"
+      ],
+      "note": "19 automated tests; three live synthetic CLI demonstrations passed. Saved analysis reproduced in fresh extraction using existing environment, not a fresh dependency installation."
+    },
+    {
+      "commitment": "Parameter-efficient fine-tuning and secondary dataset",
+      "status": "optional_not_required",
+      "evidence": [
+        "proposal/Proposal.md"
+      ],
+      "note": "Proposal explicitly describes these as conditional extensions. Neither is required to complete the implemented core scope."
+    },
+    {
+      "commitment": "Frontend",
+      "status": "not_promised",
+      "evidence": [
+        "proposal/Proposal.md"
+      ],
+      "note": "Working CLI provides claim/source input and component output. Frontend is an optional presentation improvement."
+    },
+    {
+      "commitment": "Final report, discussion and presentation",
+      "status": "deferred_by_user",
+      "evidence": [
+        "proposal/Proposal.md"
+      ],
+      "note": "Final documentation remains for the end as requested; this audit does not claim the entire proposal is fully satisfied."
+    }
+  ],
+  "conclusion": "Core implementation and exploratory evaluation completed, with explicit methodological departures. Do not describe held-out independence or general category-difficulty ranking as achieved."
+}
