@@ -176,3 +176,41 @@ Tracked annotation worksheets are in `annotation/`.
   or sources, model-run variation, or method selection.
 - The system evaluates support relative to supplied evidence, not
   independent real-world truth.
+## Docker CLI
+
+Start Docker Desktop and Ollama on your Mac, then run `ollama pull qwen2.5:7b`
+if the model is not already installed. From the repository root:
+
+```bash
+docker compose build
+docker compose run --rm claim-check python -m src.evaluation.check_claim \
+  --claim "Maria Chen directed the film, which was released in 2016." \
+  --source /inputs/source.txt --prepare-only
+```
+
+Remove `--prepare-only` to run inference. Add `--show-evidence` to display
+retrieved passages or `--output /outputs/example.json` to save a new report
+under `outputs/docker/` on the host. Existing output files are not overwritten.
+Place other UTF-8 source files in `docker/examples/` and refer to them as
+`/inputs/your_file.txt` in the container.
+
+```bash
+docker compose run --rm claim-check python -m unittest discover -s tests
+```
+
+The default image runs the prompted CLI using Python's standard library;
+it does not install PyTorch or download model weights. Ollama stays on the
+host. Compose uses `http://host.docker.internal:11434`; native Python retains
+`http://127.0.0.1:11434`. Override `OLLAMA_BASE_URL` to use another reachable
+Ollama server. On native Linux Docker Engine, a loopback-only Ollama listener
+may not be reachable through the host gateway; use an appropriately bound,
+access-controlled endpoint. No Ollama port is published by this Compose file.
+
+For plotting saved results, build the optional image with
+`docker build --target analysis -t citation-analysis .`. Mount the repository
+at `/app` when running analysis so saved datasets and reports are available.
+NLI inference requires the separate dependencies in `requirements.txt` and
+is not included in these lightweight images. The images exclude research
+data, outputs, model weights, virtual environments and secrets.
+
+Host networking reference: [Docker Compose networking](https://docs.docker.com/compose/how-tos/networking/).

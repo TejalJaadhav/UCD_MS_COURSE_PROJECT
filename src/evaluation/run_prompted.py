@@ -66,8 +66,9 @@ def ask_local(model, instruction, data, properties):
         },
         "options": {"temperature": 0, "seed": 42, "num_ctx": 4096},
     }
+    endpoint = os.environ.get("OLLAMA_BASE_URL", "http://127.0.0.1:11434").rstrip("/")
     request = Request(
-        "http://127.0.0.1:11434/api/chat", data=json.dumps(payload).encode(),
+        endpoint + "/api/chat", data=json.dumps(payload).encode(),
         headers={"Content-Type": "application/json"},
     )
     try:

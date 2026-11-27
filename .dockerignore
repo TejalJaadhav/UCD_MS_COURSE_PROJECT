@@ -1,0 +1,13 @@
+*
+!Dockerfile
+!.dockerignore
+!src/
+!src/**
+!tests/
+!tests/**
+!docker/
+!docker/examples/
+!docker/examples/**
+!requirements-analysis.txt
+**/__pycache__/
+**/*.pyc
