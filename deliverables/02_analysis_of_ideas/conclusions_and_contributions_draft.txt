@@ -1,0 +1,41 @@
+5 Conclusions
+
+5.1 Summary
+
+This project investigated citation support at the level of both complete claims and individual claim components. It implemented a pipeline that decomposes a claim, checks the proposed split, retrieves source passages, labels components as supported, unsupported, or contradicted, and aggregates these judgments into an overall support assessment. Comparisons with majority prediction, natural language inference, and prompted whole-claim assessment connected this implementation to the research questions established in the proposal.
+
+The evaluation on 1,085 cleaned claim-source pairs showed that the pre-verification Qwen 2.5 7B component configuration achieved the highest macro-F1 among the evaluated configurations, at 0.5378, with 67.19% accuracy. The majority baseline achieved 72.53% accuracy and 0.2803 macro-F1. These findings show that the strongest configuration depends on the evaluation criterion: component assessment provided better macro-F1 in this comparison, while majority prediction benefited from the prevalence of complete-support examples. At the same 3B model size, the component configuration also improved both overall accuracy and macro-F1 relative to the evaluated whole-claim prompt.
+
+The component review provided a separate assessment of localization. On the original exploratory sample of 35 reference details, exact reference coverage was 15/35 for 3B and 10/35 for 7B under contextual alignment. Conservative matching reduced these values to 14/35 and 6/35. This demonstrated why overall classification and localized correctness must be measured separately. The implementation made component decisions inspectable, but fallback, decomposition changes, and label errors limited the correctness and availability of localized output.
+
+The experimental verification stage revealed a further trade-off. It increased recall for partial-support and no-support cases while reducing complete-support recall and aggregate performance. Its selected mismatch corrections did not outweigh changes to previously correct predictions. Preserving both the original and verified judgments enabled this effect to be examined directly and supported retaining the pre-verification component configuration as the default.
+
+For RQ1, the study established a common evaluation of six configurations and showed that the highest accuracy and highest macro-F1 belonged to different methods. For RQ2, the implemented pipeline produced inspectable component judgments, and the annotation-based evaluation measured their correctness separately from overall classification. This provides an operational and measurable realization of the proposal's component-level objective, with reliability still requiring improvement.
+
+For RQ3, the reviewed cases documented how numerical, temporal, entity, qualifier, scope, and unsupported-addition mismatches affected judgments. This supplies concrete evidence about model behavior and targets for improvement. Because the cases were small and purposively selected, the study examined these categories descriptively rather than establishing a general ordering of difficulty.
+
+These conclusions characterize the implemented configurations and the reviewed samples. Test reuse during development and AI-assisted annotation constrain generalization. The resulting evidence supports further investigation of component-level assessment and provides a concrete basis for the independent evaluations proposed in Section 5.3.
+
+5.2 Contributions and Potential Impact
+
+The first contribution is an operational pipeline that connects a whole-claim support judgment to inspectable component assessments. Its decomposition checks, explicit fallback status, retained passages, and structured component labels help distinguish what the system concluded from the information it considered. This provides a concrete way to demonstrate partial support, such as a supported attribution combined with a contradicted year.
+
+The second contribution is an experimental comparison on a common set of claim-source pairs. Reporting accuracy, macro-F1, per-class measures, failure counts, and the saved before-and-after verification judgments makes the trade-offs visible. The study shows why an additional checking stage should be evaluated rather than assumed to improve a system, and why a stronger overall score does not establish stronger localization.
+
+The third contribution is a reviewed set of component annotations and a localization evaluation procedure that distinguishes exact labeling from binary error detection. The original 15-claim review and the separate 10-pair, 21-target supplement document numerical, temporal, entity, qualifier, scope, unsupported-addition, and relational issues. The supplement was confirmed through assistant-guided source review. Matching sensitivity and a separate prediction-unit audit expose uncertainty in how generated parts are aligned with reference details. These resources support further investigation without presenting the annotations as independent human gold.
+
+The fourth contribution is a usable research implementation with a command-line demonstration, resumable evaluation, validated saved-analysis tools, automated tests, and Docker support. Source fingerprints and artifact checksums help preserve the connection between a reported result and the inputs used to calculate it. These mechanisms make the project easier to inspect, demonstrate, and extend.
+
+The potential practical value is assistance with evidence review. Component labels can direct a reader's attention to a specific date, quantity, entity, or restriction that needs checking. Realizing this value reliably requires better localized accuracy and independent validation; the current system should be understood as an evaluated research prototype rather than an autonomous fact-verification service.
+
+5.3 Future Work
+
+A priority is evaluation on genuinely unexposed data after freezing the method and prompts. Larger component annotations prepared independently of model output would allow stronger localization estimates and a more balanced comparison across mismatch categories. Multiple annotators and recorded disagreements would help distinguish model error from interpretive ambiguity. Original-claim span annotation could additionally support a more comprehensive localization measure than the current reference-aligned procedure.
+
+Decomposition is another important direction. Future checks should evaluate whether a split preserves negation, attribution, quantities, comparative language, and causal relationships without relying on lexical coverage alone. Measuring fidelity separately from component judgment would help locate the source of failures and reduce the need to reconstruct missing context during matching.
+
+Evidence retrieval could be extended beyond word overlap and evaluated against source evidence identified by reviewers. Comparing retrieval approaches while holding the judging model fixed would clarify whether a missing detail reflects the source, passage selection, or inference. Any additional verification stage should be calibrated on development examples and evaluated for both corrected errors and newly introduced errors before being adopted.
+
+Finally, comparisons using the same model size, controlled inference settings, and repeated runs would better isolate the contribution of decomposition and verification. Cluster-aware uncertainty estimates could account for related questions or sources. Parameter-efficient fine-tuning remains an optional extension if sufficiently reliable training annotations become available. These directions build on the implemented pipeline and the specific failure modes documented by this study.
+
+The project thus delivers the central investigation proposed: a system that evaluates individual claim components against cited evidence, a comparison with whole-claim methods, and an analysis of the resulting judgments. Its value lies in making the assessment process inspectable and measurable, and in using experimental evidence to guide the next design decisions.

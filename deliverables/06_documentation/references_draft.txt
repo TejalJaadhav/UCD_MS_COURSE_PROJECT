@@ -1,0 +1,31 @@
+References
+
+[1] N. F. Liu, T. Zhang, and P. Liang, "Evaluating Verifiability in Generative Search Engines," Findings of the Association for Computational Linguistics: EMNLP 2023, pp. 7001-7025, 2023. https://doi.org/10.18653/v1/2023.findings-emnlp.467
+
+[2] T. Gao, H. Yen, J. Yu, and D. Chen, "Enabling Large Language Models to Generate Text with Citations," Proceedings of the 2023 Conference on Empirical Methods in Natural Language Processing, pp. 6465-6488, 2023. https://doi.org/10.18653/v1/2023.emnlp-main.398
+
+[3] X. Yue, B. Wang, Z. Chen, K. Zhang, Y. Su, and H. Sun, "Automatic Evaluation of Attribution by Large Language Models," Findings of the Association for Computational Linguistics: EMNLP 2023, pp. 4615-4635, 2023. https://doi.org/10.18653/v1/2023.findings-emnlp.307
+
+[4] Y. Li, X. Yue, Z. Liao, and H. Sun, "AttributionBench: How Hard is Automatic Attribution Evaluation?" Findings of the Association for Computational Linguistics: ACL 2024, pp. 14919-14935, 2024. https://doi.org/10.18653/v1/2024.findings-acl.886
+
+[5] W. Zhang, M. Aliannejadi, Y. Yuan, J. Pei, J.-h. Huang, and E. Kanoulas, "Towards Fine-Grained Citation Evaluation in Generated Text: A Comparative Analysis of Faithfulness Metrics," Proceedings of the 17th International Natural Language Generation Conference, pp. 427-439, 2024. https://doi.org/10.18653/v1/2024.inlg-main.35
+
+[6] H. Rashkin, V. Nikolaev, M. Lamm, L. Aroyo, M. Collins, D. Das, S. Petrov, G. S. Tomar, I. Turc, and D. Reitter, "Measuring Attribution in Natural Language Generation Models," Computational Linguistics, vol. 49, no. 4, pp. 777-840, 2023. https://doi.org/10.1162/coli_a_00486
+
+[7] Y. Xu, J. Gao, X. Yu, B. Bi, H. Shen, and X. Cheng, "ALiiCE: Evaluating Positional Fine-grained Citation Generation," Proceedings of NAACL-HLT 2025, Volume 1: Long Papers, pp. 545-561, 2025. https://doi.org/10.18653/v1/2025.naacl-long.23
+
+[8] Y. Xu, P. Qi, J. Chen, K. Liu, R. Han, L. Liu, B. Min, V. Castelli, A. Gupta, and Z. Wang, "CiteEval: Principle-Driven Citation Evaluation for Source Attribution," Proceedings of ACL 2025, Volume 1: Long Papers, pp. 32759-32778, 2025. https://doi.org/10.18653/v1/2025.acl-long.1574
+
+[9] K. Wu, E. Wu, K. Wei, A. Zhang, A. Casasola, T. Nguyen, S. Riantawan, P. Shi, D. Ho, and J. Zou, "An Automated Framework for Assessing How Well LLMs Cite Relevant Medical References," Nature Communications, vol. 16, article 3615, 2025. https://doi.org/10.1038/s41467-025-58551-6
+
+[10] P. He, J. Gao, and W. Chen, "DeBERTaV3: Improving DeBERTa Using ELECTRA-Style Pre-Training with Gradient-Disentangled Embedding Sharing," arXiv:2111.09543, version 4, 2023. https://arxiv.org/abs/2111.09543v4
+
+[11] Qwen Team, "Qwen2.5 Technical Report," arXiv:2412.15115, version 2, 2025. https://arxiv.org/abs/2412.15115v2
+
+[12] Sentence Transformers Cross Encoders, "nli-deberta-v3-small," model card, accessed November 27, 2026. https://huggingface.co/cross-encoder/nli-deberta-v3-small
+
+[13] Sentence Transformers Cross Encoders, "nli-deberta-v3-small Configuration," accessed November 27, 2026. https://huggingface.co/cross-encoder/nli-deberta-v3-small/raw/main/config.json
+
+[14] Qwen Team, "Qwen2.5-3B-Instruct," model card and configuration, accessed November 27, 2026. https://huggingface.co/Qwen/Qwen2.5-3B-Instruct ; configuration: https://huggingface.co/Qwen/Qwen2.5-3B-Instruct/raw/main/config.json
+
+[15] Qwen Team, "Qwen2.5-7B-Instruct," model card and configuration, accessed November 27, 2026. https://huggingface.co/Qwen/Qwen2.5-7B-Instruct ; configuration: https://huggingface.co/Qwen/Qwen2.5-7B-Instruct/raw/main/config.json

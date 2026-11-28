@@ -1,0 +1,131 @@
+4 Methodology Results and Analysis
+
+4.1 Methodology
+
+The evaluation addressed overall support classification, component localization, and mismatch analysis separately. Overall scores used the existing human labels in the dataset accompanying Liu et al. [1]. Cleaning retained 1,085 test pairs: 787 complete-support, 183 partial-support, and 115 no-support examples. Original labels and example IDs were preserved. The analysis tools checked identical example sets and dataset fingerprints across the six compared reports.
+
+Dataset preparation first normalized record fields and preserved original raw line numbers. Exact duplicates were removed within each split. A subsequent pass removed statement-source URL pairs already present in an earlier split, using train, development, then test order. IDs remained tied to original split positions, and retained support labels were checked against the raw records. This procedure addresses those exact duplicate and overlap definitions; it does not detect every paraphrase or related-source cluster.
+
+Split | Original pairs | Cleaned pairs | Complete | Partial | No support
+--- | --- | --- | --- | --- | ---
+train | 8834 | 8718 | 6321 | 1538 | 859
+dev | 1106 | 1091 | 819 | 163 | 109
+test | 1097 | 1085 | 787 | 183 | 115
+
+These split sizes describe the preserved cleaned files, not a newly randomized partition. Historical test reuse during method development is considered separately in Section 4.6.
+
+The comparison included majority prediction, the cross-encoder/nli-deberta-v3-small NLI model, a whole-claim Qwen 2.5 3B baseline, a 3B component method, and the 7B component method before and after experimental verification. The saved NLI report records a fitted classifier and 90 training example IDs; this mapping adapts NLI scores to the dataset labels without treating neutral as synonymous with partial support. Prompted methods used local Ollama serving. Decomposition checks and fallback were part of the component configuration described in Chapter 3.
+
+The 7B pre-verification report was reconstructed from original judgments retained in the verified run. The before-and-after comparison therefore measures the combined evidence-selection and verification stage on saved decompositions and original judgments; it is not an independent rerun. Comparisons between 3B and 7B additionally change model size and cannot isolate decomposition as the sole cause of a difference.
+
+Accuracy and per-class precision, recall, and F1 were calculated with invalid predictions retained as failures. Macro-F1 averages F1 equally across the three gold classes. Failures reduce recall and accuracy rather than disappearing from the evaluation. Whole-claim fallback can still provide a valid overall label, but it is not localized component output.
+
+The original fine-grained review contained 15 claims and 35 reference details, comprising 24 supported and 11 unsupported details and no contradicted references. Reference annotations were AI-assisted and user-reviewed after exposure to model outputs; matching provenance was recorded separately. Ten additional natural test pairs contributed 21 selected target details, all subsequently confirmed by the author through assistant-guided source review. This supplementary set was selected purposively, contains overlapping targets and categories, and is kept separate from the original subset.
+
+Localization scoring distinguishes exact agreement from binary error detection. An error reference is unsupported or contradicted; a linked prediction with either error label detects it, even when the subtype is wrong. Exact correctness requires all linked labels to equal the reference label. Missing error references count as false negatives. Unmatched generated errors require separate adjudication rather than being assumed false positives. Reference-aligned and prediction-unit precision are not interchangeable.
+
+4.2 Overall Results
+
+Method | Accuracy | Macro-F1 | Failures
+--- | --- | --- | ---
+Majority | 72.53% | 0.2803 | 0
+NLI | 19.35% | 0.1765 | 0
+Whole-claim 3B | 18.62% | 0.2160 | 0
+Components 3B | 45.35% | 0.4042 | 48
+Components 7B | 67.19% | 0.5378 | 19
+Verified 7B | 55.48% | 0.4998 | 49
+
+The pre-verification 7B component configuration achieved the highest macro-F1 among the evaluated configurations. Majority prediction achieved the highest accuracy by predicting complete support for every example, but identified no partial-support or no-support cases. This shows why accuracy and macro-F1 must be considered together in this class distribution.
+
+At the same 3B model size, the component method increased accuracy from 18.62% to 45.35% and macro-F1 from 0.2160 to 0.4042 relative to the whole-claim configuration. This is an observed improvement for these particular prompts, retrieval settings, and data. It does not establish superiority over all whole-claim evaluation methods.
+
+For the 7B component method, per-class precision, recall, and F1 were:
+
+Gold class | Precision | Recall | F1
+--- | --- | --- | ---
+complete_support | 0.8221 | 0.7751 | 0.7979
+partial_support | 0.2976 | 0.4098 | 0.3448
+no_support | 0.6111 | 0.3826 | 0.4706
+
+The method correctly classified 610 of 787 complete-support cases, 75 of 183 partial-support cases, and 44 of 115 no-support cases. Partial support therefore remained challenging even in the highest-macro-F1 configuration. The whole-claim 3B method had higher partial-support recall, but its low precision and near-absence of correct complete-support predictions show the cost of its prediction pattern.
+
+Additional per-class results for the comparison configurations are given below. Metrics are proportions, with zero used for undefined precision or F1.
+
+Method | Gold class | Precision | Recall | F1
+--- | --- | --- | --- | ---
+Majority | complete_support | 0.7253 | 1.0000 | 0.8408
+Majority | partial_support | 0.0000 | 0.0000 | 0.0000
+Majority | no_support | 0.0000 | 0.0000 | 0.0000
+NLI | complete_support | 0.7643 | 0.1360 | 0.2309
+NLI | partial_support | 0.1440 | 0.0984 | 0.1169
+NLI | no_support | 0.1037 | 0.7391 | 0.1818
+Whole-claim 3B | complete_support | 1.0000 | 0.0025 | 0.0051
+Whole-claim 3B | partial_support | 0.1549 | 0.7049 | 0.2539
+Whole-claim 3B | no_support | 0.2840 | 0.6174 | 0.3890
+Components 3B | complete_support | 0.7743 | 0.4752 | 0.5890
+Components 3B | partial_support | 0.1663 | 0.3934 | 0.2338
+Components 3B | no_support | 0.3802 | 0.4000 | 0.3898
+Verified 7B | complete_support | 0.8905 | 0.5578 | 0.6859
+Verified 7B | partial_support | 0.2588 | 0.5246 | 0.3466
+Verified 7B | no_support | 0.3895 | 0.5826 | 0.4669
+
+Component output availability is reported separately from overall classification. A fallback still produces an overall prediction but supplies no localized judgments. The following counts come from the saved report records.
+
+Method | Whole-claim fallback cases | Failed overall predictions
+--- | --- | ---
+Components 3B | 414 | 48
+Components 7B | 325 | 19
+Verified 7B | 325 | 49
+
+The NLI configuration predicted no support for many gold complete-support examples, while the whole-claim 3B configuration frequently predicted partial support. These observed prediction patterns explain their low aggregate results; the experiment does not isolate whether architecture, task adaptation, prompt wording, or evidence exposure caused them.
+
+4.3 Verification Analysis
+
+Additional verification increased partial-support recall from 40.98% to 52.46% and no-support recall from 38.26% to 58.26%. However, complete-support recall decreased from 77.51% to 55.78%, and failures increased from 19 to 49. Verification corrected 74 predictions but changed 201 previously correct predictions to errors or failures. Its aggregate accuracy and macro-F1 were therefore lower. These results informed the choice of the pre-verification component configuration as the default tool.
+
+Exploratory paired bootstrap analysis used 2,000 example-level resamples with seed 42. Relative to majority, the pre-verification 7B method changed accuracy by -5.35 percentage points, with a 95% interval of [-8.30, -2.21], and macro-F1 by +25.75 points, with an interval of [+21.54, +29.51]. Verification changed accuracy by -11.71 points, with an interval of [-14.65, -8.85], and macro-F1 by -3.80 points, with an interval of [-7.67, +0.11]. The macro-F1 interval crosses zero, so this bootstrap does not establish a clear directional macro-F1 difference. The intervals do not account for shared-question/source clusters, model-run variation, or adaptive development.
+
+4.4 Component Localization
+
+Measure | Components 3B | Components 7B
+--- | --- | ---
+Exact labels among matched references | 15/24 | 10/15
+Exact labels across all reference details | 15/35 (42.86%) | 10/35 (28.57%)
+Reference-aligned error TP / FP / FN | 1 / 1 / 10 | 2 / 1 / 9
+Reference-aligned error precision | 50.00% | 66.67%
+Reference-aligned error recall | 9.09% | 18.18%
+Reference-aligned error F1 | 0.1538 | 0.2857
+
+The original subset demonstrates that better overall classification does not automatically imply better exact component coverage. Neither method assigned the exact correct label to any of its 11 unsupported reference details. Binary detection can nevertheless identify an error while confusing unsupported with contradicted. Whole-claim fallback and omitted or distorted components limit the availability of localized judgments.
+
+Conservative alignment sensitivity reduced exact coverage to 14/35 for 3B and 6/35 for 7B. This policy rejected matches requiring missing context or changed relationships to be reconstructed. A separate assistant source audit examined all four error-labeled 7B predictions, including one previously unmatched prediction. Three identified erroneous content, giving prediction-unit binary error precision of 3/4; excluding an interpretation-sensitive case gave 2/3. These small audit counts must not be combined with reference-unit recall into a single F1.
+
+4.5 Supplementary Mismatch Review
+
+Method | Exact labels on 21 selected targets | Error TP / FP / FN
+--- | --- | ---
+3b | 4/21 | 1 / 0 / 11
+7b | 11/21 | 9 / 0 / 3
+verified7b | 13/21 | 12 / 1 / 0
+
+Mismatch category | Targets | 3B exact | 7B exact | Verified 7B exact
+--- | --- | --- | --- | ---
+conceptual_relation | 1 | 0 | 0 | 0
+entity | 3 | 0 | 1 | 2
+numerical | 4 | 0 | 3 | 3
+qualifier | 1 | 0 | 0 | 1
+scope | 2 | 0 | 0 | 2
+temporal | 4 | 0 | 1 | 3
+unsupported_addition | 2 | 0 | 2 | 2
+
+The supplementary examples show concrete contrasts: changed ranking points, a reversed winner relation, missing dates, an unstated December restriction, and changed quantitative denominators. Supported controls were included. Contradiction is a support-label outcome rather than a mutually exclusive mismatch cause. Category totals overlap and must not be summed as independent observations.
+
+Verification detected all 12 selected error targets in this supplement but also flagged one supported target as erroneous. This descriptive result concerns selected details, not all components of these claims or the full test distribution. It is compatible with the aggregate performance decline: selected error corrections do not capture the full cost of changing previously correct judgments.
+
+4.6 Interpretation and Limitations
+
+RQ1 is addressed by the overall comparison: performance depended on both configuration and metric, with the 7B component method strongest in macro-F1 and majority strongest in accuracy. RQ2 is addressed by explicit component outputs and measured localization: the system exposed individual judgments, but their exact correctness and coverage remained limited. RQ3 is addressed descriptively through source-grounded mismatch cases; the evidence does not support a reliable general ranking of the hardest categories.
+
+Earlier test errors informed later development, so the reused test split is not an untouched final evaluation. The annotations were AI-assisted, reviewers had model-output exposure, and the additional sample was purposive. Findings therefore characterize the implemented configurations and reviewed examples rather than an independently established population performance level. A genuinely fresh evaluation set and larger independent annotations are needed to strengthen generalization claims.
+
+The project contribution is a working and reproducible investigation that connects overall support assessment with interpretable component outputs and evaluates both. Preserving failures, fallback, original verification judgments, and matching sensitivity makes the trade-offs visible and identifies concrete directions for improving decomposition, evidence retrieval, and component assessment.

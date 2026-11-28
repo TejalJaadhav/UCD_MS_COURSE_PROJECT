@@ -1,0 +1,442 @@
+Evaluating Evidential Support of Citations in AI-Generated Content
+
+Tejal Jadhav
+CSCI 6970 MS Course Project
+University of Colorado Denver
+Fall 2026
+
+Abstract
+
+This project investigated whether component-level assessment can make citation support more informative than an overall label alone. A Python pipeline decomposed claims, checked decomposition fidelity, retrieved source passages, and assigned supported, unsupported, or contradicted labels before aggregation. Six configurations were compared on 1,085 cleaned claim-source pairs. The pre-verification Qwen 2.5 7B component method achieved the highest macro-F1, 0.5378, with 67.19% accuracy; majority prediction achieved 72.53% accuracy. Reviewed component annotations enabled separate measurement of localization and analysis of numerical, temporal, entity, qualifier, scope, and unsupported-addition mismatches. An experimental verification stage identified trade-offs that informed the default configuration. Test reuse and small AI-assisted annotation samples limit generalization. The project contributes a working citation-assessment tool, reproducible analyses, and evidence that overall classification and localized correctness require separate evaluation.
+
+1 Introduction
+
+1.1 Problem
+
+Large language models can generate answers that include citations to external sources. These citations give readers a way to inspect the evidence behind a statement, but their presence does not establish that every detail in the statement is supported. Liu, Zhang, and Liang [1] documented this distinction in their evaluation of generative search engines, finding that generated sentences were often not fully supported by their citations. Citation evaluation therefore requires assessing the relationship between the content of a claim and the evidence available in its cited source.
+
+Partial support is particularly important when a single sentence contains several independently verifiable details. Consider an illustrative source stating that Maria Chen directed a film released in 2016. The claim that Maria Chen directed the film and that it was released in 2017 combines a supported director attribution with a contradicted release year. An overall partially supported label identifies a problem, but it does not tell the reader which detail is responsible. Assessing the two components separately makes that distinction explicit.
+
+Similar difficulties arise when a claim adds an unmentioned date, substitutes an entity, drops a restriction, extends a statement beyond the source's scope, or changes a relationship between events. The source may concern the same topic while providing insufficient evidence for the specific wording of the claim. Identifying such differences requires more than recognizing broad semantic similarity: the evaluator must preserve the details and relationships that determine what the source establishes.
+
+This project investigated whether claim decomposition and evidence alignment could make citation-support assessment more informative by identifying the components associated with an overall judgment. Existing citation research already includes automatic citation evaluation, as illustrated by ALCE [2]. The contribution of this project is an implemented and measured comparison of component-level assessment with conventional whole-claim classification, together with an analysis of the localized judgments and their failure modes. It does not claim to introduce atomic-claim evaluation as a new research area.
+
+The scope is evidential support relative to supplied source text. A detail is supported when the source establishes it, unsupported when the available source does not establish it, and contradicted when the source directly conflicts with it. An unsupported detail may still be true in the world; missing source evidence alone does not establish falsehood. The system does not independently verify the source's reliability or search the web to establish external truth.
+
+1.2 Objective
+
+The objective was to implement and evaluate an NLP pipeline that decomposes generated claims, aligns their components with cited source passages, and produces component-level support labels alongside an overall assessment. The study examined whether this representation provides useful localized information and how its overall classification performance compares with whole-claim baselines.
+
+1.3 Approach
+
+The implemented pipeline accepts a generated claim and its cited source text. It proposes smaller verifiable components, checks decomposition coverage and fidelity, retrieves relevant passages, and assesses each component as supported, unsupported, or contradicted. Component judgments are aggregated into complete support when all components are supported, partial support when some are supported, and no support when none are supported. Rejected decompositions use a whole-claim fallback, while invalid outputs are recorded as failures. Fallback results are explicitly distinguished because they do not provide localized component judgments.
+
+The experimental study compared the component approach with majority prediction, natural language inference, and prompted whole-claim assessment on 1,085 cleaned claim-source pairs. Reviewed component annotations provided a separate basis for measuring localized correctness and examining mismatch types. A further experiment assessed the effect of evidence selection and verification. Chapter 4 presents the configurations, results, and conditions governing their interpretation.
+
+The investigation retained the three research questions from the proposal:
+
+RQ1. How accurately can Natural Language Processing (NLP) methods determine the overall level of evidential support between an AI-generated claim and its cited evidence?
+
+RQ2. Can fine-grained claim decomposition and evidence alignment identify which specific components of an AI-generated claim are supported, unsupported, or contradicted by the cited evidence?
+
+RQ3. Which types of fine-grained evidential mismatches, such as numerical discrepancies, entity or temporal differences, qualifiers, scope changes, unsupported additions, and contradictions, are most difficult for automatic citation-support methods to identify?
+
+The resulting contribution combines a working claim-checking tool, comparisons of overall classification, reviewed component annotations, and reproducible localization analyses. This connects the proposal's goal of more informative support assessment to concrete outputs and measurable experimental findings.
+
+1.4 Organization of This Project Report
+
+Chapter 2 introduces the concepts needed to distinguish overall support, component labels, and evidence alignment, and reviews related citation-evaluation research. Chapter 3 describes the pipeline architecture, decomposition checks, retrieval, component assessment, aggregation, and implementation. Chapter 4 presents the dataset preparation, experimental methodology, overall results, localization evaluation, mismatch analysis, and limitations. Chapter 5 summarizes the findings and contributions and identifies directions for future work. The references document the sources used, and appendices provide supporting experimental and reproducibility details where appropriate.
+
+2 Background
+
+2.1 Key Concepts
+
+2.1.1 Evidential Support and Attribution
+
+Citation-support evaluation asks whether a source provides sufficient evidence for the statement associated with it. This relationship is source-relative: a plausible claim can remain unsupported if the cited text does not establish it. Conversely, judging a statement supported by a source does not independently establish that the source is reliable or that the statement is true in the world. Liu et al. [1] studied citation support in generative search engines, providing the dataset used for this project's overall evaluation.
+
+This project distinguishes overall and component labels. Overall classification uses complete support, partial support, and no support. Component assessment uses supported, unsupported, and contradicted. Unsupported means that the available source does not establish the component; contradicted requires conflicting evidence. The component labels retain a distinction that the overall no-support category can combine. These two label systems must therefore be evaluated separately.
+
+2.1.2 Natural Language Inference and Prompted Assessment
+
+Natural language inference (NLI) treats evidence as a premise and a claim as a hypothesis. Entailment, neutrality, and contradiction provide a useful starting point for assessing support. However, a neutral inference outcome does not uniquely identify partial support: a source might support some details or establish none of them. The project consequently evaluates an explicit mapping from NLI outputs to the dataset's three overall support labels rather than assuming the label systems are equivalent.
+
+A prompted language model can instead be instructed to assess the complete claim directly. This provides a baseline for comparing the component approach with a model that receives the same task at a coarser granularity. Yue et al. [3] investigated prompted LLMs and fine-tuned smaller models for attribution evaluation. Their work motivates evaluating model judgments empirically rather than treating fluent responses as evidence of reliable attribution.
+
+2.1.3 Claim Decomposition and Evidence Alignment
+
+A component is a statement that can be assessed against the source while preserving its intended meaning. Decomposition must retain the entities, dates, quantities, qualifications, and relations needed to interpret the original claim. Removing a restriction or changing the subject can make a component easier to support while making it unfaithful to the original statement. Decomposition quality therefore affects both localization and overall classification.
+
+Evidence alignment associates a component with potentially relevant source passages. Retrieval establishes which text the evaluator considers; it does not prove that this text supports the component. The implementation preserves retrieved passages as model inputs and distinguishes them from the experimental stage's selected evidence sentences. An absent match can reflect missing source evidence, a retrieval failure, or a decomposition problem, so error analysis must consider the stages together.
+
+2.1.4 Overall Classification and Localization Measures
+
+Accuracy measures the proportion of overall predictions that are correct. Per-class precision, recall, and F1 show how behavior differs across support labels, while macro-F1 weights the classes equally. These measures answer different questions in a dataset where complete support is the largest class. A majority baseline is useful because it establishes how much accuracy can be obtained without assessing evidence.
+
+Localization asks whether the system identifies the relevant detail and labels it correctly. The project reports agreement on matched reference details, correct coverage across all reference details, and reference-aligned detection of unsupported or contradicted content. Detecting an error while confusing unsupported with contradicted counts as binary error detection but not exact labeling. Prediction-level audit precision is reported separately because generated components and annotated reference details are different counting units. A correct overall label alone is insufficient evidence of correct localization.
+
+2.2 Related Work and Design Rationale
+
+2.2.1 Citation and Attribution Evaluation
+
+Liu et al. [1] evaluated verifiability in generative search engines and documented incomplete support and inaccurate citations. Their study provides both the motivation and the primary overall-label dataset for this project. Gao et al. [2] introduced ALCE to evaluate generation with citations, including automatic citation-quality measures. This project focuses on assessing an existing claim-source pair rather than building an end-to-end system that retrieves web sources and generates cited answers.
+
+Yue et al. [3] examined automatic attribution judgments using prompted and fine-tuned models. Li et al. [4] subsequently introduced AttributionBench, compiling existing datasets and analyzing difficulties involving nuanced information and differences in evidence available to models and annotators. These findings motivate inspecting the supplied source text and recording mismatch causes rather than interpreting aggregate classification scores as a complete explanation of behavior.
+
+2.2.2 Fine-Grained Support Assessment
+
+Zhang et al. [5] compared faithfulness metrics for full, partial, and no support. Their findings indicate that no single metric consistently performs best across their evaluations. This supports examining multiple measures and retaining partial support as an explicit evaluation category. The present project's additional question is whether the details responsible for a support judgment can be exposed and measured through component-level assessment.
+
+The design therefore compares whole-claim and component methods, preserves component labels alongside the aggregate outcome, and evaluates localization against reviewed references. It also tests an additional verification stage as an experimental alternative. The original component judgments and verified judgments are retained so that changes in performance can be examined directly.
+
+The contribution is an empirical implementation and analysis within an established research area. It is not a claim that decomposition or fine-grained attribution is new. Overall comparisons, component matching, conservative alignment sensitivity, and targeted category review provide complementary views of the system. The small, AI-assisted review samples support descriptive conclusions; they do not establish a general ranking of mismatch difficulty or replace an independent held-out evaluation.
+
+2.2.3 Attribution Guidelines and Atomic Claims
+
+Rashkin et al. [6] introduced Attributable to Identified Sources (AIS) and a two-stage human annotation procedure for evaluating generated information against provided sources. This establishes a useful conceptual foundation: attribution is judged with respect to identified evidence. The present project's source-relative component labels follow that distinction, while its review procedure remains exploratory rather than a replication of the AIS annotation study.
+
+ALiiCE [7] uses dependency-tree-based decomposition to evaluate positional fine-grained citation generation. It demonstrates that atomic claims are already part of citation-evaluation research. This project instead uses prompted decomposition with explicit coverage and fidelity checks and studies supplied claim-source pairs. It does not implement ALiiCE's dependency parser or citation-position metrics. The comparison helps locate the contribution in an established area while making the different task and implementation choices explicit.
+
+2.2.4 Broader Citation Quality and Domain Evaluation
+
+CiteEval [8] assesses citation quality in a broader context that includes the user query, generated text, and retrieval context. It shows why source support is one dimension of citation quality rather than a complete definition. The present project deliberately limits its task to support relative to supplied text; it does not evaluate every available alternative source or provide a comprehensive citation-quality rating.
+
+Wu et al. [9] introduced SourceCheckup for assessing the sources in medical LLM responses and evaluated automated judgments against medical expert assessments. This provides a practical example of a source-checking pipeline and the importance of domain validation. The present study uses general claim-source pairs and cannot claim medical-expert agreement or transfer SourceCheckup's reported performance to its own outputs.
+
+2.2.5 Architectural Foundations
+
+He, Gao, and Chen [10] describe DeBERTaV3's replaced-token-detection pretraining and gradient-disentangled embedding sharing. This explains the provenance of the encoder family underlying the NLI checkpoint; the project does not repeat that pretraining. Its learned task adaptation is the small score-mapping layer described in Chapter 3.
+
+The Qwen2.5 technical report [11] describes the pretrained and post-trained model family used for prompted assessment. The NLI checkpoint documentation [12, 13] and Qwen model cards and configurations [14, 15] provide the checkpoint-specific architecture details. These sources establish model provenance, while project code and saved settings establish how those models were used in the experiments. Distinguishing those sources prevents pretrained capabilities from being mistaken for project-specific training or measured outcomes.
+
+2.3 Synthesis and Project Positioning
+
+The reviewed work motivates evaluating citation support at complementary levels. Overall classification provides a consistent comparison across methods; component assessment exposes the details behind a judgment; and mismatch analysis examines whether specific quantities, entities, dates, and restrictions are preserved. This project brings those levels together in one implemented evaluation pipeline.
+
+Three design choices connect that research to the implementation. First, the system retains component labels alongside the overall result, making localized assessment inspectable. Second, it checks decomposition fidelity and records fallback explicitly, so the evaluation can distinguish a correct overall prediction from the availability of component output. Third, it evaluates exact component labeling separately from binary error detection and preserves original judgments when testing verification. These choices make the project's contribution concrete: an interpretable representation accompanied by measurements of what it provides, how often it is correct, and which stages can be improved. Chapter 3 describes how these choices are implemented.
+
+3 Architecture and Implementation
+
+3.1 High Level Design
+
+The system assesses a supplied claim against the text of its cited source. It has two output levels: a label for the complete claim and, when decomposition is accepted, labels for the individual components. The main processing sequence is input validation, claim decomposition, decomposition checking, passage retrieval, component assessment, and overall aggregation. A separate experimental branch adds sentence selection and verification after the initial component judgments.
+
+The implementation uses Python and local Qwen 2.5 models served through Ollama. The command-line interface defaults to the 7B component method. The experimental verification method is selected explicitly. The interface accepts a UTF-8 source-text file rather than fetching a URL, making the source supplied to the evaluator explicit and repeatable. The source is treated as evidence, not as instructions to the evaluator.
+
+[Figure 1 placement]
+Figure 1. Overall system architecture connecting claim-source inputs, evaluation configurations, overall judgments and available component outputs.
+
+3.2 Pretrained Model Architectures
+
+The project uses two different neural model families. DeBERTa [10] is a bidirectional encoder used for classification of a source-claim pair. Qwen [11] is a causal, decoder-only language model used to generate structured judgments from instructions. Their pretrained weights were supplied by the model developers; the project contribution is the task-specific evaluation pipeline, prompts, checks, score mapping, and empirical analysis.
+
+3.2.1 DeBERTa NLI Cross Encoder
+
+The checkpoint is cross-encoder/nli-deberta-v3-small, based on Microsoft's DeBERTa v3 Small and trained by its publisher on SNLI and MultiNLI [12]. Its published configuration specifies six encoder layers, hidden dimension 768, twelve attention heads, and feed-forward intermediate dimension 3,072 [13]. Relative attention uses content-to-position and position-to-content interactions. The Transformers architecture name is DebertaV2ForSequenceClassification; this implementation name does not mean the selected checkpoint is a different DeBERTa generation.
+
+The tokenizer encodes the source as the first sequence and the claim as the second. They are processed jointly, allowing attention across the pair, rather than encoded independently and compared using cosine similarity. The implementation uses max_length=512 and truncation=only_first, which trims the source while retaining the claim where feasible. It does not apply the Qwen passage-ranking function. This difference in evidence exposure must be acknowledged in baseline comparisons.
+
+The pretrained sequence classifier produces contradiction, entailment, and neutral logits. The code applies softmax and reorders these values using the checkpoint's label mapping. Model execution uses eval mode and no_grad: the Transformer and its existing NLI head are not fine-tuned for this project. Instead, the three NLI probabilities become features for a separate Linear(3,3) layer, containing nine weights and three biases. It maps them to complete_support, partial_support, and no_support. This avoids a fixed assumption that neutral is equivalent to partial support.
+
+The mapping is fitted on 90 training examples, 30 per label, selected with seed 42. Weights and biases start at zero. Fitting uses LBFGS with max_iter=80, class-weighted cross-entropy, and a 0.001 squared-weight penalty. Only the twelve mapping parameters are optimized. At prediction time, softmax over the mapped scores and argmax select the support label. The saved report preserves training IDs, a dataset fingerprint, and fitted parameters. Its model_revision is null, so a historically pinned Hugging Face checkpoint revision cannot be claimed.
+
+[Figure 2 placement]
+Figure 2. NLI baseline with a fixed DeBERTa cross-encoder and a separately fitted twelve-parameter mapping from NLI probabilities to project support labels.
+
+3.2.2 Qwen Language Models
+
+The prompted configurations use Ollama tags qwen2.5:3b and qwen2.5:7b. The corresponding published instruction-model specifications describe causal Transformers using rotary positional embeddings, RMS normalization, SwiGLU feed-forward blocks, and grouped-query attention [14, 15]. Causal attention lets each generated position condition on preceding tokens; the model produces a JSON judgment rather than a fixed classifier-head prediction.
+
+Property | Qwen 2.5 3B Instruct | Qwen 2.5 7B Instruct
+--- | --- | ---
+Published parameter count | 3.09 billion | 7.61 billion
+Transformer layers | 36 | 28
+Hidden dimension | 2048 | 3584
+Query attention heads | 16 | 28
+Key/value heads | 2 | 4
+Feed-forward intermediate dimension | 11008 | 18944
+Tied input/output embeddings | Yes | No
+Project request context setting | 4096 tokens | 4096 tokens
+
+The larger model has fewer layers but wider representations; parameter count is not determined by depth alone. The published architectural specifications describe the upstream models. The local inventory snapshot records GGUF Q4_K_M models and their Ollama digests; it is evidence of the installed models at inspection time, not proof of the exact weights for every historical experiment. The upstream advertised maximum context is not the project's configured context budget.
+
+The same model is reused for decomposition, split review, component assessment, and optional verification within a configuration. These stages are separate prompted calls, not separately trained neural networks. There is no project-specific Qwen weight update, LoRA adapter, or training from scratch. Prompts request task-specific JSON fields, and code validates the returned structure and labels. The original component prompt requests labels; explanations and selected evidence belong to the experimental verification path.
+
+3.3 Evaluated Configurations and Comparisons
+
+Configuration | Input and processing | Project-fitted parameters | Output
+--- | --- | --- | ---
+Majority | Most frequent training label; ignores claim/source content | None; label frequency rule | Overall label
+NLI | Joint source-claim encoding, source truncation, NLI probability mapping | Twelve linear-mapping parameters | Overall label and score vectors
+Whole-claim 3B | Claim plus four ranked source windows, one Qwen judgment | None | Overall label
+Components 3B | Decomposition, checks, per-component windows and judgments | None | Components and overall label, or fallback
+Components 7B before verification | Same component design using 7B; recovered from saved verified run | None | Original components and overall label, or fallback
+Verified 7B | Original components, sentence selection and extra evidence judgment | None | Revised components and overall label, or failure
+
+The same-size whole-claim 3B versus component 3B comparison examines two prompting pipelines while holding the language-model size fixed. The component 3B versus 7B comparison changes model size as well as the outputs it produces, so it does not isolate decomposition. The 7B before/after comparison retains the original decomposition and labels and examines the combined evidence-selection and verification stage. NLI differs in architecture, training history, input handling, and inference process; differences cannot be attributed to a single architectural choice.
+
+All local Qwen calls specify temperature zero, seed 42, and num_ctx=4096. Ollama requests do not set an explicit num_predict generation limit. The separate OpenAI API branch sets a 1,200-token output limit, but it was not used for the reported Qwen configurations. These experiments use one recorded generation seed rather than repeated runs across seeds.
+
+3.4 Claim Decomposition and Validation
+
+The decomposition prompt asks for the fewest standalone sentences needed to preserve every checkable detail in the original claim. It instructs the model to retain names, numbers, dates, qualifiers, and relationships and to avoid adding implications or redundant paraphrases. If a faithful split is difficult, the original claim may be returned as a single component. Empty parts are removed, exact duplicate strings are deduplicated, and the result must contain between one and eight components. A count outside this range is recorded as an invalid result.
+
+Two further checks examine whether the proposed decomposition preserves the claim. A deterministic coverage check compares the sets of numeric strings in the claim and the combined components. It also flags a run of four consecutive original words absent from the combined component vocabulary. These are practical heuristics, not proofs of semantic equivalence. A model-based review then checks for missing, altered, or invented information, including changes in scope and relationships.
+
+If either coverage checking or model review rejects the split, the system assesses the whole claim using the same language model. The report records this fallback and the proposed decomposition. Such a result contributes to overall classification evaluation but cannot be credited with producing localized component judgments. This distinction makes the availability of interpretable output measurable rather than assuming it for every example.
+
+[Figure 3 placement]
+Figure 3. Component assessment pipeline with explicit branches for invalid decomposition counts and whole-claim fallback.
+
+3.5 Passage Retrieval and Component Assessment
+
+The source is divided into windows of up to 160 whitespace-separated words, beginning every 120 words. Windows are ranked by the number of distinct case-normalized word tokens shared with the component; earlier source positions break ties. The four highest-ranked windows, or fewer for a short source, are passed to the model. The whole-claim baseline uses the same retrieval function with the complete claim as its query.
+
+Each component receives one of three labels. Supported means the supplied passages establish the statement, contradicted means they directly conflict with it, and unsupported means the evidence is insufficient. The prompt explicitly restricts the decision to the supplied passages. The original component method requests a label, not a free-text explanation or a verified quotation. Its stored passages show the model's input and must not be presented as independently verified supporting evidence.
+
+Local requests use a structured JSON schema, temperature zero, seed 42, and a context setting of 4,096 tokens. Returned fields and label values are validated. Fixed generation settings aid repeatability but do not guarantee identical outputs across model versions, hardware, or serving environments. Retrieval can also miss relevant information, so a component labeled unsupported from retrieved passages is not automatically proof that the full source contains no evidence.
+
+3.6 Overall Aggregation and Experimental Verification
+
+Aggregation uses the number of supported components. If every component is supported, the overall label is complete_support. If at least one but not all are supported, it is partial_support. If none are supported, it is no_support. Unsupported and contradicted components both prevent complete support, while their distinct labels remain available for localized analysis.
+
+The experimental branch first runs the component method and retains the original labels and overall prediction. It then selects evidence sentences for each component. Invalid evidence selections are recorded as component errors. For a selected judgment of supported or contradicted, an additional model call checks whether the selected evidence establishes the component and requests a short reason. A selected unsupported judgment does not receive that extra verification call. If any final component label is invalid, the overall verified result is recorded as a failure. Whole-claim fallback bypasses component verification because no component judgments are available.
+
+The saved original judgments permit a comparison before and after the combined evidence-selection and verification stage. This is a paired analysis of one run, not an independent rerun of the original method. Verification is retained as an experimental comparison; the pre-verification component method is the default demonstration path.
+
+[Figure 4 placement]
+Figure 4. Experimental sentence selection and verification branch. Original judgments are retained; invalid component results produce a failed overall prediction.
+
+3.7 Execution and Reproducibility
+
+The batch runner supports SQLite checkpoints that store run settings and one result per example ID. Resuming checks the stored settings and rejects an incompatible command. This made it possible to continue interrupted evaluation without discarding completed rows. Saved reports preserve the predictions and diagnostic information used by the analysis tools.
+
+The single-claim interface validates inputs before inference, provides a prepare-only option, and can save a JSON report containing the source hash, model, method, prediction, component details, and errors. Existing output files are not overwritten. Retrieved passages can be displayed explicitly, and whole-claim fallback is identified in the output.
+
+Docker packages the Python CLI while Ollama remains on the host computer. The endpoint is configurable through OLLAMA_BASE_URL; native execution defaults to the local loopback address, while Compose uses the host gateway address. Model weights and research data are excluded from the image. An optional analysis image installs plotting dependencies; NLI dependencies are separate from the lightweight CLI image. The container build, 21 automated tests, mounted-source validation, host-model connectivity, and one real claim-check demonstration were successfully checked.
+
+Overall evaluation tools validate dataset fingerprints and example IDs before comparing reports. Localization tools validate reference links and saved model outputs and distinguish missing component output from label disagreement. The artifact package includes checksums so saved analysis inputs can be checked for modification. These mechanisms support reproducibility of the recorded analyses without claiming an identical fresh inference run.
+
+3.8 Design Rationale and Processing Cost
+
+The architecture separates three decisions that can be inspected independently: what a claim says, which source passages are considered, and what those passages establish. Decomposition checks protect the first decision, deterministic passage ranking makes the second traceable, and retained component judgments expose the third. The whole-claim fallback preserves a classification path when decomposition is rejected, while its explicit status prevents that result from being mistaken for successful localization.
+
+The aggregation rule can be written using n accepted components and s supported components: complete_support if s=n; partial_support if 0<s<n; and no_support if s=0. This rule treats each accepted component as a decision unit without learning numerical component weights. Its meaning depends on a faithful decomposition: splitting one detail into several parts or losing a restriction can change the units being aggregated. The annotation and matching analyses therefore examine component quality separately from the overall label.
+
+The retrieval score is the size of the intersection between the component's unique case-normalized word-token set and a candidate window's token set. Ranking is descending by this score, followed by ascending source start position. The method requires no learned embedding index and preserves the text and word position of each selected window. The trade-off is limited sensitivity to synonyms and relationships that do not share words; future retrieval comparisons can hold the judging model fixed to study this stage directly.
+
+With n accepted components and valid responses, the original component path requires n+2 Qwen calls: one decomposition call, one split-review call, and one judgment per component. A coverage rejection uses decomposition followed by a whole-claim call, while rejection by model review adds that review before fallback. The whole-claim baseline requires one judgment call. For a successful verified path, sentence selection adds n calls and the extra evidence check adds one call for each selected supported or contradicted judgment. These are structural request counts, not measured latency or throughput results. They explain why a more detailed assessment requires additional inference work and why its value should be assessed alongside output correctness.
+
+The system architecture was designed and implemented for this project using pretrained model components. Its contribution is the integration of input handling, prompted assessment, decomposition safeguards, evidence retrieval, structured outputs, fallback, verification experiments, and evaluation records. The pretrained Transformer backbones and their original training procedures remain attributed to their developers.
+
+4 Methodology Results and Analysis
+
+4.1 Methodology
+
+The evaluation addressed overall support classification, component localization, and mismatch analysis separately. Overall scores used the existing human labels in the dataset accompanying Liu et al. [1]. Cleaning retained 1,085 test pairs: 787 complete-support, 183 partial-support, and 115 no-support examples. Original labels and example IDs were preserved. The analysis tools checked identical example sets and dataset fingerprints across the six compared reports.
+
+Dataset preparation first normalized record fields and preserved original raw line numbers. Exact duplicates were removed within each split. A subsequent pass removed statement-source URL pairs already present in an earlier split, using train, development, then test order. IDs remained tied to original split positions, and retained support labels were checked against the raw records. This procedure addresses those exact duplicate and overlap definitions; it does not detect every paraphrase or related-source cluster.
+
+Split | Original pairs | Cleaned pairs | Complete | Partial | No support
+--- | --- | --- | --- | --- | ---
+train | 8834 | 8718 | 6321 | 1538 | 859
+dev | 1106 | 1091 | 819 | 163 | 109
+test | 1097 | 1085 | 787 | 183 | 115
+
+These split sizes describe the preserved cleaned files, not a newly randomized partition. Historical test reuse during method development is considered separately in Section 4.6.
+
+The comparison included majority prediction, the cross-encoder/nli-deberta-v3-small NLI model, a whole-claim Qwen 2.5 3B baseline, a 3B component method, and the 7B component method before and after experimental verification. The saved NLI report records a fitted classifier and 90 training example IDs; this mapping adapts NLI scores to the dataset labels without treating neutral as synonymous with partial support. Prompted methods used local Ollama serving. Decomposition checks and fallback were part of the component configuration described in Chapter 3.
+
+The 7B pre-verification report was reconstructed from original judgments retained in the verified run. The before-and-after comparison therefore measures the combined evidence-selection and verification stage on saved decompositions and original judgments; it is not an independent rerun. Comparisons between 3B and 7B additionally change model size and cannot isolate decomposition as the sole cause of a difference.
+
+Accuracy and per-class precision, recall, and F1 were calculated with invalid predictions retained as failures. Macro-F1 averages F1 equally across the three gold classes. Failures reduce recall and accuracy rather than disappearing from the evaluation. Whole-claim fallback can still provide a valid overall label, but it is not localized component output.
+
+The original fine-grained review contained 15 claims and 35 reference details, comprising 24 supported and 11 unsupported details and no contradicted references. Reference annotations were AI-assisted and user-reviewed after exposure to model outputs; matching provenance was recorded separately. Ten additional natural test pairs contributed 21 selected target details, all subsequently confirmed by the author through assistant-guided source review. This supplementary set was selected purposively, contains overlapping targets and categories, and is kept separate from the original subset.
+
+Localization scoring distinguishes exact agreement from binary error detection. An error reference is unsupported or contradicted; a linked prediction with either error label detects it, even when the subtype is wrong. Exact correctness requires all linked labels to equal the reference label. Missing error references count as false negatives. Unmatched generated errors require separate adjudication rather than being assumed false positives. Reference-aligned and prediction-unit precision are not interchangeable.
+
+4.2 Overall Results
+
+Method | Accuracy | Macro-F1 | Failures
+--- | --- | --- | ---
+Majority | 72.53% | 0.2803 | 0
+NLI | 19.35% | 0.1765 | 0
+Whole-claim 3B | 18.62% | 0.2160 | 0
+Components 3B | 45.35% | 0.4042 | 48
+Components 7B | 67.19% | 0.5378 | 19
+Verified 7B | 55.48% | 0.4998 | 49
+
+The pre-verification 7B component configuration achieved the highest macro-F1 among the evaluated configurations. Majority prediction achieved the highest accuracy by predicting complete support for every example, but identified no partial-support or no-support cases. This shows why accuracy and macro-F1 must be considered together in this class distribution.
+
+At the same 3B model size, the component method increased accuracy from 18.62% to 45.35% and macro-F1 from 0.2160 to 0.4042 relative to the whole-claim configuration. This is an observed improvement for these particular prompts, retrieval settings, and data. It does not establish superiority over all whole-claim evaluation methods.
+
+For the 7B component method, per-class precision, recall, and F1 were:
+
+Gold class | Precision | Recall | F1
+--- | --- | --- | ---
+complete_support | 0.8221 | 0.7751 | 0.7979
+partial_support | 0.2976 | 0.4098 | 0.3448
+no_support | 0.6111 | 0.3826 | 0.4706
+
+The method correctly classified 610 of 787 complete-support cases, 75 of 183 partial-support cases, and 44 of 115 no-support cases. Partial support therefore remained challenging even in the highest-macro-F1 configuration. The whole-claim 3B method had higher partial-support recall, but its low precision and near-absence of correct complete-support predictions show the cost of its prediction pattern.
+
+Additional per-class results for the comparison configurations are given below. Metrics are proportions, with zero used for undefined precision or F1.
+
+Method | Gold class | Precision | Recall | F1
+--- | --- | --- | --- | ---
+Majority | complete_support | 0.7253 | 1.0000 | 0.8408
+Majority | partial_support | 0.0000 | 0.0000 | 0.0000
+Majority | no_support | 0.0000 | 0.0000 | 0.0000
+NLI | complete_support | 0.7643 | 0.1360 | 0.2309
+NLI | partial_support | 0.1440 | 0.0984 | 0.1169
+NLI | no_support | 0.1037 | 0.7391 | 0.1818
+Whole-claim 3B | complete_support | 1.0000 | 0.0025 | 0.0051
+Whole-claim 3B | partial_support | 0.1549 | 0.7049 | 0.2539
+Whole-claim 3B | no_support | 0.2840 | 0.6174 | 0.3890
+Components 3B | complete_support | 0.7743 | 0.4752 | 0.5890
+Components 3B | partial_support | 0.1663 | 0.3934 | 0.2338
+Components 3B | no_support | 0.3802 | 0.4000 | 0.3898
+Verified 7B | complete_support | 0.8905 | 0.5578 | 0.6859
+Verified 7B | partial_support | 0.2588 | 0.5246 | 0.3466
+Verified 7B | no_support | 0.3895 | 0.5826 | 0.4669
+
+Component output availability is reported separately from overall classification. A fallback still produces an overall prediction but supplies no localized judgments. The following counts come from the saved report records.
+
+Method | Whole-claim fallback cases | Failed overall predictions
+--- | --- | ---
+Components 3B | 414 | 48
+Components 7B | 325 | 19
+Verified 7B | 325 | 49
+
+The NLI configuration predicted no support for many gold complete-support examples, while the whole-claim 3B configuration frequently predicted partial support. These observed prediction patterns explain their low aggregate results; the experiment does not isolate whether architecture, task adaptation, prompt wording, or evidence exposure caused them.
+
+[Figure 5 placement]
+Figure 5. Accuracy and macro-F1 across six configurations on the same 1,085 cleaned test pairs. Invalid outputs remain in the evaluation.
+
+[Figure 6 placement]
+Figure 6. Confusion counts for the 7B component method before verification, including a separate failed-prediction column. Rows are dataset labels and columns are model predictions.
+
+4.3 Verification Analysis
+
+Additional verification increased partial-support recall from 40.98% to 52.46% and no-support recall from 38.26% to 58.26%. However, complete-support recall decreased from 77.51% to 55.78%, and failures increased from 19 to 49. Verification corrected 74 predictions but changed 201 previously correct predictions to errors or failures. Its aggregate accuracy and macro-F1 were therefore lower. These results informed the choice of the pre-verification component configuration as the default tool.
+
+Exploratory paired bootstrap analysis used 2,000 example-level resamples with seed 42. Relative to majority, the pre-verification 7B method changed accuracy by -5.35 percentage points, with a 95% interval of [-8.30, -2.21], and macro-F1 by +25.75 points, with an interval of [+21.54, +29.51]. Verification changed accuracy by -11.71 points, with an interval of [-14.65, -8.85], and macro-F1 by -3.80 points, with an interval of [-7.67, +0.11]. The macro-F1 interval crosses zero, so this bootstrap does not establish a clear directional macro-F1 difference. The intervals do not account for shared-question/source clusters, model-run variation, or adaptive development.
+
+4.4 Component Localization
+
+Measure | Components 3B | Components 7B
+--- | --- | ---
+Exact labels among matched references | 15/24 | 10/15
+Exact labels across all reference details | 15/35 (42.86%) | 10/35 (28.57%)
+Reference-aligned error TP / FP / FN | 1 / 1 / 10 | 2 / 1 / 9
+Reference-aligned error precision | 50.00% | 66.67%
+Reference-aligned error recall | 9.09% | 18.18%
+Reference-aligned error F1 | 0.1538 | 0.2857
+
+The original subset demonstrates that better overall classification does not automatically imply better exact component coverage. Neither method assigned the exact correct label to any of its 11 unsupported reference details. Binary detection can nevertheless identify an error while confusing unsupported with contradicted. Whole-claim fallback and omitted or distorted components limit the availability of localized judgments.
+
+Conservative alignment sensitivity reduced exact coverage to 14/35 for 3B and 6/35 for 7B. This policy rejected matches requiring missing context or changed relationships to be reconstructed. A separate assistant source audit examined all four error-labeled 7B predictions, including one previously unmatched prediction. Three identified erroneous content, giving prediction-unit binary error precision of 3/4; excluding an interpretation-sensitive case gave 2/3. These small audit counts must not be combined with reference-unit recall into a single F1.
+
+4.5 Supplementary Mismatch Review
+
+Method | Exact labels on 21 selected targets | Error TP / FP / FN
+--- | --- | ---
+3b | 4/21 | 1 / 0 / 11
+7b | 11/21 | 9 / 0 / 3
+verified7b | 13/21 | 12 / 1 / 0
+
+Mismatch category | Targets | 3B exact | 7B exact | Verified 7B exact
+--- | --- | --- | --- | ---
+conceptual_relation | 1 | 0 | 0 | 0
+entity | 3 | 0 | 1 | 2
+numerical | 4 | 0 | 3 | 3
+qualifier | 1 | 0 | 0 | 1
+scope | 2 | 0 | 0 | 2
+temporal | 4 | 0 | 1 | 3
+unsupported_addition | 2 | 0 | 2 | 2
+
+The supplementary examples show concrete contrasts: changed ranking points, a reversed winner relation, missing dates, an unstated December restriction, and changed quantitative denominators. Supported controls were included. Contradiction is a support-label outcome rather than a mutually exclusive mismatch cause. Category totals overlap and must not be summed as independent observations.
+
+Verification detected all 12 selected error targets in this supplement but also flagged one supported target as erroneous. This descriptive result concerns selected details, not all components of these claims or the full test distribution. It is compatible with the aggregate performance decline: selected error corrections do not capture the full cost of changing previously correct judgments.
+
+4.6 Interpretation and Limitations
+
+RQ1 is addressed by the overall comparison: performance depended on both configuration and metric, with the 7B component method strongest in macro-F1 and majority strongest in accuracy. RQ2 is addressed by explicit component outputs and measured localization: the system exposed individual judgments, but their exact correctness and coverage remained limited. RQ3 is addressed descriptively through source-grounded mismatch cases; the evidence does not support a reliable general ranking of the hardest categories.
+
+Earlier test errors informed later development, so the reused test split is not an untouched final evaluation. The annotations were AI-assisted, reviewers had model-output exposure, and the additional sample was purposive. Findings therefore characterize the implemented configurations and reviewed examples rather than an independently established population performance level. A genuinely fresh evaluation set and larger independent annotations are needed to strengthen generalization claims.
+
+The project contribution is a working and reproducible investigation that connects overall support assessment with interpretable component outputs and evaluates both. Preserving failures, fallback, original verification judgments, and matching sensitivity makes the trade-offs visible and identifies concrete directions for improving decomposition, evidence retrieval, and component assessment.
+
+5 Conclusions
+
+5.1 Summary
+
+This project investigated citation support at the level of both complete claims and individual claim components. It implemented a pipeline that decomposes a claim, checks the proposed split, retrieves source passages, labels components as supported, unsupported, or contradicted, and aggregates these judgments into an overall support assessment. Comparisons with majority prediction, natural language inference, and prompted whole-claim assessment connected this implementation to the research questions established in the proposal.
+
+The evaluation on 1,085 cleaned claim-source pairs showed that the pre-verification Qwen 2.5 7B component configuration achieved the highest macro-F1 among the evaluated configurations, at 0.5378, with 67.19% accuracy. The majority baseline achieved 72.53% accuracy and 0.2803 macro-F1. These findings show that the strongest configuration depends on the evaluation criterion: component assessment provided better macro-F1 in this comparison, while majority prediction benefited from the prevalence of complete-support examples. At the same 3B model size, the component configuration also improved both overall accuracy and macro-F1 relative to the evaluated whole-claim prompt.
+
+The component review provided a separate assessment of localization. On the original exploratory sample of 35 reference details, exact reference coverage was 15/35 for 3B and 10/35 for 7B under contextual alignment. Conservative matching reduced these values to 14/35 and 6/35. This demonstrated why overall classification and localized correctness must be measured separately. The implementation made component decisions inspectable, but fallback, decomposition changes, and label errors limited the correctness and availability of localized output.
+
+The experimental verification stage revealed a further trade-off. It increased recall for partial-support and no-support cases while reducing complete-support recall and aggregate performance. Its selected mismatch corrections did not outweigh changes to previously correct predictions. Preserving both the original and verified judgments enabled this effect to be examined directly and supported retaining the pre-verification component configuration as the default.
+
+For RQ1, the study established a common evaluation of six configurations and showed that the highest accuracy and highest macro-F1 belonged to different methods. For RQ2, the implemented pipeline produced inspectable component judgments, and the annotation-based evaluation measured their correctness separately from overall classification. This provides an operational and measurable realization of the proposal's component-level objective, with reliability still requiring improvement.
+
+For RQ3, the reviewed cases documented how numerical, temporal, entity, qualifier, scope, and unsupported-addition mismatches affected judgments. This supplies concrete evidence about model behavior and targets for improvement. Because the cases were small and purposively selected, the study examined these categories descriptively rather than establishing a general ordering of difficulty.
+
+These conclusions characterize the implemented configurations and the reviewed samples. Test reuse during development and AI-assisted annotation constrain generalization. The resulting evidence supports further investigation of component-level assessment and provides a concrete basis for the independent evaluations proposed in Section 5.3.
+
+5.2 Contributions and Potential Impact
+
+The first contribution is an operational pipeline that connects a whole-claim support judgment to inspectable component assessments. Its decomposition checks, explicit fallback status, retained passages, and structured component labels help distinguish what the system concluded from the information it considered. This provides a concrete way to demonstrate partial support, such as a supported attribution combined with a contradicted year.
+
+The second contribution is an experimental comparison on a common set of claim-source pairs. Reporting accuracy, macro-F1, per-class measures, failure counts, and the saved before-and-after verification judgments makes the trade-offs visible. The study shows why an additional checking stage should be evaluated rather than assumed to improve a system, and why a stronger overall score does not establish stronger localization.
+
+The third contribution is a reviewed set of component annotations and a localization evaluation procedure that distinguishes exact labeling from binary error detection. The original 15-claim review and the separate 10-pair, 21-target supplement document numerical, temporal, entity, qualifier, scope, unsupported-addition, and relational issues. The supplement was confirmed through assistant-guided source review. Matching sensitivity and a separate prediction-unit audit expose uncertainty in how generated parts are aligned with reference details. These resources support further investigation without presenting the annotations as independent human gold.
+
+The fourth contribution is a usable research implementation with a command-line demonstration, resumable evaluation, validated saved-analysis tools, automated tests, and Docker support. Source fingerprints and artifact checksums help preserve the connection between a reported result and the inputs used to calculate it. These mechanisms make the project easier to inspect, demonstrate, and extend.
+
+The potential practical value is assistance with evidence review. Component labels can direct a reader's attention to a specific date, quantity, entity, or restriction that needs checking. Realizing this value reliably requires better localized accuracy and independent validation; the current system should be understood as an evaluated research prototype rather than an autonomous fact-verification service.
+
+5.3 Future Work
+
+A priority is evaluation on genuinely unexposed data after freezing the method and prompts. Larger component annotations prepared independently of model output would allow stronger localization estimates and a more balanced comparison across mismatch categories. Multiple annotators and recorded disagreements would help distinguish model error from interpretive ambiguity. Original-claim span annotation could additionally support a more comprehensive localization measure than the current reference-aligned procedure.
+
+Decomposition is another important direction. Future checks should evaluate whether a split preserves negation, attribution, quantities, comparative language, and causal relationships without relying on lexical coverage alone. Measuring fidelity separately from component judgment would help locate the source of failures and reduce the need to reconstruct missing context during matching.
+
+Evidence retrieval could be extended beyond word overlap and evaluated against source evidence identified by reviewers. Comparing retrieval approaches while holding the judging model fixed would clarify whether a missing detail reflects the source, passage selection, or inference. Any additional verification stage should be calibrated on development examples and evaluated for both corrected errors and newly introduced errors before being adopted.
+
+Finally, comparisons using the same model size, controlled inference settings, and repeated runs would better isolate the contribution of decomposition and verification. Cluster-aware uncertainty estimates could account for related questions or sources. Parameter-efficient fine-tuning remains an optional extension if sufficiently reliable training annotations become available. These directions build on the implemented pipeline and the specific failure modes documented by this study.
+
+The project thus delivers the central investigation proposed: a system that evaluates individual claim components against cited evidence, a comparison with whole-claim methods, and an analysis of the resulting judgments. Its value lies in making the assessment process inspectable and measurable, and in using experimental evidence to guide the next design decisions.
+
+References
+
+[1] N. F. Liu, T. Zhang, and P. Liang, "Evaluating Verifiability in Generative Search Engines," Findings of the Association for Computational Linguistics: EMNLP 2023, pp. 7001-7025, 2023. https://doi.org/10.18653/v1/2023.findings-emnlp.467
+
+[2] T. Gao, H. Yen, J. Yu, and D. Chen, "Enabling Large Language Models to Generate Text with Citations," Proceedings of the 2023 Conference on Empirical Methods in Natural Language Processing, pp. 6465-6488, 2023. https://doi.org/10.18653/v1/2023.emnlp-main.398
+
+[3] X. Yue, B. Wang, Z. Chen, K. Zhang, Y. Su, and H. Sun, "Automatic Evaluation of Attribution by Large Language Models," Findings of the Association for Computational Linguistics: EMNLP 2023, pp. 4615-4635, 2023. https://doi.org/10.18653/v1/2023.findings-emnlp.307
+
+[4] Y. Li, X. Yue, Z. Liao, and H. Sun, "AttributionBench: How Hard is Automatic Attribution Evaluation?" Findings of the Association for Computational Linguistics: ACL 2024, pp. 14919-14935, 2024. https://doi.org/10.18653/v1/2024.findings-acl.886
+
+[5] W. Zhang, M. Aliannejadi, Y. Yuan, J. Pei, J.-h. Huang, and E. Kanoulas, "Towards Fine-Grained Citation Evaluation in Generated Text: A Comparative Analysis of Faithfulness Metrics," Proceedings of the 17th International Natural Language Generation Conference, pp. 427-439, 2024. https://doi.org/10.18653/v1/2024.inlg-main.35
+
+[6] H. Rashkin, V. Nikolaev, M. Lamm, L. Aroyo, M. Collins, D. Das, S. Petrov, G. S. Tomar, I. Turc, and D. Reitter, "Measuring Attribution in Natural Language Generation Models," Computational Linguistics, vol. 49, no. 4, pp. 777-840, 2023. https://doi.org/10.1162/coli_a_00486
+
+[7] Y. Xu, J. Gao, X. Yu, B. Bi, H. Shen, and X. Cheng, "ALiiCE: Evaluating Positional Fine-grained Citation Generation," Proceedings of NAACL-HLT 2025, Volume 1: Long Papers, pp. 545-561, 2025. https://doi.org/10.18653/v1/2025.naacl-long.23
+
+[8] Y. Xu, P. Qi, J. Chen, K. Liu, R. Han, L. Liu, B. Min, V. Castelli, A. Gupta, and Z. Wang, "CiteEval: Principle-Driven Citation Evaluation for Source Attribution," Proceedings of ACL 2025, Volume 1: Long Papers, pp. 32759-32778, 2025. https://doi.org/10.18653/v1/2025.acl-long.1574
+
+[9] K. Wu, E. Wu, K. Wei, A. Zhang, A. Casasola, T. Nguyen, S. Riantawan, P. Shi, D. Ho, and J. Zou, "An Automated Framework for Assessing How Well LLMs Cite Relevant Medical References," Nature Communications, vol. 16, article 3615, 2025. https://doi.org/10.1038/s41467-025-58551-6
+
+[10] P. He, J. Gao, and W. Chen, "DeBERTaV3: Improving DeBERTa Using ELECTRA-Style Pre-Training with Gradient-Disentangled Embedding Sharing," arXiv:2111.09543, version 4, 2023. https://arxiv.org/abs/2111.09543v4
+
+[11] Qwen Team, "Qwen2.5 Technical Report," arXiv:2412.15115, version 2, 2025. https://arxiv.org/abs/2412.15115v2
+
+[12] Sentence Transformers Cross Encoders, "nli-deberta-v3-small," model card, accessed November 27, 2026. https://huggingface.co/cross-encoder/nli-deberta-v3-small
+
+[13] Sentence Transformers Cross Encoders, "nli-deberta-v3-small Configuration," accessed November 27, 2026. https://huggingface.co/cross-encoder/nli-deberta-v3-small/raw/main/config.json
+
+[14] Qwen Team, "Qwen2.5-3B-Instruct," model card and configuration, accessed November 27, 2026. https://huggingface.co/Qwen/Qwen2.5-3B-Instruct ; configuration: https://huggingface.co/Qwen/Qwen2.5-3B-Instruct/raw/main/config.json
+
+[15] Qwen Team, "Qwen2.5-7B-Instruct," model card and configuration, accessed November 27, 2026. https://huggingface.co/Qwen/Qwen2.5-7B-Instruct ; configuration: https://huggingface.co/Qwen/Qwen2.5-7B-Instruct/raw/main/config.json

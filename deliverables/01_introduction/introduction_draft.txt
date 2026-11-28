@@ -20,9 +20,7 @@ The objective was to implement and evaluate an NLP pipeline that decomposes gene
 
 The implemented pipeline accepts a generated claim and its cited source text. It proposes smaller verifiable components, checks decomposition coverage and fidelity, retrieves relevant passages, and assesses each component as supported, unsupported, or contradicted. Component judgments are aggregated into complete support when all components are supported, partial support when some are supported, and no support when none are supported. Rejected decompositions use a whole-claim fallback, while invalid outputs are recorded as failures. Fallback results are explicitly distinguished because they do not provide localized component judgments.
 
-The experimental comparison used the dataset released with Liu et al. [1]. Overall classification was evaluated on 1,085 cleaned test pairs with the original human support labels preserved. The comparison included a majority baseline, a pretrained natural language inference model, a prompted whole-claim language model, and component methods using Qwen 2.5 models. An additional evidence-selection and verification stage was evaluated using saved judgments from the same 7B run. Accuracy, macro-F1, per-class precision and recall, and failure counts were used to assess performance. In these experiments, the pre-verification 7B component method achieved the highest macro-F1, while the majority baseline achieved the highest accuracy. This distinction motivates examining multiple measures rather than treating a single score as sufficient evidence of success.
-
-Fine-grained evaluation examined an exploratory subset of 15 claims containing 35 reference details, supplemented by 10 additional claim-source pairs containing 21 selected target details. The supplementary labels were confirmed by the author after AI-assisted review of saved-source evidence. The analysis distinguished exact component labeling from binary detection of unsupported or contradicted content, and examined mismatches involving numbers, entities, dates, qualifiers, scope, and unsupported additions. Direct contradiction was treated as a support-label outcome that can arise from different mismatch types. These samples provide descriptive evidence rather than a representative ranking of general category difficulty.
+The experimental study compared the component approach with majority prediction, natural language inference, and prompted whole-claim assessment on 1,085 cleaned claim-source pairs. Reviewed component annotations provided a separate basis for measuring localized correctness and examining mismatch types. A further experiment assessed the effect of evidence selection and verification. Chapter 4 presents the configurations, results, and conditions governing their interpretation.
 
 The investigation retained the three research questions from the proposal:
 
@@ -32,14 +30,8 @@ RQ2. Can fine-grained claim decomposition and evidence alignment identify which 
 
 RQ3. Which types of fine-grained evidential mismatches, such as numerical discrepancies, entity or temporal differences, qualifiers, scope changes, unsupported additions, and contradictions, are most difficult for automatic citation-support methods to identify?
 
-The resulting contribution combines a working claim-checking tool, comparisons of overall classification, reviewed component annotations, and reproducible localization analyses. The experiments also establish practical limits: test examples were reused during development, and the small, AI-assisted annotation samples do not provide an independent population-level estimate. These conditions guide the interpretation of the findings throughout the report.
+The resulting contribution combines a working claim-checking tool, comparisons of overall classification, reviewed component annotations, and reproducible localization analyses. This connects the proposal's goal of more informative support assessment to concrete outputs and measurable experimental findings.
 
 1.4 Organization of This Project Report
 
 Chapter 2 introduces the concepts needed to distinguish overall support, component labels, and evidence alignment, and reviews related citation-evaluation research. Chapter 3 describes the pipeline architecture, decomposition checks, retrieval, component assessment, aggregation, and implementation. Chapter 4 presents the dataset preparation, experimental methodology, overall results, localization evaluation, mismatch analysis, and limitations. Chapter 5 summarizes the findings and contributions and identifies directions for future work. The references document the sources used, and appendices provide supporting experimental and reproducibility details where appropriate.
-
-References cited in this section
-
-[1] N. F. Liu, T. Zhang, and P. Liang, "Evaluating Verifiability in Generative Search Engines," Findings of the Association for Computational Linguistics: EMNLP 2023, pp. 7001-7025, 2023. https://doi.org/10.18653/v1/2023.findings-emnlp.467
-
-[2] T. Gao, H. Yen, J. Yu, and D. Chen, "Enabling Large Language Models to Generate Text with Citations," Proceedings of the 2023 Conference on Empirical Methods in Natural Language Processing, pp. 6465-6488, 2023. https://doi.org/10.18653/v1/2023.emnlp-main.398

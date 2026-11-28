@@ -1,0 +1,34 @@
+Document preparation status
+
+Complete text assembled from the five chapter drafts and the consolidated reference list.
+Abstract: 125 words; within the template maximum of 150.
+Reference target check: all numeric chapter citations resolve to bibliography entries 1-15.
+Four architecture figures and two saved-results charts exist; six captions and placement markers are included.
+Findings and material limitations retained; contributions lead the abstract and conclusions.
+
+Pending before submission
+Word/PDF assembly using the supplied template, including real tables, figure insertion, numbering and pagination.
+Visual inspection of every rendered page; no Word/PDF layout verification has occurred.
+Confirm whether the course requires approval or degree-history fields from the generic template; no signatures or personal degree facts have been invented.
+Editorial review of the complete assembled report by the author.
+Refresh and verify the table of contents, list of figures, reference numbering and cross-references after formatting.
+
+Environment constraint
+The required workspace document runtime/dependency-loader tool is unavailable in this session. The text draft is not a substitute for the final formatted submission.
+
+Figure assets
+/Users/tejaljadhav/MS_FINAL_PROJECT/deliverables/04_research_and_implementation/figures/01_system_overview.png
+/Users/tejaljadhav/MS_FINAL_PROJECT/deliverables/04_research_and_implementation/figures/02_nli_architecture.png
+/Users/tejaljadhav/MS_FINAL_PROJECT/deliverables/04_research_and_implementation/figures/03_component_pipeline.png
+/Users/tejaljadhav/MS_FINAL_PROJECT/deliverables/04_research_and_implementation/figures/04_verification_branch.png
+/Users/tejaljadhav/MS_FINAL_PROJECT/results/final/overall_results.png
+/Users/tejaljadhav/MS_FINAL_PROJECT/results/final/confusion_7b.png
+
+Chapter 3 technical review
+Checked against whole_claim_nli.py, run_prompted.py and the saved NLI metadata on November 27, 2026. Clarified local generation settings and added aggregation, retrieval and request-count rationale. Chapter 3 and assembled text are synchronized. Model-card specifications and diagram checks were performed during the preceding architecture expansion. This is a text/code review, not Word/PDF layout approval.
+
+Chapter 4 numerical and methodology review
+All six overall metric objects recomputed against the exact dataset agree with results/final/metrics.json to floating-point tolerance 1e-12. Added cleaning definitions, actual cleaned split distributions, complete per-class comparison and saved fallback counts. Chapter 4 and assembled text synchronized. This is saved-analysis verification, not independent evaluation data or an inference rerun.
+
+Chapter 5 conclusion review
+Checked the headline results and localization counts against the reviewed Chapter 4. Added explicit conclusions for RQ1, RQ2 and RQ3, retaining the distinction between descriptive category analysis and a general difficulty ranking. Four contributions are tied to implemented artifacts; future work is identified separately. All five main chapters have received an initial text review; Word/PDF formatting, visual verification and author review remain pending.

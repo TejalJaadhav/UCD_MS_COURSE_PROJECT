@@ -1,0 +1,101 @@
+3 Architecture and Implementation
+
+3.1 High Level Design
+
+The system assesses a supplied claim against the text of its cited source. It has two output levels: a label for the complete claim and, when decomposition is accepted, labels for the individual components. The main processing sequence is input validation, claim decomposition, decomposition checking, passage retrieval, component assessment, and overall aggregation. A separate experimental branch adds sentence selection and verification after the initial component judgments.
+
+The implementation uses Python and local Qwen 2.5 models served through Ollama. The command-line interface defaults to the 7B component method. The experimental verification method is selected explicitly. The interface accepts a UTF-8 source-text file rather than fetching a URL, making the source supplied to the evaluator explicit and repeatable. The source is treated as evidence, not as instructions to the evaluator.
+
+3.2 Pretrained Model Architectures
+
+The project uses two different neural model families. DeBERTa [10] is a bidirectional encoder used for classification of a source-claim pair. Qwen [11] is a causal, decoder-only language model used to generate structured judgments from instructions. Their pretrained weights were supplied by the model developers; the project contribution is the task-specific evaluation pipeline, prompts, checks, score mapping, and empirical analysis.
+
+3.2.1 DeBERTa NLI Cross Encoder
+
+The checkpoint is cross-encoder/nli-deberta-v3-small, based on Microsoft's DeBERTa v3 Small and trained by its publisher on SNLI and MultiNLI [12]. Its published configuration specifies six encoder layers, hidden dimension 768, twelve attention heads, and feed-forward intermediate dimension 3,072 [13]. Relative attention uses content-to-position and position-to-content interactions. The Transformers architecture name is DebertaV2ForSequenceClassification; this implementation name does not mean the selected checkpoint is a different DeBERTa generation.
+
+The tokenizer encodes the source as the first sequence and the claim as the second. They are processed jointly, allowing attention across the pair, rather than encoded independently and compared using cosine similarity. The implementation uses max_length=512 and truncation=only_first, which trims the source while retaining the claim where feasible. It does not apply the Qwen passage-ranking function. This difference in evidence exposure must be acknowledged in baseline comparisons.
+
+The pretrained sequence classifier produces contradiction, entailment, and neutral logits. The code applies softmax and reorders these values using the checkpoint's label mapping. Model execution uses eval mode and no_grad: the Transformer and its existing NLI head are not fine-tuned for this project. Instead, the three NLI probabilities become features for a separate Linear(3,3) layer, containing nine weights and three biases. It maps them to complete_support, partial_support, and no_support. This avoids a fixed assumption that neutral is equivalent to partial support.
+
+The mapping is fitted on 90 training examples, 30 per label, selected with seed 42. Weights and biases start at zero. Fitting uses LBFGS with max_iter=80, class-weighted cross-entropy, and a 0.001 squared-weight penalty. Only the twelve mapping parameters are optimized. At prediction time, softmax over the mapped scores and argmax select the support label. The saved report preserves training IDs, a dataset fingerprint, and fitted parameters. Its model_revision is null, so a historically pinned Hugging Face checkpoint revision cannot be claimed.
+
+3.2.2 Qwen Language Models
+
+The prompted configurations use Ollama tags qwen2.5:3b and qwen2.5:7b. The corresponding published instruction-model specifications describe causal Transformers using rotary positional embeddings, RMS normalization, SwiGLU feed-forward blocks, and grouped-query attention [14, 15]. Causal attention lets each generated position condition on preceding tokens; the model produces a JSON judgment rather than a fixed classifier-head prediction.
+
+Property | Qwen 2.5 3B Instruct | Qwen 2.5 7B Instruct
+--- | --- | ---
+Published parameter count | 3.09 billion | 7.61 billion
+Transformer layers | 36 | 28
+Hidden dimension | 2048 | 3584
+Query attention heads | 16 | 28
+Key/value heads | 2 | 4
+Feed-forward intermediate dimension | 11008 | 18944
+Tied input/output embeddings | Yes | No
+Project request context setting | 4096 tokens | 4096 tokens
+
+The larger model has fewer layers but wider representations; parameter count is not determined by depth alone. The published architectural specifications describe the upstream models. The local inventory snapshot records GGUF Q4_K_M models and their Ollama digests; it is evidence of the installed models at inspection time, not proof of the exact weights for every historical experiment. The upstream advertised maximum context is not the project's configured context budget.
+
+The same model is reused for decomposition, split review, component assessment, and optional verification within a configuration. These stages are separate prompted calls, not separately trained neural networks. There is no project-specific Qwen weight update, LoRA adapter, or training from scratch. Prompts request task-specific JSON fields, and code validates the returned structure and labels. The original component prompt requests labels; explanations and selected evidence belong to the experimental verification path.
+
+3.3 Evaluated Configurations and Comparisons
+
+Configuration | Input and processing | Project-fitted parameters | Output
+--- | --- | --- | ---
+Majority | Most frequent training label; ignores claim/source content | None; label frequency rule | Overall label
+NLI | Joint source-claim encoding, source truncation, NLI probability mapping | Twelve linear-mapping parameters | Overall label and score vectors
+Whole-claim 3B | Claim plus four ranked source windows, one Qwen judgment | None | Overall label
+Components 3B | Decomposition, checks, per-component windows and judgments | None | Components and overall label, or fallback
+Components 7B before verification | Same component design using 7B; recovered from saved verified run | None | Original components and overall label, or fallback
+Verified 7B | Original components, sentence selection and extra evidence judgment | None | Revised components and overall label, or failure
+
+The same-size whole-claim 3B versus component 3B comparison examines two prompting pipelines while holding the language-model size fixed. The component 3B versus 7B comparison changes model size as well as the outputs it produces, so it does not isolate decomposition. The 7B before/after comparison retains the original decomposition and labels and examines the combined evidence-selection and verification stage. NLI differs in architecture, training history, input handling, and inference process; differences cannot be attributed to a single architectural choice.
+
+All local Qwen calls specify temperature zero, seed 42, and num_ctx=4096. Ollama requests do not set an explicit num_predict generation limit. The separate OpenAI API branch sets a 1,200-token output limit, but it was not used for the reported Qwen configurations. These experiments use one recorded generation seed rather than repeated runs across seeds.
+
+3.4 Claim Decomposition and Validation
+
+The decomposition prompt asks for the fewest standalone sentences needed to preserve every checkable detail in the original claim. It instructs the model to retain names, numbers, dates, qualifiers, and relationships and to avoid adding implications or redundant paraphrases. If a faithful split is difficult, the original claim may be returned as a single component. Empty parts are removed, exact duplicate strings are deduplicated, and the result must contain between one and eight components. A count outside this range is recorded as an invalid result.
+
+Two further checks examine whether the proposed decomposition preserves the claim. A deterministic coverage check compares the sets of numeric strings in the claim and the combined components. It also flags a run of four consecutive original words absent from the combined component vocabulary. These are practical heuristics, not proofs of semantic equivalence. A model-based review then checks for missing, altered, or invented information, including changes in scope and relationships.
+
+If either coverage checking or model review rejects the split, the system assesses the whole claim using the same language model. The report records this fallback and the proposed decomposition. Such a result contributes to overall classification evaluation but cannot be credited with producing localized component judgments. This distinction makes the availability of interpretable output measurable rather than assuming it for every example.
+
+3.5 Passage Retrieval and Component Assessment
+
+The source is divided into windows of up to 160 whitespace-separated words, beginning every 120 words. Windows are ranked by the number of distinct case-normalized word tokens shared with the component; earlier source positions break ties. The four highest-ranked windows, or fewer for a short source, are passed to the model. The whole-claim baseline uses the same retrieval function with the complete claim as its query.
+
+Each component receives one of three labels. Supported means the supplied passages establish the statement, contradicted means they directly conflict with it, and unsupported means the evidence is insufficient. The prompt explicitly restricts the decision to the supplied passages. The original component method requests a label, not a free-text explanation or a verified quotation. Its stored passages show the model's input and must not be presented as independently verified supporting evidence.
+
+Local requests use a structured JSON schema, temperature zero, seed 42, and a context setting of 4,096 tokens. Returned fields and label values are validated. Fixed generation settings aid repeatability but do not guarantee identical outputs across model versions, hardware, or serving environments. Retrieval can also miss relevant information, so a component labeled unsupported from retrieved passages is not automatically proof that the full source contains no evidence.
+
+3.6 Overall Aggregation and Experimental Verification
+
+Aggregation uses the number of supported components. If every component is supported, the overall label is complete_support. If at least one but not all are supported, it is partial_support. If none are supported, it is no_support. Unsupported and contradicted components both prevent complete support, while their distinct labels remain available for localized analysis.
+
+The experimental branch first runs the component method and retains the original labels and overall prediction. It then selects evidence sentences for each component. Invalid evidence selections are recorded as component errors. For a selected judgment of supported or contradicted, an additional model call checks whether the selected evidence establishes the component and requests a short reason. A selected unsupported judgment does not receive that extra verification call. If any final component label is invalid, the overall verified result is recorded as a failure. Whole-claim fallback bypasses component verification because no component judgments are available.
+
+The saved original judgments permit a comparison before and after the combined evidence-selection and verification stage. This is a paired analysis of one run, not an independent rerun of the original method. Verification is retained as an experimental comparison; the pre-verification component method is the default demonstration path.
+
+3.7 Execution and Reproducibility
+
+The batch runner supports SQLite checkpoints that store run settings and one result per example ID. Resuming checks the stored settings and rejects an incompatible command. This made it possible to continue interrupted evaluation without discarding completed rows. Saved reports preserve the predictions and diagnostic information used by the analysis tools.
+
+The single-claim interface validates inputs before inference, provides a prepare-only option, and can save a JSON report containing the source hash, model, method, prediction, component details, and errors. Existing output files are not overwritten. Retrieved passages can be displayed explicitly, and whole-claim fallback is identified in the output.
+
+Docker packages the Python CLI while Ollama remains on the host computer. The endpoint is configurable through OLLAMA_BASE_URL; native execution defaults to the local loopback address, while Compose uses the host gateway address. Model weights and research data are excluded from the image. An optional analysis image installs plotting dependencies; NLI dependencies are separate from the lightweight CLI image. The container build, 21 automated tests, mounted-source validation, host-model connectivity, and one real claim-check demonstration were successfully checked.
+
+Overall evaluation tools validate dataset fingerprints and example IDs before comparing reports. Localization tools validate reference links and saved model outputs and distinguish missing component output from label disagreement. The artifact package includes checksums so saved analysis inputs can be checked for modification. These mechanisms support reproducibility of the recorded analyses without claiming an identical fresh inference run.
+
+3.8 Design Rationale and Processing Cost
+
+The architecture separates three decisions that can be inspected independently: what a claim says, which source passages are considered, and what those passages establish. Decomposition checks protect the first decision, deterministic passage ranking makes the second traceable, and retained component judgments expose the third. The whole-claim fallback preserves a classification path when decomposition is rejected, while its explicit status prevents that result from being mistaken for successful localization.
+
+The aggregation rule can be written using n accepted components and s supported components: complete_support if s=n; partial_support if 0<s<n; and no_support if s=0. This rule treats each accepted component as a decision unit without learning numerical component weights. Its meaning depends on a faithful decomposition: splitting one detail into several parts or losing a restriction can change the units being aggregated. The annotation and matching analyses therefore examine component quality separately from the overall label.
+
+The retrieval score is the size of the intersection between the component's unique case-normalized word-token set and a candidate window's token set. Ranking is descending by this score, followed by ascending source start position. The method requires no learned embedding index and preserves the text and word position of each selected window. The trade-off is limited sensitivity to synonyms and relationships that do not share words; future retrieval comparisons can hold the judging model fixed to study this stage directly.
+
+With n accepted components and valid responses, the original component path requires n+2 Qwen calls: one decomposition call, one split-review call, and one judgment per component. A coverage rejection uses decomposition followed by a whole-claim call, while rejection by model review adds that review before fallback. The whole-claim baseline requires one judgment call. For a successful verified path, sentence selection adds n calls and the extra evidence check adds one call for each selected supported or contradicted judgment. These are structural request counts, not measured latency or throughput results. They explain why a more detailed assessment requires additional inference work and why its value should be assessed alongside output correctness.
+
+The system architecture was designed and implemented for this project using pretrained model components. Its contribution is the integration of input handling, prompted assessment, decomposition safeguards, evidence retrieval, structured outputs, fallback, verification experiments, and evaluation records. The pretrained Transformer backbones and their original training procedures remain attributed to their developers.

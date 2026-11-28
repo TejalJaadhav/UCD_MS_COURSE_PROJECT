@@ -1,0 +1,67 @@
+2 Background
+
+2.1 Key Concepts
+
+2.1.1 Evidential Support and Attribution
+
+Citation-support evaluation asks whether a source provides sufficient evidence for the statement associated with it. This relationship is source-relative: a plausible claim can remain unsupported if the cited text does not establish it. Conversely, judging a statement supported by a source does not independently establish that the source is reliable or that the statement is true in the world. Liu et al. [1] studied citation support in generative search engines, providing the dataset used for this project's overall evaluation.
+
+This project distinguishes overall and component labels. Overall classification uses complete support, partial support, and no support. Component assessment uses supported, unsupported, and contradicted. Unsupported means that the available source does not establish the component; contradicted requires conflicting evidence. The component labels retain a distinction that the overall no-support category can combine. These two label systems must therefore be evaluated separately.
+
+2.1.2 Natural Language Inference and Prompted Assessment
+
+Natural language inference (NLI) treats evidence as a premise and a claim as a hypothesis. Entailment, neutrality, and contradiction provide a useful starting point for assessing support. However, a neutral inference outcome does not uniquely identify partial support: a source might support some details or establish none of them. The project consequently evaluates an explicit mapping from NLI outputs to the dataset's three overall support labels rather than assuming the label systems are equivalent.
+
+A prompted language model can instead be instructed to assess the complete claim directly. This provides a baseline for comparing the component approach with a model that receives the same task at a coarser granularity. Yue et al. [3] investigated prompted LLMs and fine-tuned smaller models for attribution evaluation. Their work motivates evaluating model judgments empirically rather than treating fluent responses as evidence of reliable attribution.
+
+2.1.3 Claim Decomposition and Evidence Alignment
+
+A component is a statement that can be assessed against the source while preserving its intended meaning. Decomposition must retain the entities, dates, quantities, qualifications, and relations needed to interpret the original claim. Removing a restriction or changing the subject can make a component easier to support while making it unfaithful to the original statement. Decomposition quality therefore affects both localization and overall classification.
+
+Evidence alignment associates a component with potentially relevant source passages. Retrieval establishes which text the evaluator considers; it does not prove that this text supports the component. The implementation preserves retrieved passages as model inputs and distinguishes them from the experimental stage's selected evidence sentences. An absent match can reflect missing source evidence, a retrieval failure, or a decomposition problem, so error analysis must consider the stages together.
+
+2.1.4 Overall Classification and Localization Measures
+
+Accuracy measures the proportion of overall predictions that are correct. Per-class precision, recall, and F1 show how behavior differs across support labels, while macro-F1 weights the classes equally. These measures answer different questions in a dataset where complete support is the largest class. A majority baseline is useful because it establishes how much accuracy can be obtained without assessing evidence.
+
+Localization asks whether the system identifies the relevant detail and labels it correctly. The project reports agreement on matched reference details, correct coverage across all reference details, and reference-aligned detection of unsupported or contradicted content. Detecting an error while confusing unsupported with contradicted counts as binary error detection but not exact labeling. Prediction-level audit precision is reported separately because generated components and annotated reference details are different counting units. A correct overall label alone is insufficient evidence of correct localization.
+
+2.2 Related Work and Design Rationale
+
+2.2.1 Citation and Attribution Evaluation
+
+Liu et al. [1] evaluated verifiability in generative search engines and documented incomplete support and inaccurate citations. Their study provides both the motivation and the primary overall-label dataset for this project. Gao et al. [2] introduced ALCE to evaluate generation with citations, including automatic citation-quality measures. This project focuses on assessing an existing claim-source pair rather than building an end-to-end system that retrieves web sources and generates cited answers.
+
+Yue et al. [3] examined automatic attribution judgments using prompted and fine-tuned models. Li et al. [4] subsequently introduced AttributionBench, compiling existing datasets and analyzing difficulties involving nuanced information and differences in evidence available to models and annotators. These findings motivate inspecting the supplied source text and recording mismatch causes rather than interpreting aggregate classification scores as a complete explanation of behavior.
+
+2.2.2 Fine-Grained Support Assessment
+
+Zhang et al. [5] compared faithfulness metrics for full, partial, and no support. Their findings indicate that no single metric consistently performs best across their evaluations. This supports examining multiple measures and retaining partial support as an explicit evaluation category. The present project's additional question is whether the details responsible for a support judgment can be exposed and measured through component-level assessment.
+
+The design therefore compares whole-claim and component methods, preserves component labels alongside the aggregate outcome, and evaluates localization against reviewed references. It also tests an additional verification stage as an experimental alternative. The original component judgments and verified judgments are retained so that changes in performance can be examined directly.
+
+The contribution is an empirical implementation and analysis within an established research area. It is not a claim that decomposition or fine-grained attribution is new. Overall comparisons, component matching, conservative alignment sensitivity, and targeted category review provide complementary views of the system. The small, AI-assisted review samples support descriptive conclusions; they do not establish a general ranking of mismatch difficulty or replace an independent held-out evaluation.
+
+2.2.3 Attribution Guidelines and Atomic Claims
+
+Rashkin et al. [6] introduced Attributable to Identified Sources (AIS) and a two-stage human annotation procedure for evaluating generated information against provided sources. This establishes a useful conceptual foundation: attribution is judged with respect to identified evidence. The present project's source-relative component labels follow that distinction, while its review procedure remains exploratory rather than a replication of the AIS annotation study.
+
+ALiiCE [7] uses dependency-tree-based decomposition to evaluate positional fine-grained citation generation. It demonstrates that atomic claims are already part of citation-evaluation research. This project instead uses prompted decomposition with explicit coverage and fidelity checks and studies supplied claim-source pairs. It does not implement ALiiCE's dependency parser or citation-position metrics. The comparison helps locate the contribution in an established area while making the different task and implementation choices explicit.
+
+2.2.4 Broader Citation Quality and Domain Evaluation
+
+CiteEval [8] assesses citation quality in a broader context that includes the user query, generated text, and retrieval context. It shows why source support is one dimension of citation quality rather than a complete definition. The present project deliberately limits its task to support relative to supplied text; it does not evaluate every available alternative source or provide a comprehensive citation-quality rating.
+
+Wu et al. [9] introduced SourceCheckup for assessing the sources in medical LLM responses and evaluated automated judgments against medical expert assessments. This provides a practical example of a source-checking pipeline and the importance of domain validation. The present study uses general claim-source pairs and cannot claim medical-expert agreement or transfer SourceCheckup's reported performance to its own outputs.
+
+2.2.5 Architectural Foundations
+
+He, Gao, and Chen [10] describe DeBERTaV3's replaced-token-detection pretraining and gradient-disentangled embedding sharing. This explains the provenance of the encoder family underlying the NLI checkpoint; the project does not repeat that pretraining. Its learned task adaptation is the small score-mapping layer described in Chapter 3.
+
+The Qwen2.5 technical report [11] describes the pretrained and post-trained model family used for prompted assessment. The NLI checkpoint documentation [12, 13] and Qwen model cards and configurations [14, 15] provide the checkpoint-specific architecture details. These sources establish model provenance, while project code and saved settings establish how those models were used in the experiments. Distinguishing those sources prevents pretrained capabilities from being mistaken for project-specific training or measured outcomes.
+
+2.3 Synthesis and Project Positioning
+
+The reviewed work motivates evaluating citation support at complementary levels. Overall classification provides a consistent comparison across methods; component assessment exposes the details behind a judgment; and mismatch analysis examines whether specific quantities, entities, dates, and restrictions are preserved. This project brings those levels together in one implemented evaluation pipeline.
+
+Three design choices connect that research to the implementation. First, the system retains component labels alongside the overall result, making localized assessment inspectable. Second, it checks decomposition fidelity and records fallback explicitly, so the evaluation can distinguish a correct overall prediction from the availability of component output. Third, it evaluates exact component labeling separately from binary error detection and preserves original judgments when testing verification. These choices make the project's contribution concrete: an interpretable representation accompanied by measurements of what it provides, how often it is correct, and which stages can be improved. Chapter 3 describes how these choices are implemented.
